@@ -1,0 +1,103 @@
+#wrapper {
+	width: 50%;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10%;
+	margin-bottom: 20%;
+}
+
+#pic {
+	margin-right: auto;
+	margin-left: auto;
+	width: 	100%;
+	position: relative;
+}
+
+#loginphoto {
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	-moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    border: solid 5px white;
+    box-shadow: 2px 2px 5px #888888;
+	opacity: 1;
+	width: 	10%;
+}
+
+#success {
+	border-top: solid 1px #dadada;
+	border-bottom: solid 1px #dadada;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	font-family:  "Microsoft YaHei";
+}
+
+#title {
+	font-size: 2em;
+}
+
+#notice {
+	font-size: 1.5em;
+	line-height: 1.7em;
+}
+
+#sign {
+	margin-top: 5px;
+	position: relative;
+}
+
+body {
+	background-color: #FCFAF2;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.button {
+	opacity: 0.5;
+	width: 32px;
+	height: 32px;
+	transition: opacity 0.3s ease-in-out;
+	-webkit-transition: opacity 0.3s ease-in-out;
+	display: inline;
+}
+
+#signupbutton {
+	float: right;
+}
+
+
+.button:hover {
+	opacity: 1;
+}
+
+
+.lab_item {
+	width: 80%;
+	margin: 0px;
+	display: inline;
+}
+
+.lab_button {
+	width: 32px;
+	height: 32px;
+	opacity: 0.5;
+	transition: opacity 0.3s ease-in-out;
+	-webkit-transition: opacity 0.3s ease-in-out;
+}
+
+.lab_button:hover {
+	opacity: 1;
+}
+
+img {
+	max-width: 100%;
+}
