@@ -13,7 +13,7 @@ Ray tracer, normal mapping, B-Spline, surface subdivision, Perlin noise and nume
 <style type="text/css">
 .img {
     display: inline-block;
-    width: 33%;
+    width: 32%;
 }
 </style>
 
