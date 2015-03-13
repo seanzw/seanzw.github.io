@@ -10,6 +10,17 @@ Exchange student in ETH Zuerich, Switzerland
 Finished the master course computer graphics in ETH Zuerich. [GitHub Project Page](https://zerowong.github.io/ETHZ-CG-2014)
 Ray tracer, normal mapping, B-Spline, surface subdivision, Perlin noise and numerous other basic computer graphics algorithms are implemented with JavaScript and WebGL.
 
+<style type="text/css">
+.img {
+    display: inline-block;
+    width: 33%;
+}
+</style>
+
+<div class = "img"><img src = "./img/CG-NormalMapping.png" alt = "something is wrong...:"></div>
+<div class = "img"><img src = "./img/CG-Opacity.png" alt = "something is wrong...:"></div>
+<div class = "img"><img src = "./img/CG-Marble.png" alt = "something is wrong...:"></div>
+
 #### Interest
 Mainly interested in computer graphics and computer vision. Especially in real time rendering and physics-based rendering.
 
