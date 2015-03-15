@@ -1,16 +1,18 @@
-#### Bio
-Wang Zhengrong ([CV](./CV/CV_eng.pdf))
-Bachlor of Engineering (Electronic Engineering), Tsinghua University
-Exchange student in ETH Zuerich, Switzerland
-
 <style type="text/css">
 #photo {
-    display: inline-block;
+    /*display: inline-block;*/
+    position: relative;
+   	float: right;
     width: 32%;
 }
 </style>
 
 <div id = "photo"><img src = "./img/photo.png" alt = "He is not here"></div>
+
+#### Bio
+Wang Zhengrong ([CV](./CV/CV_eng.pdf))
+Bachlor of Engineering (Electronic Engineering), Tsinghua University
+Exchange student in ETH Zuerich, Switzerland
 
 #### Projects
 ##### ETH Zuerich Computer Graphics
