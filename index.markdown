@@ -3,7 +3,14 @@ Wang Zhengrong ([CV](./CV/CV_eng.pdf))
 Bachlor of Engineering (Electronic Engineering), Tsinghua University
 Exchange student in ETH Zuerich, Switzerland
 
+<style type="text/css">
+#photo {
+    display: inline-block;
+    width: 32%;
+}
+</style>
 
+<div id = "photo"><img src = "./img/photo.png" alt = "He is not here"></div>
 
 #### Projects
 ##### ETH Zuerich Computer Graphics
