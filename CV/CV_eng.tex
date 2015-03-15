@@ -1,134 +1,226 @@
 \documentclass[a4paper]{article}
 \usepackage{palatino}
+\usepackage{fullpage}
 \usepackage{CJK}
-\usepackage{tabularx}
 \usepackage{geometry}
 \usepackage[colorlinks, linkcolor=]{hyperref}
-\geometry{text={175mm,295mm}}
-\geometry{tmargin = 0mm}
+
+% set margins
+\leftmargin=0.25in
+\oddsidemargin=0.25in
+\textwidth=6.0in
+\topmargin=0in
+\textheight=9.25in
+
+\raggedright
+
+\thispagestyle{empty}
+
+
+\newenvironment{changemargin}[2]{%
+  \begin{list}{}{%
+    \setlength{\topsep}{0pt}%
+    \setlength{\leftmargin}{#1}%
+    \setlength{\rightmargin}{#2}%
+    \setlength{\listparindent}{\parindent}%
+    \setlength{\itemindent}{\parindent}%
+    \setlength{\parsep}{\parskip}%
+  }%
+  \item[]}{\end{list}
+}
+
+\newcommand{\lineover}{
+	\begin{changemargin}{-0.05in}{-0.05in}
+		\vspace*{-8pt}
+		\hrulefill \\
+		\vspace*{-2pt}
+	\end{changemargin}
+}
+
+\newcommand{\header}[1]{
+	\begin{changemargin}{-0.5in}{-0.5in}
+		\scshape{#1}\\
+  	\lineover
+	\end{changemargin}
+}
+
+\newcommand{\contact}[5]{
+	\begin{changemargin}{-0.5in}{-0.5in}
+		\begin{center}
+			{\Large \scshape {#1}}\\ \smallskip
+			{#2}\\ \smallskip 
+			{#3}\\ \smallskip
+			{\href{mailto:#4}{#4}}\\ \smallskip
+			{\href{#5}{#5}}\smallskip
+		\end{center}
+	\end{changemargin}
+}
+
+\newenvironment{body} {
+	\vspace*{-16pt}
+	\begin{changemargin}{-0.25in}{-0.5in}
+  }	
+	{\end{changemargin}
+}	
+
+\newcommand{\school}[4]{
+	\textbf{#1} \hfill \emph{#2\\}
+	#3\\ 
+	#4\\
+}
+
 \begin{document}
-\title{\Huge \textbf{Wang Zhengrong}}
-\author{seanyukigeek@gmail.com}
-\maketitle
-
-\huge \textbf{Education} 
-\small
-\\
-\noindent\rule{\textwidth}{0.5pt}
-\normalsize
-\begin{tabular*}{\textwidth}{l r}
-\parbox[c]{0.5\textwidth}{
-	\begin{itemize}
-	\large \item Electronic Engineering, Tsinghua University(Bachlor) \\
-		% \normalsize GPA: 91.10
-	\end{itemize}
-	} & Aug. 2012 - present \\
-
-\parbox[c]{0.77\textwidth}{	
-	\begin{itemize}
-	\large \item ETH Zuerich(Exchange) \\
-	\end{itemize}
-	} & Aug. 2014 - Feb. 2015 \\
-
-\parbox[c]{0.77\textwidth}{
-	\begin{itemize}
-	\large \item Coursera \\ 
-		\normalsize Stanford University: Machine Learning \\
-		\normalsize Princeton University: Algorithms, Part II
-	\end{itemize}
-	} & Oct. 2014 - Dec. 2014 \\
-
-\parbox[c]{0.77\textwidth}{
-	\begin{itemize}
-	\large \item edX \\ 
-		\normalsize MITx: 6.041x Introduction to Probability\\
-		\normalsize MITx: 6.00.1x Introduction to Computer Science and \\
-					Programming with Python
-	\end{itemize}
-	} & Oct. 2013 - Dec. 2013 \\
+\contact{Zhengrong Wang}{Zijing Building 1\#129B, Tsinghua University, Beijing, P.R.China, 100084}{(+86) 185-6611-9325}{seanyukigeek@gmail.com}{zerowong.github.io}
 
 
-\end{tabular*}
+% Education
+\header{Education}
 
-\vspace{4pt}
-\huge \textbf{Reward}
-\small
-\\
-\noindent\rule{\textwidth}{0.5pt}
-\normalsize
-\begin{tabular*}{\textwidth}{p{0.85\textwidth} r}	
-\parbox[c]{0.85\textwidth}{
-	\begin{itemize}
-	\large \item Wang Zhaosheng Scholarship for Excellent Students from Dongguan \\
-		\normalsize 2 persons of 100
-	\end{itemize}
-	} & Nov. 2012 \\
-	
-\parbox[c]{0.85\textwidth}{
-	\begin{itemize}
-	\large \item Tsinghua University Second Scholarship for Excellent Freshmen \\
-		\normalsize 33 persons of 281
-	\end{itemize}
-	} & Sep. 2012 \\
-\end{tabular*}
+\begin{body}
+	\vspace{14pt}
 
-\vspace{4pt}
-\huge \textbf{Experience}
-\small
-\\
-\noindent\rule{\textwidth}{0.5pt}
-\normalsize
-\begin{tabular*}{\textwidth}{l r}
-\parbox[c]{0.75\textwidth}{
-	\begin{itemize}
-	\large \item Student Research： Humming Search on Android
-	\end{itemize}
-	} & Oct. 2013 - present \\
-	
-\parbox[c]{0.75\textwidth}{
-	\begin{itemize}
-	\large \item India Dream a Dream Children Education Volunteer \\
-		\normalsize Hold summer camp for children from rural area in India
-	\end{itemize}
-	}	& Jul. 2013 -  Sep. 2013 \\
- 	
-\parbox[c]{0.75\textwidth}{
-	\begin{itemize}
-	\large \item Xingxingyu Volunteer Program for Children with Autism
-	\end{itemize}
-	}		& Oct. 2012 - Dec. 2012 \\
- 	
-\parbox[c]{0.75\textwidth}{
-	\begin{itemize}
-	\large \item Greenpeace Environment Protection Campaign
-	\end{itemize}
-	}	& Oct. 2011 - Nov. 2011 \\
- 
-\end{tabular*}
+% -----
+	\textbf{Tsinghua University}, \emph{Department of Electronic Engineering} \hfill Beijing, P.R. China \\
+Bachlor of Engineering in Electronic Engineering \hfill \emph{Aug. 2012 - Jul. 2016}(expected){} \\
+GPA: 92/100\ \ \ Rank: 15/241\\
+Concentration: Computer Graphics, Computer Vision. \\
+\vspace{6pt}
 
-\vspace{4pt}
-\huge \textbf{Skills}
-\small
-\\
-\noindent\rule{\textwidth}{0.5pt}
-\normalsize
-\begin{tabular*}{\textwidth}{l r}
-\parbox[c]{0.76\textwidth}{
-	\begin{itemize}
-	\large \item English \\
-		\normalsize Toefl: 114, with full mark on reading and listening
-	\end{itemize}
-	} & \\
-	
-\parbox[c]{0.76\textwidth}{
-	\begin{itemize}
-	\large \item Programming \\
-		\normalsize C++ $\backslash$ Python $\backslash$ Matlab $\backslash$ JavaScript
+% -----
+	\textbf{ETH Z\"urich}, \emph{Department of Information Technology} \hfill Z\"urich, Switzerland \\
+	Exchange Student, International Academic Program \hfill \emph{Sept. 2014 - Feb. 2015}{} \\
+GPA: 5.50/6.00\\
 
-		\normalsize GitHub: \href{https://github.com/seanyuki}{seanyuki}
-	\end{itemize}
-	} & \\
 
-\end{tabular*}
+\end{body}
+
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Skills
+\header{Professional \& Personal Skills}
+
+\begin{body}
+	\vspace{14pt}
+% -----
+	Background in Mathematics: Familiar with calculus, linear algebra, probability theory, discrete mathematics, algorithms.\\
+	\smallskip
+% -----
+	Background in Computer Graphics: Familiar with ray tracing, \\
+	\smallskip
+	% -----
+	Computer Capability: Skilled at C/C++, Python, MATLAB, Java, JavaScript\\
+	\smallskip
+
+	% -----
+	Language Proficiency: English: Toefl 114; German: B1 Level(MCER)\\
+\end{body}
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Projects
+\header{Selected Projects}
+
+\begin{body}
+	\vspace{14pt}
+% -----
+	Computer Graphics in ETH Z\"urich \hfill \emph{Sept. 2014 - Dec. 2014}
+	\begin{itemize}
+	\itemsep 0pt
+	\item Use JavaScript and WebGL to implement computer graphics technologies.
+	\item Ray tracing, normal mapping, BRDF, Perlin noise, B-Spline, etc are implemented.
+	\item Demo: \href{https://zerowong.github.io/ETHZ-CG-2014}{https://zerowong.github.io/ETHZ-CG-2014}
+	\end{itemize}
+	\smallskip
+% -----
+	Computer Vision in ETH Z\"urich \hfill \emph{Sept. 2015 - Jan. 2015}
+	\begin{itemize}
+	\itemsep 0pt
+	\item Use Matlab to implement various algorithms in computer vision.
+	\item Particle filter, calibration, SIFT, segmentation, silhouette reconstruction, etc are implemented.
+	\end{itemize}
+	\smallskip
+
+\end{body}
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Awards and Honors
+\header{Awards and Honors}
+
+\begin{body}
+	\vspace{14pt}
+	% -----
+	Second-class Scholarship for Excellent Freshmen, \emph{Tsinghua University} \hfill{} \emph{Oct. 2012}\\
+	\smallskip
+	% -----
+	Wang Zhaosheng Scholarship for Excellent Studeng from Dongguan, \emph{Wang Zhaosheng Fundation} \hfill{} \emph{Oct. 2012}\\
+	\smallskip
+	% -----
+	Second Prize in $30^{\mathrm{th}}$ Chinese National Physics Contest(non-physical group A) \hfill{} \emph{Dec. 2013}\\
+	\smallskip
+	% -----
+	Ranked No.5 in National Matriculation Test(Science), Guangdong Province (1/600,000) \hfill{} \emph{Jun. 2012}
+\end{body}
+
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Major Courses
+% \header{Main Courses}
+
+% \begin{body}
+% 	\vspace{14pt}
+
+% 	\begin{itemize} \itemsep -0pt
+% 		\item Mining Massive Datasets (Stanford CS246, Coursera)
+% 		\item Computer Program Design -- 98, 97 (2012 Fall \& 2013 Spring)
+% 		\item Data Structure, Numerical Analysis and Algorithms -- 89 (2013 Fall)
+% 		\item Probability and Stochastic Processes(1) -- 100 (2014 Spring)
+% 		\item Probability and Stochastic Processes(2) -- A (UW-Madison ECE 730, 2014 Fall)
+% 	\end{itemize}
+
+% \end{body}
+
+% \smallskip
+% \smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Experience
+\header{Experience}
+
+\begin{body}
+	\vspace{14pt}
+	% -----
+	\textbf{Coursera}
+	\begin{itemize}
+	\itemsep 0pt
+	\item Stanford University, Machine Learning by Andrew Ng
+	\item Princeton University, Algorithms Part I \& II by Robert Sedgewick
+	\end{itemize}
+	\smallskip
+	% ----
+	\textbf{EdX}
+	\begin{itemize}
+	\itemsep 0pt
+	\item MIT, Introduction to Computer Science and Programming
+	\item MIT, Introduction to Probability
+	\end{itemize}
+	\smallskip
+
+	% -----
+	Children Education Program Volunteer, \emph{Dream a Dream, Bangalore, India} \hfill \emph{Jul. 2013 - Sept. 2013}\\
+	\smallskip
+
+\end{body}
+
+\smallskip
+\smallskip
+
+
 
 \end{document}
