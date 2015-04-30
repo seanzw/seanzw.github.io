@@ -1,0 +1,223 @@
+\documentclass[a4paper]{article}
+\usepackage{palatino}
+\usepackage{fullpage}
+\usepackage{CJK}
+\usepackage{geometry}
+\usepackage[colorlinks, linkcolor=]{hyperref}
+
+% set margins
+\leftmargin=0.25in
+\oddsidemargin=0.25in
+\textwidth=6.0in
+\topmargin=0in
+\textheight=9.25in
+
+\raggedright
+
+\thispagestyle{empty}
+
+
+\newenvironment{changemargin}[2]{%
+  \begin{list}{}{%
+    \setlength{\topsep}{0pt}%
+    \setlength{\leftmargin}{#1}%
+    \setlength{\rightmargin}{#2}%
+    \setlength{\listparindent}{\parindent}%
+    \setlength{\itemindent}{\parindent}%
+    \setlength{\parsep}{\parskip}%
+  }%
+  \item[]}{\end{list}
+}
+
+\newcommand{\lineover}{
+	\begin{changemargin}{-0.05in}{-0.05in}
+		\vspace*{-8pt}
+		\hrulefill \\
+		\vspace*{-2pt}
+	\end{changemargin}
+}
+
+\newcommand{\header}[1]{
+	\begin{changemargin}{-0.5in}{-0.5in}
+		\scshape{#1}\\
+  	\lineover
+	\end{changemargin}
+}
+
+\newcommand{\contact}[5]{
+	\begin{changemargin}{-0.5in}{-0.5in}
+		\begin{center}
+			{\Large \scshape {#1}}\\ \smallskip
+			{#2}\\ \smallskip 
+			{#3}\\ \smallskip
+			{\href{mailto:#4}{#4}}\\ \smallskip
+			{\href{#5}{#5}}\smallskip
+		\end{center}
+	\end{changemargin}
+}
+
+\newenvironment{body} {
+	\vspace*{-16pt}
+	\begin{changemargin}{-0.25in}{-0.5in}
+  }	
+	{\end{changemargin}
+}	
+
+\newcommand{\school}[4]{
+	\textbf{#1} \hfill \emph{#2\\}
+	#3\\ 
+	#4\\
+}
+
+\begin{document}
+\begin{CJK*}{UTF8}{gbsn}
+\contact{王钲荣}{中国北京市海淀区清华大学紫荆公寓1\#129B, 100084}{(+86) 185-6611-9325}{seanyukigeek@gmail.com}{zerowong.github.io}
+
+
+% Education
+\header{Education}
+
+\begin{body}
+	\vspace{14pt}
+
+% -----
+	\textbf{清华大学}, \emph{电子工程系} \hfill 北京，中国 \\
+电子工程学士 \hfill \emph{Aug. 2012 - Jul. 2016}(expected){} \\
+GPA: 92/100\ \ \ Rank: 15/241\\
+\vspace{6pt}
+
+% -----
+	\textbf{瑞士苏黎世联邦理工}, \emph{信息技术学院} \hfill 苏黎世，瑞士 \\
+	交换生 \hfill \emph{Sept. 2014 - Feb. 2015}{} \\
+GPA: 5.50/6.00\\
+
+
+\end{body}
+
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Skills
+\header{Professional \& Personal Skills}
+
+\begin{body}
+	\vspace{14pt}
+% -----
+	数学背景：熟悉微积分，线性代数，概率论，离散数学，算法。\\
+	\smallskip
+% -----
+	计算机图形学：熟悉光线追踪，纹理贴图，过程噪声等。 \\
+	\smallskip
+	% -----
+	编程技能: 熟练运用 C/C++，Python，MATLAB，Java，JavaScript。\\
+	\smallskip
+
+	% -----
+	语言: 英语: 托福 114; 德语: B1 (欧盟语言框架).\\
+\end{body}
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Projects
+\header{Selected Projects}
+
+\begin{body}
+	\vspace{14pt}
+% -----
+	计算机图形学，苏黎世联邦理工 \hfill \emph{Sept. 2014 - Dec. 2014}
+	\begin{itemize}
+	\itemsep 0pt
+	\item 使用JavaScript和WebGL实现计算机图形学基本算法。
+	\item 实现了Ray tracing, normal mapping, BRDF, Perlin noise, B-Spline等。
+	\item Demo: \href{https://zerowong.github.io/ETHZ-CG-2014}{https://zerowong.github.io/ETHZ-CG-2014}
+	\end{itemize}
+	\smallskip
+% -----
+	计算机视觉，苏黎世联邦理工 \hfill \emph{Sept. 2015 - Jan. 2015}
+	\begin{itemize}
+	\itemsep 0pt
+	\item 使用Matlab实现计算机视觉算法。
+	\item 实现了Particle filter, calibration, SIFT, segmentation, silhouette reconstruction等。
+	\end{itemize}
+	\smallskip
+
+\end{body}
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Awards and Honors
+\header{Awards and Honors}
+
+\begin{body}
+	\vspace{14pt}
+	% -----
+	新生二等奖学金, \emph{清华大学} \hfill{} \emph{Oct. 2012}\\
+	\smallskip
+	% -----
+	王兆生奖学金, \emph{王兆生基金会} \hfill{} \emph{Oct. 2012}\\
+	\smallskip
+	% -----
+	第30届全国物理竞赛（非物理组A）二等奖 \hfill{} \emph{Dec. 2013}\\
+\end{body}
+
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Major Courses
+% \header{Main Courses}
+
+% \begin{body}
+% 	\vspace{14pt}
+
+% 	\begin{itemize} \itemsep -0pt
+% 		\item Mining Massive Datasets (Stanford CS246, Coursera)
+% 		\item Computer Program Design -- 98, 97 (2012 Fall \& 2013 Spring)
+% 		\item Data Structure, Numerical Analysis and Algorithms -- 89 (2013 Fall)
+% 		\item Probability and Stochastic Processes(1) -- 100 (2014 Spring)
+% 		\item Probability and Stochastic Processes(2) -- A (UW-Madison ECE 730, 2014 Fall)
+% 	\end{itemize}
+
+% \end{body}
+
+% \smallskip
+% \smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Experience
+\header{Experience}
+
+\begin{body}
+	\vspace{14pt}
+	% -----
+	\textbf{Coursera}
+	\begin{itemize}
+	\itemsep 0pt
+	\item 斯坦福大学，机器学习
+	\item 普林斯顿大学，算法
+	\end{itemize}
+	\smallskip
+	% ----
+	\textbf{EdX}
+	\begin{itemize}
+	\itemsep 0pt
+	\item MIT, 计算机科学与编程导论
+	\item MIT, 概率论导论
+	\end{itemize}
+	\smallskip
+
+	% -----
+	儿童教育项目志愿者，\emph{Dream a Dream, 班加罗尔, 印度} \hfill \emph{Jul. 2013 - Sept. 2013}\\
+	\smallskip
+
+\end{body}
+
+\smallskip
+\smallskip
+
+
+\end{CJK*}
+\end{document}

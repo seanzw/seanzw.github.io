@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2015.3.25)  25 MAR 2015 01:35
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2015.3.25)  25 MAR 2015 01:50
 entering extended mode
-**D:/File/CV/zerowong.github.io/CV/CV_eng.tex
-(D:/File/CV/zerowong.github.io/CV/CV_eng.tex
+**D:/File/CV/zerowong.github.io/CV/CV_chn.tex
+(D:/File/CV/zerowong.github.io/CV/CV_chn.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for loaded.
 (C:\CTEX\MiKTeX\tex\latex\base\article.cls
@@ -175,7 +175,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip44
 )
-(D:\File\CV\zerowong.github.io\CV\CV_eng.aux)
+(D:\File\CV\zerowong.github.io\CV\CV_chn.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 72.
 LaTeX Font Info:    ... okay on input line 72.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 72.
@@ -333,50 +333,114 @@ LaTeX Info: Redefining \ref on input line 72.
 LaTeX Info: Redefining \pageref on input line 72.
 LaTeX Info: Redefining \nameref on input line 72.
 
-(D:\File\CV\zerowong.github.io\CV\CV_eng.out)
-(D:\File\CV\zerowong.github.io\CV\CV_eng.out)
+(D:\File\CV\zerowong.github.io\CV\CV_chn.out)
+(D:\File\CV\zerowong.github.io\CV\CV_chn.out)
 \@outlinefile=\write3
-LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 83.
-LaTeX Font Info:    Try loading font information for OMS+ppl on input line 132.
 
+(C:\CTEX\MiKTeX\tex\latex\cjk\UTF8\UTF8.bdg
+File: UTF8.bdg 2008/12/29 4.8.2
+)
+(C:\CTEX\MiKTeX\tex\latex\cjk\UTF8\UTF8.enc
+File: UTF8.enc 2008/12/29 4.8.2
+)
+(C:\CTEX\MiKTeX\tex\latex\cjk\UTF8\UTF8.chr
+File: UTF8.chr 2008/12/29 4.8.2
+)
+LaTeX Font Info:    Try loading font information for C70+gbsn on input line 74.
+
+
+(C:\CTEX\MiKTeX\tex\latex\cjk\UTF8\c70gbsn.fd
+File: c70gbsn.fd 2008/12/29 4.8.2
+)
+(C:\CTEX\MiKTeX\tex\latex\cjk\UTF8\c70gbsn.fdx
+File: c70gbsn.fdx 2008/12/29 4.8.2
+)
+
+LaTeX Font Warning: Font shape `C70/gbsn/m/sc' undefined
+(Font)              using `C70/gbsn/m/n' instead on input line 74.
+
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 84.
+
+LaTeX Font Warning: Font shape `C70/gbsn/m/it' undefined
+(Font)              using `C70/gbsn/m/n' instead on input line 84.
+
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 132.
 
 (C:\CTEX\MiKTeX\tex\latex\psnfss\omsppl.fd
 File: omsppl.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 132.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 163.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 163.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 226.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 223.
  [1
 
 {C:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 226.
- (D:\File\CV\zerowong.github.io\CV\CV_eng.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 226.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 226.
-Package rerunfilecheck Info: File `CV_eng.out' has not changed.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 223.
+ (D:\File\CV\zerowong.github.io\CV\CV_chn.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 223.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 223.
+Package rerunfilecheck Info: File `CV_chn.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
  ) 
 Here is how much of TeX's memory you used:
- 6046 strings out of 495354
- 84617 string characters out of 3183859
- 181341 words of memory out of 3000000
- 9187 multiletter control sequences out of 15000+200000
- 10162 words of font info for 26 fonts, out of 3000000 for 9000
+ 6458 strings out of 495354
+ 91464 string characters out of 3183859
+ 188341 words of memory out of 3000000
+ 9527 multiletter control sequences out of 15000+200000
+ 25934 words of font info for 85 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 29i,5n,25p,236b,326s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,5n,27p,280b,369s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<C:/CTEX/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmr10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7
-.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/CTEX/MiKTeX/
-fonts/type1/urw/palatino/uplb8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/palatino/up
-lr8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on CV_eng.pdf (1 page, 83431 bytes).
+ublic/amsfonts/cm/cmsy10.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu30.p
+fb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu4e.pfb><C:/CTEX/MiKTeX/fonts/t
+ype1/arphic/gbsnu/gbsnu4f.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu51.
+pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu52.pfb><C:/CTEX/MiKTeX/fonts/
+type1/arphic/gbsnu/gbsnu53.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu54
+.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu56.pfb><C:/CTEX/MiKTeX/fonts
+/type1/arphic/gbsnu/gbsnu57.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu5
+8.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu59.pfb><C:/CTEX/MiKTeX/font
+s/type1/arphic/gbsnu/gbsnu5b.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu
+5c.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu5d.pfb><C:/CTEX/MiKTeX/fon
+ts/type1/arphic/gbsnu/gbsnu5e.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsn
+u5f.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu60.pfb><C:/CTEX/MiKTeX/fo
+nts/type1/arphic/gbsnu/gbsnu61.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbs
+nu62.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu63.pfb><C:/CTEX/MiKTeX/f
+onts/type1/arphic/gbsnu/gbsnu65.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gb
+snu66.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu67.pfb><C:/CTEX/MiKTeX/
+fonts/type1/arphic/gbsnu/gbsnu68.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/g
+bsnu69.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu6b.pfb><C:/CTEX/MiKTeX
+/fonts/type1/arphic/gbsnu/gbsnu6c.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/
+gbsnu6d.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu6e.pfb><C:/CTEX/MiKTe
+X/fonts/type1/arphic/gbsnu/gbsnu71.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu
+/gbsnu72.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu73.pfb><C:/CTEX/MiKT
+eX/fonts/type1/arphic/gbsnu/gbsnu74.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsn
+u/gbsnu75.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu76.pfb><C:/CTEX/MiK
+TeX/fonts/type1/arphic/gbsnu/gbsnu79.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbs
+nu/gbsnu7a.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu7b.pfb><C:/CTEX/Mi
+KTeX/fonts/type1/arphic/gbsnu/gbsnu7c.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gb
+snu/gbsnu7d.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu7e.pfb><C:/CTEX/M
+iKTeX/fonts/type1/arphic/gbsnu/gbsnu7f.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/g
+bsnu/gbsnu80.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu82.pfb><C:/CTEX/
+MiKTeX/fonts/type1/arphic/gbsnu/gbsnu83.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/
+gbsnu/gbsnu89.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu8a.pfb><C:/CTEX
+/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu8b.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic
+/gbsnu/gbsnu8d.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu8e.pfb><C:/CTE
+X/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu8f.pfb><C:/CTEX/MiKTeX/fonts/type1/arphi
+c/gbsnu/gbsnu90.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu91.pfb><C:/CT
+EX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu94.pfb><C:/CTEX/MiKTeX/fonts/type1/arph
+ic/gbsnu/gbsnu96.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu97.pfb><C:/C
+TEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnu98.pfb><C:/CTEX/MiKTeX/fonts/type1/arp
+hic/gbsnu/gbsnu9e.pfb><C:/CTEX/MiKTeX/fonts/type1/arphic/gbsnu/gbsnuff.pfb><C:/
+CTEX/MiKTeX/fonts/type1/urw/palatino/uplb8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw
+/palatino/uplr8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on CV_chn.pdf (1 page, 277955 bytes).
 PDF statistics:
- 39 PDF objects out of 1000 (max. 8388607)
+ 267 PDF objects out of 1000 (max. 8388607)
  2 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
