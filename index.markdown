@@ -16,7 +16,7 @@ Exchange student in ETH Zuerich, Switzerland
 
 #### Projects
 ##### ETH Zuerich Computer Graphics
-Finished the master course computer graphics in ETH Zuerich. [GitHub Project Page](https://zerowong.github.io/ETHZ-CG-2014)
+Finished the master course computer graphics in ETH Zuerich. [GitHub Project Page](https://seanzw.github.io/ETHZ-CG-2014)
 Ray tracer, normal mapping, B-Spline, surface subdivision, Perlin noise and numerous other basic computer graphics algorithms are implemented with JavaScript and WebGL.
 
 <style type="text/css">
