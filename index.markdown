@@ -48,7 +48,7 @@ Ray tracer, normal mapping, B-Spline, surface subdivision, Perlin noise and nume
 
 <!-- <div class = "img"><img src = "./img/CG-NormalMapping.png" alt = "something is wrong...:"></div> -->
 <!-- <div class = "img"><img src = "./img/CG-Opacity.png" alt = "something is wrong...:"></div> -->
-<div class = "img"><img src = "./img/CG-Marble.png" alt = "something is wrong...:"></div>
+<!-- <div class = "img"><img src = "./img/CG-Marble.png" alt = "something is wrong...:"></div> -->
 
 #### Interest
 Computer graphics, mainly in rendering.
