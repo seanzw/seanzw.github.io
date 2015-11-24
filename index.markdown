@@ -46,8 +46,8 @@ Project Repo: [https://github.com/seanzw/MicroPythonFPGA](https://github.com/sea
 Finished the master course computer graphics in ETH Zuerich. [GitHub Project Page](https://seanzw.github.io/ETHZ-CG-2014)
 Ray tracer, normal mapping, B-Spline, surface subdivision, Perlin noise and numerous other basic computer graphics algorithms are implemented with JavaScript and WebGL.
 
-<div class = "img"><img src = "./img/CG-NormalMapping.png" alt = "something is wrong...:"></div>
-<div class = "img"><img src = "./img/CG-Opacity.png" alt = "something is wrong...:"></div>
+<!-- <div class = "img"><img src = "./img/CG-NormalMapping.png" alt = "something is wrong...:"></div> -->
+<!-- <div class = "img"><img src = "./img/CG-Opacity.png" alt = "something is wrong...:"></div> -->
 <div class = "img"><img src = "./img/CG-Marble.png" alt = "something is wrong...:"></div>
 
 #### Interest
