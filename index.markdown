@@ -33,9 +33,9 @@ Yet another ray tracer in `c++`. It supports direct light and bidirectional path
 
 Project Repo: [https://github.com/seanzw/yart-cpp](https://github.com/seanzw/yart-cpp)
 
-<div class = "img"><img src = "./img/yart-indirect-bi.png" alt = "something is wrong...:"></div>
-<div class = "img"><img src = "./img/yart-cornell-box.png" alt = "something is wrong...:"></div>
-<div class = "img"><img src = "./img/yart-stanford-dragon.png" alt = "something is wrong...:"></div>
+<!-- <div class = "img"><img src = "./img/yart-indirect-bi.png" alt = "something is wrong...:"></div> -->
+<!-- <div class = "img"><img src = "./img/yart-cornell-box.png" alt = "something is wrong...:"></div> -->
+<!-- <div class = "img"><img src = "./img/yart-stanford-dragon.png" alt = "something is wrong...:"></div> -->
 
 ##### MicroPython on FPGA
 [MicroPython](https://github.com/micropython/micropython) is implementation of Python for embedded system. Under supervision of Peter Y K Cheung at Imperial College London, [Zhixun Tan](https://github.com/phisiart) and I port MicroPython to Altera's DE0-Nano-SoC. We also write a simple Python module to communicate with the FPGA part.
