@@ -33,7 +33,6 @@ Yet another ray tracer in `c++`. It supports direct light and bidirectional path
 
 Project Repo: [https://github.com/seanzw/yart-cpp](https://github.com/seanzw/yart-cpp)
 
-<div class = "img"><img src = "https://seanzw.github.io/img/yart-indirect-bi.png" alt = "something is wrong...:"></div>
 <div class = "img"><img src = "https://seanzw.github.io/img/yart-cornell-box.png" alt = "something is wrong...:"></div>
 <div class = "img"><img src = "https://seanzw.github.io/img/yart-stanford-dragon.png" alt = "something is wrong...:"></div>
 
