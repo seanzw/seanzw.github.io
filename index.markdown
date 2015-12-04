@@ -17,7 +17,7 @@
 </style>
 
 #### Bio
-Wang Zhengrong ([CV](./CV/CV_eng.pdf))
+Wang Zhengrong ([CV](https://seanzw.github.io/CV/CV_eng.pdf))
 Bachlor of Engineering (Electronic Engineering), Tsinghua University
 Exchange student in ETH Zuerich, Switzerland
 
