@@ -100,10 +100,16 @@
             </div>
             <div style="width:60%; margin: 0 auto;">
                 <div>
+                    <h4>University of California, Los Angeles</h4>
+                    <p>Dept. Computer Science<br>
+                    Master of Science in Computer Science<br>
+                    Sep. 2016 - Jul. 2018</p>
+                </div>
+                <div style="margin-top: 50px;">
                     <h4>Tsinghua University</h4>
                     <p>Dept. Electronic Engineering<br>
                     Bachelor of Engineering<br>
-                    Aug. 2012 - Jul. 2016 (Expected)</p>
+                    Aug. 2012 - Jul. 2016</p>
                 </div>
                 <div style="margin-top: 50px;">
                     <h4>ETH Zürich</h4>
@@ -161,6 +167,16 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
+                    <a href="#lcc" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content text-center">
+                                <h4>Light C-Compiler in C#</h4>
+                            </div>
+                        </div>
+                        <img src="img/projects/dodecahedron.png" class="img-responsive" alt="">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
                     <a href="#pedestrain" class="portfolio-link" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content text-center">
@@ -170,6 +186,8 @@
                         <img src="img/projects/bunny.png" class="img-responsive" alt="">
                     </a>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-4 portfolio-item">
                     <a href="#mesh" class="portfolio-link" data-toggle="modal">
                         <div class="caption">
@@ -180,8 +198,6 @@
                         <img src="img/projects/icosahedron.png" class="img-responsive" alt="">
                     </a>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-sm-4 portfolio-item">
                     <a href="#micropython" class="portfolio-link" data-toggle="modal">
                         <div class="caption">
@@ -261,6 +277,41 @@
                             
                             <img src="img/projects/stanford-dragon.png" class="img-responsive img-centered" alt="">
                             <img src="img/projects/env.png" class="img-responsive img-centered" alt="">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="lcc" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Light C-Compiler in C#</h2>
+                            <hr class="star-primary">
+                            <img src="img/projects/dodecahedron.png" class="img-responsive img-centered" alt="">
+                            <div style="text-align:left">
+                            <p>Light C-Compiler is an entertainment project for me to practice my programming skill and reach into some deep corners of C language. It is based on C99 and works ONLY on Windows 32bits + Visual Studio 2015.
+                            <br/>
+                            Like many other compilers, lcc divides the whole compilation into 4 stages: lexical analysis, syntax checking, semantic checking and code generation. For the first two stages, three simple tools are developed: RegEx, Lexer and Parserc (see below). The target platform is x86.
+                            <br/>
+                            Here are some more images and you can find more details at the GitHub repo.</p>
+                            </div>
+                            <ul class="list-inline item-details">
+                                <li>
+                                    <strong><a href="https://github.com/seanzw/lcc">https://github.com/seanzw/lcc</a>
+                                    </strong>
+                                </li>
+                            </ul>                            
                             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                         </div>
                     </div>
