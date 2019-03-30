@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Zhengrong Wang</title>
+    <link>http://seanzw.github.io/</link>
+    <description>Recent content on Zhengrong Wang</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 29 Mar 2019 15:41:55 -0700</lastBuildDate>
+    
+	<atom:link href="http://seanzw.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Setup This Website with Hugo</title>
+      <link>http://seanzw.github.io/posts/setting-up-this/</link>
+      <pubDate>Fri, 29 Mar 2019 15:41:55 -0700</pubDate>
+      
+      <guid>http://seanzw.github.io/posts/setting-up-this/</guid>
+      <description>After 2 years with my previous dummy personal website, I was urged to create a better one. After some googling, I made this tiny website using Hugo. Here are some notes for a n00b in front-end like me.
+ Make sure you download the extended version of Hugo. Otherwise you won&amp;rsquo;t have support for SASS and SCSS (I have no idea what these are). Just scroll down in the release page and you will find it.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://seanzw.github.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://seanzw.github.io/about/</guid>
+      <description>About Me I am a first Ph.D. student at UCLA, advised by Prof. Tony Nowatzki. I am generally interested in developing high performance computer architecture for both general and domain specific computing with compiler support. I am also looking into how to accurately and efficiently model and simulate current architectures.
+Prior joining UCLA, I received Bachelor of Engineering from Department of Electronic Enginerring, Tsinghua University. I also studied at ETH Zürich for half a year as a exhange student.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://seanzw.github.io/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://seanzw.github.io/projects/</guid>
+      <description>Projects Yart-Yet Another Ray Tracer  Yart is a simple but powerful ray tracer engine. It reads in a scene description file and parses it. Then it renders the scene and prints the output image. For objects, it supports sphere and triangle mesh. For material, Lambertian, Specular, Refraction and Cook-Torrance BSDF are implemented. To solve the light equation, it can use either direct lighting or bidirectional path tracing. To accelerate the computation, multiple threads and OC-Tree are used.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://seanzw.github.io/publications/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://seanzw.github.io/publications/</guid>
+      <description>Publications Zhengrong Wang, Tony Nowatzki Stream-based Memory Access Specialization for General Purpose Processors. 2019 ACM/IEEE 46th Annual International Symposium on Computer Architecture (ISCA) [To Appear].
+Zhengrong Wang, Fei Qiao, Zhen Liu, Yuxiang Shan, Xunyi Zhou, Li Luo, Huazhong Yang Optimizing convolutional neural network on FPGA under heterogeneous computing framework with OpenCL. 2016 IEEE Region 10 Conference (TENCON).</description>
+    </item>
+    
+  </channel>
+</rss>

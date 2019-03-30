@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Zhengrong Wang</title>
+    <link>http://seanzw.github.io/posts/</link>
+    <description>Recent content in Posts on Zhengrong Wang</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 29 Mar 2019 15:41:55 -0700</lastBuildDate>
+    
+	<atom:link href="http://seanzw.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Setup This Website with Hugo</title>
+      <link>http://seanzw.github.io/posts/setting-up-this/</link>
+      <pubDate>Fri, 29 Mar 2019 15:41:55 -0700</pubDate>
+      
+      <guid>http://seanzw.github.io/posts/setting-up-this/</guid>
+      <description>After 2 years with my previous dummy personal website, I was urged to create a better one. After some googling, I made this tiny website using Hugo. Here are some notes for a n00b in front-end like me.
+ Make sure you download the extended version of Hugo. Otherwise you won&amp;rsquo;t have support for SASS and SCSS (I have no idea what these are). Just scroll down in the release page and you will find it.</description>
+    </item>
+    
+  </channel>
+</rss>

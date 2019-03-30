@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Zhengrong Wang">
+    <meta name="description" content="Zhengrong Wang&#39;s personal website">
+    <meta name="keywords" content="Ph.D. Student;Blog.">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="Projects Yart-Yet Another Ray Tracer  Yart is a simple but powerful ray tracer engine. It reads in a scene description file and parses it. Then it renders the scene and prints the output image. For objects, it supports sphere and triangle mesh. For material, Lambertian, Specular, Refraction and Cook-Torrance BSDF are implemented. To solve the light equation, it can use either direct lighting or bidirectional path tracing. To accelerate the computation, multiple threads and OC-Tree are used."/>
+
+    <meta property="og:title" content="" />
+<meta property="og:description" content="Projects Yart-Yet Another Ray Tracer  Yart is a simple but powerful ray tracer engine. It reads in a scene description file and parses it. Then it renders the scene and prints the output image. For objects, it supports sphere and triangle mesh. For material, Lambertian, Specular, Refraction and Cook-Torrance BSDF are implemented. To solve the light equation, it can use either direct lighting or bidirectional path tracing. To accelerate the computation, multiple threads and OC-Tree are used." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://seanzw.github.io/projects/" />
+
+
+
+    
+      <base href="http://seanzw.github.io/projects/">
+    
+    <title>
+   · Zhengrong Wang
+</title>
+
+    
+      <link rel="canonical" href="http://seanzw.github.io/projects/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="http://seanzw.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="http://seanzw.github.io/img/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://seanzw.github.io/img/favicon-16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.54.0" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://seanzw.github.io">
+      Zhengrong Wang
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://seanzw.github.io/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://seanzw.github.io/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://seanzw.github.io/projects/">Projects</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://seanzw.github.io/publications/">Publications</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container page">
+  <article>
+    <header>
+      <h1></h1>
+    </header>
+
+    
+
+<h1 id="projects">Projects</h1>
+
+<h3 id="yart-yet-another-ray-tracer-a-href-https-github-com-seanzw-yart-cpp-i-class-fab-fa-github-i-a">Yart-Yet Another Ray Tracer <a href=https://github.com/seanzw/yart-cpp><i class="fab fa-github"></i></a></h3>
+
+<p>Yart is a simple but powerful ray tracer engine. It reads in a scene description file and parses it. Then it renders the scene and prints the output image. For objects, it supports sphere and triangle mesh. For material, Lambertian, Specular, Refraction and Cook-Torrance BSDF are implemented. To solve the light equation, it can use either direct lighting or bidirectional path tracing. To accelerate the computation, multiple threads and OC-Tree are used.</p>
+
+<p><details><summary> Sample Images. </summary>
+<p>
+<img src="http://seanzw.github.io/img/projects/stanford-dragon.png" alt="Stanford Dragon" />
+<img src="http://seanzw.github.io/img/projects/env.png" alt="Environmental Light" />
+<img src="http://seanzw.github.io/img/projects/lucy.png" alt="Simplified Mesh" />
+</p>
+</details></p>
+
+<h3 id="light-c-compiler-in-c-a-href-https-github-com-seanzw-lcc-i-class-fab-fa-github-i-a">Light C-Compiler in C#  <a href=https://github.com/seanzw/lcc><i class="fab fa-github"></i></a></h3>
+
+<p>Light C-Compiler is an entertainment project for me to practice my programming skill and reach into some deep corners of C language. It implements C99 and works ONLY on Windows 32bits + Visual Studio 2015.</p>
+
+<p>Like many other compilers, lcc divides the whole compilation into 4 stages: lexical analysis, syntax checking, semantic checking and code generation. For the first two stages, three simple tools are developed: RegEx, Lexer and Parserc (see below). The target platform is x86.</p>
+
+<h3 id="pedestrain-tracker-a-href-https-github-com-seanzw-pedestraintracker-i-class-fab-fa-github-i-a">Pedestrain Tracker <a href=https://github.com/seanzw/PedestrainTracker><i class="fab fa-github"></i></a></h3>
+
+<p>Pedestrain Tracker is an offline system to track and count pedestrains walking in a video clip. The video is uncaliberated, which means there is no depth information. For detection, we used online boosting with RGB HoG feature. Particle filter is used to tracking multiple targets. The system works well when there is no occlusion however when it is likely to lose the target when there are is occlusion and overlapping. You can find more images and result video clips at the GitHub repo.</p>
+
+<h3 id="micropython-on-fpga-a-href-https-github-com-seanzw-micropythonfpga-i-class-fab-fa-github-i-a">MicroPython on FPGA <a href=https://github.com/seanzw/MicroPythonFPGA><i class="fab fa-github"></i></a></h3>
+
+<p>During the summer 2015, I worked at Imperial College with Johnson under supervision of <a href="https://www.imperial.ac.uk/people/p.cheung">Prof. Peter Y. K. Cheung</a>.
+We ported MicroPython to Altera&rsquo;s DE0-Nano-SoC FPGA. This interpreter can now run not only on ARM Linux, but also on bare-metal (without any OS support, thanks to Johnson). We also extended the interpreter with some modules to support peripherals on the board, and perform communication between HPS and FPGA.</p>
+
+<h3 id="opencl-fpga-a-href-https-github-com-seanzw-opencl-fpga-i-class-fab-fa-github-i-a">OpenCL@FPGA <a href=https://github.com/seanzw/OpenCL-FPGA><i class="fab fa-github"></i></a></h3>
+
+<p>This was my undergraduate thesis. I will explore Xilinx&rsquo;s new OpenCL IDF, SDAccel and try to use it to accelerate the computation on FPGA without writing RTL language such as verilog.</p>
+
+  </article>
+</section>
+
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>Enjoy it!</p>
+    
+     © 2019
+    
+    
+       · 
+      [<a href="https://github.com/luizdepra/hugo-coder/tree/"></a>]
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137273352-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+  </body>
+
+</html>
