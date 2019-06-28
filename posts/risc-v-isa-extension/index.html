@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Zhengrong Wang">
+    <meta name="description" content="Zhengrong Wang&#39;s personal website">
+    <meta name="keywords" content="Ph.D. Student;Blog.">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Extend RISC-V ISA with Matrix Multiply"/>
+<meta name="twitter:description" content="Notes on how to extend RISC-V with a matrix multiply instruction."/>
+
+    <meta property="og:title" content="Extend RISC-V ISA with Matrix Multiply" />
+<meta property="og:description" content="Notes on how to extend RISC-V with a matrix multiply instruction." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://seanzw.github.io/posts/risc-v-isa-extension/" />
+<meta property="article:published_time" content="2019-06-28T14:55:52-07:00"/>
+<meta property="article:modified_time" content="2019-06-28T14:55:52-07:00"/>
+
+
+    
+      <base href="http://seanzw.github.io/posts/risc-v-isa-extension/">
+    
+    <title>
+  Extend RISC-V ISA with Matrix Multiply · Zhengrong Wang
+</title>
+
+    
+      <link rel="canonical" href="http://seanzw.github.io/posts/risc-v-isa-extension/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="http://seanzw.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="http://seanzw.github.io/img/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://seanzw.github.io/img/favicon-16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.54.0" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://seanzw.github.io">
+      Zhengrong Wang
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://seanzw.github.io/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://seanzw.github.io/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://seanzw.github.io/projects/">Projects</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://seanzw.github.io/publications/">Publications</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Extend RISC-V ISA with Matrix Multiply</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-06-28T14:55:52-07:00'>
+                June 28, 2019
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              4 minutes read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+
+<p>Many computer architecture students will eventually add some new (useless)
+instructions to a ISA, and there are many great tutorial on how to do this. This is
+yet another notes on my struggling to extend RISC-V with a new matrix multiply
+instruction. The overall goal is to add a new functional unit in a general purpose
+processor to do a 4x4 matrix multiply accumulate with single-precision
+floating-point.</p>
+
+<p>The <a href="https://content.riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf">Manual</a> has a very detailed explanation on what ISA encoding is reserved for such non-standard extension (see ch.21). Basially any instruction with a prefix (starting from LSB) <code>00 010 11</code> or <code>01 010 11</code> is reserved.</p>
+
+<p>Since the matrix is 64 bytes (16 single-precision floating-point elements), and can
+not be hold in a normal register. We also need to introduce new registers as well as special load and store instructions.</p>
+
+<h2 id="define-new-instructions">Define New Instructions.</h2>
+
+<p>First, let&rsquo;s set up <a href="https://github.com/riscv/riscv-tools">riscv-tools</a> and
+<a href="https://github.com/riscv/riscv-gnu-toolchain">riscv-gnu-toolchain</a>. We then define our new instructions in <code>riscv-tools/riscv-opcodes/opcodes</code>:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">matrix_multiply rd rs1 rs2     31..25=0 14..12=0  6..5=0 4..2=2 1..0=3 # R-type
+matrix_ld       rd rs1 imm12            14..12=1  6..5=0 4..2=2 1..0=3 # I-type
+matrix_st       imm12hi rs1 rs2 imm12lo 14..12=2  6..5=0 4..2=2 1..0=3 # S-type</pre></div>
+<p>Notice the bit 0 to 6 is set to <code>00 010 11</code>, which indicates these are non-standard extension instructions. Rebuild the repo.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&gt; ./build.sh</pre></div>
+<p>You can find something new in <code>riscv-tools/riscv-isa-sim/riscv/encoding.h</code>:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#0f0;font-weight:bold">#define MATCH_MATRIX_MULTIPLY 0xb
+</span><span style="color:#0f0;font-weight:bold">#define MASK_MATRIX_MULTIPLY  0xfe00707f
+</span><span style="color:#0f0;font-weight:bold">#define MATCH_MATRIX_LD 0x100b
+</span><span style="color:#0f0;font-weight:bold">#define MASK_MATRIX_LD  0x707f
+</span><span style="color:#0f0;font-weight:bold">#define MATCH_MATRIX_ST 0x200b
+</span><span style="color:#0f0;font-weight:bold">#define MASK_MATRIX_ST  0x707f</span></code></pre></div>
+<h2 id="add-new-instructions-to-gnu-toolchain">Add New Instructions to GNU Toolchain.</h2>
+
+<p>Now we add our new instructions to the GNU toolchain so that we can write inline assembly. This is fairly simple. Add the above macros to <code>riscv-gnu-toolchain/riscv-gdb/include/opcode/riscv-opc.h</code> and <code>riscv-gnu-toolchain/riscv-binutils/include/opcode/riscv-opc.h</code>. Then add the following lines to <code>riscv-opc.c</code>:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">{<span style="color:#0ff;font-weight:bold">&#34;matrix.multiply&#34;</span>, <span style="color:#ff0;font-weight:bold">0</span>, {<span style="color:#0ff;font-weight:bold">&#34;I&#34;</span>, <span style="color:#ff0;font-weight:bold">0</span>},   <span style="color:#0ff;font-weight:bold">&#34;d,s,t&#34;</span>,  MATCH_MATRIX_MULTIPLY, MASK_MATRIX_MULTIPLY, match_opcode, <span style="color:#ff0;font-weight:bold">0</span> },
+{<span style="color:#0ff;font-weight:bold">&#34;matrix.ld&#34;</span>,       <span style="color:#ff0;font-weight:bold">0</span>, {<span style="color:#0ff;font-weight:bold">&#34;I&#34;</span>, <span style="color:#ff0;font-weight:bold">0</span>},   <span style="color:#0ff;font-weight:bold">&#34;d,o(s)&#34;</span>,  MATCH_MATRIX_LD, MASK_MATRIX_LD, match_opcode, <span style="color:#ff0;font-weight:bold">0</span> },
+{<span style="color:#0ff;font-weight:bold">&#34;matrix.st&#34;</span>,       <span style="color:#ff0;font-weight:bold">0</span>, {<span style="color:#0ff;font-weight:bold">&#34;I&#34;</span>, <span style="color:#ff0;font-weight:bold">0</span>},   <span style="color:#0ff;font-weight:bold">&#34;t,q(s)&#34;</span>,  MATCH_MATRIX_ST, MASK_MATRIX_ST, match_opcode, <span style="color:#ff0;font-weight:bold">0</span> },</code></pre></div>
+<p>Recompile the GNU toolchain and now let&rsquo;s write a test program. We assume the
+matrix&rsquo;s layout is already block-wise.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#007f7f">// Use our pseudo-instruction.
+</span><span style="color:#007f7f"></span><span style="color:#fff;font-weight:bold">register</span> VTYPE tmp_a;
+<span style="color:#fff;font-weight:bold">register</span> VTYPE tmp_b;
+<span style="color:#0f0;font-weight:bold">#pragma GCC unroll 0
+</span><span style="color:#0f0;font-weight:bold"></span><span style="color:#fff;font-weight:bold">for</span> (i = <span style="color:#ff0;font-weight:bold">0</span>; i &lt; N_BLOCKS; ++i) {
+  <span style="color:#0f0;font-weight:bold">#pragma GCC unroll 0
+</span><span style="color:#0f0;font-weight:bold"></span>  <span style="color:#fff;font-weight:bold">for</span> (j = <span style="color:#ff0;font-weight:bold">0</span>; j &lt; N_BLOCKS; ++j) {
+    <span style="color:#007f7f">// Load the output.
+</span><span style="color:#007f7f"></span>    VTYPE *pc = c2[i][j];
+    <span style="color:#fff;font-weight:bold">register</span> VTYPE tmp_c = <span style="color:#ff0;font-weight:bold">0</span>;
+    <span style="color:#0f0;font-weight:bold">#pragma GCC unroll 0
+</span><span style="color:#0f0;font-weight:bold"></span>    <span style="color:#fff;font-weight:bold">for</span> (k = <span style="color:#ff0;font-weight:bold">0</span>; k &lt; N_BLOCKS; ++k) {
+      VTYPE *pa = a[i][k];
+      VTYPE *pb = b[k][j];
+      __asm__ volatile(<span style="color:#0ff;font-weight:bold">&#34;matrix.ld %[tmp_a], %[a]</span><span style="color:#0ff;font-weight:bold">\n\t</span><span style="color:#0ff;font-weight:bold">&#34;</span>
+                       <span style="color:#0ff;font-weight:bold">&#34;matrix.ld %[tmp_b], %[b]</span><span style="color:#0ff;font-weight:bold">\n\t</span><span style="color:#0ff;font-weight:bold">&#34;</span>
+                       <span style="color:#0ff;font-weight:bold">&#34;matrix.multiply %[tmp_c], %[tmp_a], %[tmp_b]</span><span style="color:#0ff;font-weight:bold">\n\t</span><span style="color:#0ff;font-weight:bold">&#34;</span>
+                       : [tmp_c] <span style="color:#0ff;font-weight:bold">&#34;=&amp;r&#34;</span>(tmp_c), [tmp_a] <span style="color:#0ff;font-weight:bold">&#34;=r&#34;</span>(tmp_a), [tmp_b] <span style="color:#0ff;font-weight:bold">&#34;=r&#34;</span>(tmp_b)
+                       : [a] <span style="color:#0ff;font-weight:bold">&#34;r&#34;</span>(pa), [b] <span style="color:#0ff;font-weight:bold">&#34;r&#34;</span>(pb));
+    }
+    __asm__ <span style="color:#fff;font-weight:bold">volatile</span>(<span style="color:#0ff;font-weight:bold">&#34;matrix.st %[tmp_c], %[c]</span><span style="color:#0ff;font-weight:bold">\n\t</span><span style="color:#0ff;font-weight:bold">&#34;</span>
+                     :
+                     : [c] <span style="color:#0ff;font-weight:bold">&#34;r&#34;</span>(pc), [tmp_c] <span style="color:#0ff;font-weight:bold">&#34;r&#34;</span>(tmp_c));
+  }
+}</code></pre></div>
+<p>There are some interesting points here:</p>
+
+<ul>
+<li>We disable loop unrolling here via a pragma. This pragam is supported in
+GCC 8 (they really should have supported this before).</li>
+<li>We use temporary register variables to store the loaded and partial results.
+Notice the <code>&quot;=&amp;r&quot;</code> for <code>tmp_c</code>. This is to make sure that <code>tmp_c</code> does not share
+a register with other input operands.</li>
+</ul>
+
+<h2 id="simulate-in-spike">Simulate in Spike.</h2>
+
+<p>We first want to implement these new instructions in Spike, a ISA simulator for
+RISC-V. Although we use</p>
+
+<p>Add this to <code>riscv-insn-list</code> in <code>riscv-tools/riscv-isa-sim/riscv/riscv.mk.in</code>:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">	matrix_multiply \
+	matrix_ld \
+	matrix_st \</pre></div>
+<p>Declare the disassembly in <code>riscv-tools/riscv-isa-sim/spike_main/disasm.cc</code>:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">DEFINE_RTYPE(matrix_multiply);
+DEFINE_XLOAD(matrix_ld);
+DEFINE_XSTORE(matrix_st);</code></pre></div>
+<p>Also add this to <code>riscv-tools/riscv-isa-sim/fesvr/encoding.h</code>:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">DECLARE_INSN(matrix_multiply, MATCH_MATRIX_MULTIPLY, MASK_MATRIX_MULTIPLY)
+DECLARE_INSN(matrix_ld, MATCH_MATRIX_LD, MASK_MATRIX_LD)
+DECLARE_INSN(matrix_st, MATCH_MATRIX_ST, MASK_MATRIX_ST)</code></pre></div>
+<p>Now it is time to actually implement it in Spike. This involves changing <code>decode.h</code> and add the functionality implementation in <code>riscv/insns/*.h</code>. The architectural states are defined in <code>riscv/processor.h</code>. Take a look at other examples and you will soon figure it out.</p>
+
+<h2 id="add-the-instruction-in-gem5">Add the instruction in gem5.</h2>
+
+<p>Finally, we want to simulate the binary in a cycle-level simulator like gem5. Fortunately, the RISC-V implementation in gem5 has a really nice and extendable instruction decoder (compared to x86). The decoder is defined in <code>src/arch/riscv/isa/decoder.isa</code>. Find the correct place to insert your new instruction based on the binary format. <code>ROp</code> and <code>Load/Store</code> are predefined instruction templates. Notice that gem5&rsquo;s instruction decoder is a python-based template generator. The input and output registers are detected by the generator analyzing the instruction&rsquo;s functionality. For example, for our matrix multiply accumulation instruction, since <code>Rd</code> appears on both sides of the assign, it will be marked as both input and output register. Then in the out-of-order execution, there will be dependence chain on the this instruction.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">0x02: decode FUNCT3 {
+  format ROp {
+      0x0: matrix_multiply({{
+          Rd = Rd + Rs1 + Rs2;
+          xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.multiply();
+      }}, MatrixOp);
+  }
+  format Load {
+      0x1: matrix_ld({{
+          Rd = Mem;
+          uint64_t reg = xc-&gt;readIntRegOperand(this, 0);
+          Addr EA = reg + offset;
+          xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.load(xc, EA);
+      }});
+  }
+  format Store {
+      0x2: matrix_st({{
+          Mem_ud = Rs2_ud;
+          uint64_t reg = xc-&gt;readIntRegOperand(this, 0);
+          Addr EA = reg + offset;
+          Mem = xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.store(xc, EA);
+      }});
+  }
+}</pre></div>
+<p>I will not show the details of implementing this within gem5. It&rsquo;s just labor work.</p>
+
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>Enjoy it!</p>
+    
+     © 2019
+    
+    
+       · 
+      [<a href="https://github.com/luizdepra/hugo-coder/tree/"></a>]
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137273352-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+  </body>
+
+</html>

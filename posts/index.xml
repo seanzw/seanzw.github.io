@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Zhengrong Wang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 29 Mar 2019 15:41:55 -0700</lastBuildDate>
+    <lastBuildDate>Fri, 28 Jun 2019 14:55:52 -0700</lastBuildDate>
     
 	<atom:link href="http://seanzw.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Extend RISC-V ISA with Matrix Multiply</title>
+      <link>http://seanzw.github.io/posts/risc-v-isa-extension/</link>
+      <pubDate>Fri, 28 Jun 2019 14:55:52 -0700</pubDate>
+      
+      <guid>http://seanzw.github.io/posts/risc-v-isa-extension/</guid>
+      <description>Many computer architecture students will eventually add some new (useless) instructions to a ISA, and there are many great tutorial on how to do this. This is yet another notes on my struggling to extend RISC-V with a new matrix multiply instruction. The overall goal is to add a new functional unit in a general purpose processor to do a 4x4 matrix multiply accumulate with single-precision floating-point.
+The Manual has a very detailed explanation on what ISA encoding is reserved for such non-standard extension (see ch.</description>
+    </item>
     
     <item>
       <title>Setup This Website with Hugo</title>
