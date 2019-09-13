@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://seanzw.github.io/posts/swap-ctrl-cap/</loc>
+    <lastmod>2019-09-13T10:30:04-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://seanzw.github.io/posts/risc-v-isa-extension/</loc>
     <lastmod>2019-06-28T14:55:52-07:00</lastmod>
   </url>
@@ -26,7 +31,7 @@
   
   <url>
     <loc>http://seanzw.github.io/posts/</loc>
-    <lastmod>2019-06-28T14:55:52-07:00</lastmod>
+    <lastmod>2019-09-13T10:30:04-07:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -37,7 +42,7 @@
   
   <url>
     <loc>http://seanzw.github.io/</loc>
-    <lastmod>2019-06-28T14:55:52-07:00</lastmod>
+    <lastmod>2019-09-13T10:30:04-07:00</lastmod>
     <priority>0</priority>
   </url>
   
