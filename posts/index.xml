@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Zhengrong Wang</title>
-    <link>http://seanzw.github.io/posts/</link>
+    <link>https://seanzw.github.io/posts/</link>
     <description>Recent content in Posts on Zhengrong Wang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Fri, 13 Sep 2019 10:30:04 -0700</lastBuildDate>
     
-	<atom:link href="http://seanzw.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://seanzw.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Swap Ctrl and Cap</title>
-      <link>http://seanzw.github.io/posts/swap-ctrl-cap/</link>
+      <link>https://seanzw.github.io/posts/swap-ctrl-cap/</link>
       <pubDate>Fri, 13 Sep 2019 10:30:04 -0700</pubDate>
       
-      <guid>http://seanzw.github.io/posts/swap-ctrl-cap/</guid>
+      <guid>https://seanzw.github.io/posts/swap-ctrl-cap/</guid>
       <description> I find it very convenient to swap the control and cap lock key. And here is how I achieve this in the OS I am using.
 Ubuntu 16.04 Somehow the gnome-tweak-tool is not working in my case. I am using the following command line and it works like magic.
 /usr/bin/setxkbmap -option &amp;#34;ctrl:swapcaps&amp;#34;</description>
@@ -24,20 +24,20 @@ Ubuntu 16.04 Somehow the gnome-tweak-tool is not working in my case. I am using 
     
     <item>
       <title>Extend RISC-V ISA with Matrix Multiply</title>
-      <link>http://seanzw.github.io/posts/risc-v-isa-extension/</link>
+      <link>https://seanzw.github.io/posts/risc-v-isa-extension/</link>
       <pubDate>Fri, 28 Jun 2019 14:55:52 -0700</pubDate>
       
-      <guid>http://seanzw.github.io/posts/risc-v-isa-extension/</guid>
+      <guid>https://seanzw.github.io/posts/risc-v-isa-extension/</guid>
       <description>Many computer architecture students will eventually add some new (useless) instructions to a ISA, and there are many great tutorial on how to do this. This is yet another notes on my struggling to extend RISC-V with a new matrix multiply instruction. The overall goal is to add a new functional unit in a general purpose processor to do a 4x4 matrix multiply accumulate with single-precision floating-point.
 The Manual has a very detailed explanation on what ISA encoding is reserved for such non-standard extension (see ch.</description>
     </item>
     
     <item>
       <title>Setup This Website with Hugo</title>
-      <link>http://seanzw.github.io/posts/setting-up-this/</link>
+      <link>https://seanzw.github.io/posts/setting-up-this/</link>
       <pubDate>Fri, 29 Mar 2019 15:41:55 -0700</pubDate>
       
-      <guid>http://seanzw.github.io/posts/setting-up-this/</guid>
+      <guid>https://seanzw.github.io/posts/setting-up-this/</guid>
       <description>After 2 years with my previous dummy personal website, I was urged to create a better one. After some googling, I made this tiny website using Hugo. Here are some notes for a n00b in front-end like me.
  Make sure you download the extended version of Hugo. Otherwise you won&amp;rsquo;t have support for SASS and SCSS (I have no idea what these are). Just scroll down in the release page and you will find it.</description>
     </item>
