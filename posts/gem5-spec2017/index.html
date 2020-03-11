@@ -148,7 +148,7 @@ longer time to finish, but it&rsquo;s a good way to verify that you SPEC2017 wor
 &gt; specinvoke -n
 ../run_base_refspeed_mytest-m64.0000/lbm_s_base.mytest-m64 <span style="color:#ff0;font-weight:bold">2000</span> reference.dat <span style="color:#ff0;font-weight:bold">0</span> <span style="color:#ff0;font-weight:bold">0</span> 200_200_260_ldc.of &gt; lbm.out <span style="color:#ff0;font-weight:bold">2</span>&gt;&gt; lbm.err</code></pre></div>
 <p>This gives us the command line arguments to run <code>lbm_s</code>:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">reference.dat 0 0 200_200_260_ldc.of</pre></div>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">2000 reference.dat 0 0 200_200_260_ldc.of</pre></div>
 <p>Now simulate it in gem5. This command will start to simulate <code>lbm_s</code> using <code>AtomicSimpleCPU</code>. You can also specify other CPU types and add cache, and there
 are detailed instructions <a href="http://learning.gem5.org/book/part1/example_configs.html">here</a>.</p>
 <div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; /where/gem5/is/build/X86/gem5.opt <span style="color:#0ff;font-weight:bold">\
