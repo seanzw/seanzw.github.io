@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Zhengrong Wang">
+    <meta name="description" content="Zhengrong Wang&#39;s personal website">
+    <meta name="keywords" content="Ph.D. Student;Blog.">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Simulating SPEC2017 on GEM5"/>
+<meta name="twitter:description" content="Brief Note on Simulating SPEC2017 on GEM5 This is a brief note on how to simulate SPEC2017 on gem5. SPEC2017 has complicated compile scripts. The basic workflow is to compile it, do a fake run to get the arguments for the binary, and finally simulate it in gem5. This is by no means the official instructions or guaranteed to work on your machine. You can also follow the instructions on the official website of SPEC2017."/>
+
+    <meta property="og:title" content="Simulating SPEC2017 on GEM5" />
+<meta property="og:description" content="Brief Note on Simulating SPEC2017 on GEM5 This is a brief note on how to simulate SPEC2017 on gem5. SPEC2017 has complicated compile scripts. The basic workflow is to compile it, do a fake run to get the arguments for the binary, and finally simulate it in gem5. This is by no means the official instructions or guaranteed to work on your machine. You can also follow the instructions on the official website of SPEC2017." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://seanzw.github.io/posts/gem5-spec2017/" />
+<meta property="article:published_time" content="2020-03-11T14:19:34-07:00"/>
+<meta property="article:modified_time" content="2020-03-11T14:19:34-07:00"/>
+
+
+    
+      <base href="https://seanzw.github.io/posts/gem5-spec2017/">
+    
+    <title>
+  Simulating SPEC2017 on GEM5 · Zhengrong Wang
+</title>
+
+    
+      <link rel="canonical" href="https://seanzw.github.io/posts/gem5-spec2017/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://seanzw.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.54.0" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://seanzw.github.io">
+      Zhengrong Wang
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/projects/">Projects</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/publications/">Publications</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Simulating SPEC2017 on GEM5</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2020-03-11T14:19:34-07:00'>
+                March 11, 2020
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              2 minutes read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://seanzw.github.io/categories/gem5/">GEM5</a></div>
+
+          
+        </div>
+      </header>
+
+      <div>
+        
+
+<h1 id="brief-note-on-simulating-spec2017-on-gem5">Brief Note on Simulating SPEC2017 on GEM5</h1>
+
+<p>This is a brief note on how to simulate SPEC2017 on gem5. SPEC2017 has complicated compile scripts. The basic workflow is to compile it, do a fake run to get the
+arguments for the binary, and finally simulate it in gem5. This is by no means the official instructions or guaranteed to work on your machine.
+You can also follow the instructions on the official website of SPEC2017.</p>
+
+<h2 id="compile-spec2017">Compile SPEC2017</h2>
+
+<p>First go to the folder of SPEC2017, and set up the environment. This gives you many useful commands to navigate through the SPEC2017, compile and run it.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; <span style="color:#fff;font-weight:bold">source</span> shrc</code></pre></div>
+<p>Here we use <code>lbm_s</code> as an example. For other workloads it should be similar. Now let&rsquo;s go to where <code>lbm_s</code> is:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go lbm_s</code></pre></div>
+<p>The first thing is to do fake run. This will let the building system set up all the folder, inputs and so on. You can also do a full run, which will take much
+longer time to finish, but it&rsquo;s a good way to verify that you SPEC2017 works on your native machine.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#007f7f"># Remove existing build</span>
+&gt; rm -r build
+&gt; runcpu --fake --config gcc-linux-x86 lbm_s</code></pre></div>
+<p>This should create <code>build</code> and <code>run</code> folder. Now let&rsquo;s compile the program:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; <span style="color:#fff;font-weight:bold">cd</span> build/build_base_mytest-m64.0000
+&gt; specmake</code></pre></div>
+<p>This should compile and gives a <code>lbm_s</code> binary in the folder.</p>
+
+<h2 id="simulate-it-in-gem5">Simulate it in GEM5</h2>
+
+<p>First we need to get arguments to run the binary. Go the the <code>run</code> directory.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go lbm_s 
+&gt; <span style="color:#fff;font-weight:bold">cd</span> run/run_base_refspeed_mytest-m64.0000
+&gt; specinvoke -n
+../run_base_refspeed_mytest-m64.0000/lbm_s_base.mytest-m64 <span style="color:#ff0;font-weight:bold">2000</span> reference.dat <span style="color:#ff0;font-weight:bold">0</span> <span style="color:#ff0;font-weight:bold">0</span> 200_200_260_ldc.of &gt; lbm.out <span style="color:#ff0;font-weight:bold">2</span>&gt;&gt; lbm.err</code></pre></div>
+<p>This gives us the command line arguments to run <code>lbm_s</code>:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">reference.dat 0 0 200_200_260_ldc.of</pre></div>
+<p>Now simulate it in gem5. This command will start to simulate <code>lbm_s</code> using <code>AtomicSimpleCPU</code>. You can also specify other CPU types and add cache, and there
+are detailed instructions <a href="http://learning.gem5.org/book/part1/example_configs.html">here</a>.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; /where/gem5/is/build/X86/gem5.opt <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; /where/gem5/is/configs/example/se.py <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --cmd=../../build/build_base_mytest-m64.0000/lbm_s <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --options=<span style="color:#0ff;font-weight:bold">&#34;2000 reference.dat 0 0 200_200_260_ldc.of&#34;</span> <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --mem-size=8GB</code></pre></div>
+<p>As an example to simulate using O3 cpu:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; /where/gem5/is/build/X86/gem5.opt <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; /where/gem5/is/configs/example/se.py <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --cmd=../../build/build_base_mytest-m64.0000/lbm_s <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --options=<span style="color:#0ff;font-weight:bold">&#34;2000 reference.dat 0 0 200_200_260_ldc.of&#34;</span> <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --mem-size=8GB <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --cpu-type=DerivO3CPU <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --caches --l2cache <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --l1d_size=32kB --l1i_size=32kB --l2_size=512kB</code></pre></div>
+<p>Finally, here is how you can fast forward using <code>AtomicSimpleCPU</code> for 1 million instructions and then switch to <code>DerivO3CPU</code>:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; /where/gem5/is/build/X86/gem5.opt <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; /where/gem5/is/configs/example/se.py <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --cmd=../../build/build_base_mytest-m64.0000/lbm_s <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --options=<span style="color:#0ff;font-weight:bold">&#34;2000 reference.dat 0 0 200_200_260_ldc.of&#34;</span> <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --mem-size=8GB <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --cpu-type=DerivO3CPU <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --caches --l2cache <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --l1d_size=32kB --l1i_size=32kB --l2_size=512kB <span style="color:#0ff;font-weight:bold">\
+</span><span style="color:#0ff;font-weight:bold"></span>&gt; --fast-forward=<span style="color:#ff0;font-weight:bold">1000000</span></code></pre></div>
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>Enjoy it!</p>
+    
+     © 2020
+    
+    
+       · 
+      [<a href="https://github.com/luizdepra/hugo-coder/tree/"></a>]
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137273352-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+  </body>
+
+</html>

@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Zhengrong Wang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 13 Sep 2019 10:30:04 -0700</lastBuildDate>
+    <lastBuildDate>Wed, 11 Mar 2020 14:19:34 -0700</lastBuildDate>
     
 	<atom:link href="https://seanzw.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Simulating SPEC2017 on GEM5</title>
+      <link>https://seanzw.github.io/posts/gem5-spec2017/</link>
+      <pubDate>Wed, 11 Mar 2020 14:19:34 -0700</pubDate>
+      
+      <guid>https://seanzw.github.io/posts/gem5-spec2017/</guid>
+      <description>Brief Note on Simulating SPEC2017 on GEM5 This is a brief note on how to simulate SPEC2017 on gem5. SPEC2017 has complicated compile scripts. The basic workflow is to compile it, do a fake run to get the arguments for the binary, and finally simulate it in gem5. This is by no means the official instructions or guaranteed to work on your machine. You can also follow the instructions on the official website of SPEC2017.</description>
+    </item>
     
     <item>
       <title>Swap Ctrl and Cap</title>
