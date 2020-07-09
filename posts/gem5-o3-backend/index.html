@@ -137,7 +137,7 @@ not interact with the LSQ. It is actually pretty straightforward and
 here is a high-level description.
 I first show the calling chain (only important
 functions), and then describe its functionality.</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">Rename::tick()--&gt;Rename::RenameInsts()
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Rename::tick()--&gt;Rename::RenameInsts()
 IEW::tick()--&gt;IEW::dispatchInsts()
 IEW::tick()--&gt;InstructionQueue::scheduleReadyInsts()
 IEW::tick()--&gt;IEW::executeInsts()
