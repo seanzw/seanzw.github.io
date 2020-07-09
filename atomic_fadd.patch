@@ -1,0 +1,170 @@
+diff --git a/clang/include/clang/Basic/Builtins.def b/clang/include/clang/Basic/Builtins.def
+index 76e3b03..9c39423 100644
+--- a/clang/include/clang/Basic/Builtins.def
++++ b/clang/include/clang/Basic/Builtins.def
+@@ -732,6 +732,7 @@ ATOMIC_BUILTIN(__atomic_exchange_n, "v.", "t")
+ ATOMIC_BUILTIN(__atomic_compare_exchange, "v.", "t")
+ ATOMIC_BUILTIN(__atomic_compare_exchange_n, "v.", "t")
+ ATOMIC_BUILTIN(__atomic_fetch_add, "v.", "t")
++ATOMIC_BUILTIN(__atomic_fetch_fadd, "v.", "t")
+ ATOMIC_BUILTIN(__atomic_fetch_sub, "v.", "t")
+ ATOMIC_BUILTIN(__atomic_fetch_and, "v.", "t")
+ ATOMIC_BUILTIN(__atomic_fetch_or, "v.", "t")
+diff --git a/clang/include/clang/Basic/DiagnosticSemaKinds.td b/clang/include/clang/Basic/DiagnosticSemaKinds.td
+index 47a1dee..3022589 100644
+--- a/clang/include/clang/Basic/DiagnosticSemaKinds.td
++++ b/clang/include/clang/Basic/DiagnosticSemaKinds.td
+@@ -7370,6 +7370,9 @@ def err_atomic_op_needs_trivial_copy : Error<
+ def err_atomic_op_needs_atomic_int_or_ptr : Error<
+   "address argument to atomic operation must be a pointer to %select{|atomic }0"
+   "integer or pointer (%1 invalid)">;
++def err_atomic_op_needs_atomic_fp : Error<
++  "address argument to atomic operation must be a pointer to %select{|atomic }0"
++  "floating point (%1 invalid)">;
+ def err_atomic_op_needs_int32_or_ptr : Error<
+   "address argument to atomic operation must be a pointer to signed or unsigned 32-bit integer">;
+ def err_atomic_op_bitwise_needs_atomic_int : Error<
+diff --git a/clang/lib/AST/Expr.cpp b/clang/lib/AST/Expr.cpp
+index 339f471..44a9934 100644
+--- a/clang/lib/AST/Expr.cpp
++++ b/clang/lib/AST/Expr.cpp
+@@ -4597,6 +4597,7 @@ unsigned AtomicExpr::getNumSubExprs(AtomicOp Op) {
+   case AO__c11_atomic_fetch_or:
+   case AO__c11_atomic_fetch_xor:
+   case AO__atomic_fetch_add:
++  case AO__atomic_fetch_fadd:
+   case AO__atomic_fetch_sub:
+   case AO__atomic_fetch_and:
+   case AO__atomic_fetch_or:
+diff --git a/clang/lib/CodeGen/CGAtomic.cpp b/clang/lib/CodeGen/CGAtomic.cpp
+index 5059163..4b4078f 100644
+--- a/clang/lib/CodeGen/CGAtomic.cpp
++++ b/clang/lib/CodeGen/CGAtomic.cpp
+@@ -579,6 +579,10 @@ static void EmitAtomicOp(CodeGenFunction &CGF, AtomicExpr *E, Address Dest,
+     Op = llvm::AtomicRMWInst::Add;
+     break;
+ 
++  case AtomicExpr::AO__atomic_fetch_fadd:
++    Op = llvm::AtomicRMWInst::FAdd;
++    break;
++
+   case AtomicExpr::AO__atomic_sub_fetch:
+     PostOp = llvm::Instruction::Sub;
+     LLVM_FALLTHROUGH;
+@@ -841,6 +845,7 @@ RValue CodeGenFunction::EmitAtomicExpr(AtomicExpr *E) {
+     }
+       LLVM_FALLTHROUGH;
+   case AtomicExpr::AO__atomic_fetch_add:
++  case AtomicExpr::AO__atomic_fetch_fadd:
+   case AtomicExpr::AO__atomic_fetch_sub:
+   case AtomicExpr::AO__atomic_add_fetch:
+   case AtomicExpr::AO__atomic_sub_fetch:
+@@ -880,15 +885,25 @@ RValue CodeGenFunction::EmitAtomicExpr(AtomicExpr *E) {
+   LValue AtomicVal = MakeAddrLValue(Ptr, AtomicTy);
+   AtomicInfo Atomics(*this, AtomicVal);
+ 
+-  Ptr = Atomics.emitCastToAtomicIntPointer(Ptr);
+-  if (Val1.isValid()) Val1 = Atomics.convertToAtomicIntPointer(Val1);
+-  if (Val2.isValid()) Val2 = Atomics.convertToAtomicIntPointer(Val2);
+-  if (Dest.isValid())
+-    Dest = Atomics.emitCastToAtomicIntPointer(Dest);
+-  else if (E->isCmpXChg())
++  // Do not cast to int pointer for floating point (fadd).
++  bool ShouldCastToInt = E->getOp() != AtomicExpr::AO__atomic_fetch_fadd;
++  if (ShouldCastToInt) {
++    Ptr = Atomics.emitCastToAtomicIntPointer(Ptr);
++  }
++  if (Val1.isValid() && ShouldCastToInt) Val1 = Atomics.convertToAtomicIntPointer(Val1);
++  if (Val2.isValid() && ShouldCastToInt) Val2 = Atomics.convertToAtomicIntPointer(Val2);
++  if (Dest.isValid()) {
++    if (ShouldCastToInt) {
++      Dest = Atomics.emitCastToAtomicIntPointer(Dest);
++    }
++  } else if (E->isCmpXChg())
+     Dest = CreateMemTemp(RValTy, "cmpxchg.bool");
+-  else if (!RValTy->isVoidType())
+-    Dest = Atomics.emitCastToAtomicIntPointer(Atomics.CreateTempAlloca());
++  else if (!RValTy->isVoidType()) {
++    Dest = Atomics.CreateTempAlloca();
++    if (ShouldCastToInt) {
++      Dest = Atomics.emitCastToAtomicIntPointer(Dest);
++    }
++  }
+ 
+   // Use a library call.  See: http://gcc.gnu.org/wiki/Atomic/GCCMM/LIbrary .
+   if (UseLibcall) {
+@@ -903,6 +918,7 @@ RValue CodeGenFunction::EmitAtomicExpr(AtomicExpr *E) {
+     case AtomicExpr::AO__atomic_fetch_add:
+     case AtomicExpr::AO__c11_atomic_fetch_and:
+     case AtomicExpr::AO__opencl_atomic_fetch_and:
++    case AtomicExpr::AO__atomic_fetch_fadd:
+     case AtomicExpr::AO__atomic_fetch_and:
+     case AtomicExpr::AO__c11_atomic_fetch_or:
+     case AtomicExpr::AO__opencl_atomic_fetch_or:
+@@ -1064,6 +1080,8 @@ RValue CodeGenFunction::EmitAtomicExpr(AtomicExpr *E) {
+       AddDirectArgument(*this, Args, UseOptimizedLibcall, Val1.getPointer(),
+                         LoweredMemTy, E->getExprLoc(), sizeChars);
+       break;
++    case AtomicExpr::AO__atomic_fetch_fadd:
++      llvm_unreachable("__atomic_fetch_fadd has no libcall!");
+     // T __atomic_and_fetch_N(T *mem, T val, int order)
+     // T __atomic_fetch_and_N(T *mem, T val, int order)
+     case AtomicExpr::AO__atomic_and_fetch:
+diff --git a/clang/lib/Sema/SemaChecking.cpp b/clang/lib/Sema/SemaChecking.cpp
+index dca81d1..a78d8d8 100644
+--- a/clang/lib/Sema/SemaChecking.cpp
++++ b/clang/lib/Sema/SemaChecking.cpp
+@@ -4573,6 +4573,7 @@ ExprResult Sema::BuildAtomicExpr(SourceRange CallRange, SourceRange ExprRange,
+              Op == AtomicExpr::AO__atomic_exchange_n ||
+              Op == AtomicExpr::AO__atomic_compare_exchange_n;
+   bool IsAddSub = false;
++  bool IsFAddSub = false;
+   bool IsMinMax = false;
+ 
+   switch (Op) {
+@@ -4598,6 +4599,9 @@ ExprResult Sema::BuildAtomicExpr(SourceRange CallRange, SourceRange ExprRange,
+     Form = Copy;
+     break;
+ 
++  case AtomicExpr::AO__atomic_fetch_fadd:
++    IsFAddSub = true;
++    LLVM_FALLTHROUGH;
+   case AtomicExpr::AO__c11_atomic_fetch_add:
+   case AtomicExpr::AO__c11_atomic_fetch_sub:
+   case AtomicExpr::AO__opencl_atomic_fetch_add:
+@@ -4715,12 +4719,17 @@ ExprResult Sema::BuildAtomicExpr(SourceRange CallRange, SourceRange ExprRange,
+   // For an arithmetic operation, the implied arithmetic must be well-formed.
+   if (Form == Arithmetic) {
+     // gcc does not enforce these rules for GNU atomics, but we do so for sanity.
+-    if (IsAddSub && !ValType->isIntegerType()
++    if (IsAddSub && !IsFAddSub && !ValType->isIntegerType()
+         && !ValType->isPointerType()) {
+       Diag(ExprRange.getBegin(), diag::err_atomic_op_needs_atomic_int_or_ptr)
+           << IsC11 << Ptr->getType() << Ptr->getSourceRange();
+       return ExprError();
+     }
++    if (IsAddSub && IsFAddSub && !ValType->isFloatingType()) {
++      Diag(ExprRange.getBegin(), diag::err_atomic_op_needs_atomic_fp)
++          << IsC11 << Ptr->getType() << Ptr->getSourceRange();
++      return ExprError();
++    }
+     if (IsMinMax) {
+       const BuiltinType *BT = ValType->getAs<BuiltinType>();
+       if (!BT || (BT->getKind() != BuiltinType::Int &&
+@@ -4861,9 +4870,13 @@ ExprResult Sema::BuildAtomicExpr(SourceRange CallRange, SourceRange ExprRange,
+                                  ExprRange.getBegin());
+           }
+           Ty = ByValType;
+-        } else if (Form == Arithmetic)
+-          Ty = Context.getPointerDiffType();
+-        else {
++        } else if (Form == Arithmetic) {
++          // fadd should have value type.
++          if (Op == AtomicExpr::AO__atomic_fetch_fadd)
++            Ty = ValType;
++          else
++            Ty = Context.getPointerDiffType();
++        } else {
+           Expr *ValArg = APIOrderedArgs[i];
+           // The value pointer is always dereferenced, a nullptr is undefined.
+           CheckNonNullArgument(*this, ValArg, ExprRange.getBegin());
