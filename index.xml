@@ -88,8 +88,8 @@ Prior joining UCLA, I received Bachelor of Engineering from Department of Electr
       
       <guid>https://seanzw.github.io/publications/</guid>
       <description>Publications Zhengrong Wang, Tony Nowatzki Stream-based Memory Access Specialization for General Purpose Processors.  [pdf] [slides] [pptx] 2019 ACM/IEEE 46th Annual International Symposium on Computer Architecture (ISCA).
-Jian Weng, Sihao Liu, Zhengrong Wang, Vidushi Dadu, Tony Nowatzki A Hybrid Systolic-Dataflow Architecture for Inductive Matrix Algorithms.  2020 International Symposium on High-Performance Computer Architecture (HPCA) To Appear.
-Zhengrong Wang, Fei Qiao, Zhen Liu, Yuxiang Shan, Xunyi Zhou, Li Luo, Huazhong Yang Optimizing convolutional neural network on FPGA under heterogeneous computing framework with OpenCL.</description>
+Jian Weng, Sihao Liu, Vidushi Dadu, Zhengrong Wang, Preyas Shah, Tony Nowatzki DSAGEN: Synthesizing Programmable Spatial Accelerators.  2020 ACM/IEEE 46th Annual International Symposium on Computer Architecture (ISCA) TO APPEAR.
+Jian Weng, Sihao Liu, Zhengrong Wang, Vidushi Dadu, Tony Nowatzki A Hybrid Systolic-Dataflow Architecture for Inductive Matrix Algorithms.</description>
     </item>
     
   </channel>
