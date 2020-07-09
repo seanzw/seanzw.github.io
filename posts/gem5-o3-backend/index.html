@@ -10,13 +10,13 @@
     <meta name="keywords" content="Ph.D. Student;Blog.">
 
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="GEM5 O3 CPU Backend This is my note on reading GEM5&rsquo;s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
+<meta name="twitter:title" content="GEM5 O3 CPU Backend"/>
+<meta name="twitter:description" content="This is my note on reading GEM5&rsquo;s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
 Hopefully this could help more people. I assume you are already familiar with GEM5.
 Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ."/>
 
-    <meta property="og:title" content="" />
-<meta property="og:description" content="GEM5 O3 CPU Backend This is my note on reading GEM5&rsquo;s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
+    <meta property="og:title" content="GEM5 O3 CPU Backend" />
+<meta property="og:description" content="This is my note on reading GEM5&rsquo;s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
 Hopefully this could help more people. I assume you are already familiar with GEM5.
 Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ." />
 <meta property="og:type" content="article" />
@@ -29,7 +29,7 @@ Compute Instructions Compute instructions are simpler as they do not access memo
       <base href="https://seanzw.github.io/posts/gem5-o3-backend/">
     
     <title>
-   · Zhengrong Wang
+  GEM5 O3 CPU Backend · Zhengrong Wang
 </title>
 
     
@@ -99,7 +99,7 @@ Compute Instructions Compute instructions are simpler as they do not access memo
     <article>
       <header>
         <div class="post-title">
-          <h1 class="title"></h1>
+          <h1 class="title">GEM5 O3 CPU Backend</h1>
         </div>
         <div class="post-meta">
           <div class="date">
@@ -121,8 +121,6 @@ Compute Instructions Compute instructions are simpler as they do not access memo
 
       <div>
         
-
-<h1 id="gem5-o3-cpu-backend">GEM5 O3 CPU Backend</h1>
 
 <p>This is my note on reading GEM5&rsquo;s O3 cpu backend. I could not find a
 good document online, and the code is a little bit entangled and tricky
