@@ -137,12 +137,12 @@ not interact with the LSQ. It is actually pretty straightforward and
 here is a high-level description.
 I first show the calling chain (only important
 functions), and then describe its functionality.</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Rename<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>Rename<span style="color:#666">::</span>RenameInsts()
-IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>dispatchInsts()
-IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>InstructionQueue<span style="color:#666">::</span>scheduleReadyInsts()
-IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>executeInsts()
-IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>writebackInsts()
-Commit<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>Commit<span style="color:#666">::</span>commitInsts()<span style="color:#666">--&gt;</span>Commit<span style="color:#666">::</span>commitHead()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++">Rename<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>Rename<span style="color:#f92672">::</span>RenameInsts()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>dispatchInsts()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>InstructionQueue<span style="color:#f92672">::</span>scheduleReadyInsts()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>executeInsts()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>writebackInsts()
+Commit<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>Commit<span style="color:#f92672">::</span>commitInsts()<span style="color:#f92672">-&gt;</span>Commit<span style="color:#f92672">::</span>commitHead()
 </code></pre></div>
 <ul>
 <li>Rename (<code>Rename::renameInsts()</code>)
@@ -171,20 +171,20 @@ released from ROB.</li>
 
 <p>Load instructions shares the same path as compute instructions until
 execution.</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>executeInsts()
-  <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>executeLoad()
-    <span style="color:#666">--&gt;</span>StaticInst<span style="color:#666">::</span>initiateAcc()
-      <span style="color:#666">--&gt;</span>LSQ<span style="color:#666">::</span>pushRequest()
-        <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>read()
-          <span style="color:#666">--&gt;</span>LSQRequest<span style="color:#666">::</span>buildPackets()
-          <span style="color:#666">--&gt;</span>LSQRequest<span style="color:#666">::</span>sendPacketToCache()
-    <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>checkViolation()
-DcachePort<span style="color:#666">::</span>recvTimingResp()<span style="color:#666">--&gt;</span>LSQRequest<span style="color:#666">::</span>recvTimingResp()
-  <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>completeDataAccess()
-    <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>writeback()
-      <span style="color:#666">--&gt;</span>StaticInst<span style="color:#666">::</span>completeAcc()
-      <span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>instToCommit()
-IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>writebackInsts()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>executeInsts()
+  <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>executeLoad()
+    <span style="color:#f92672">-&gt;</span>StaticInst<span style="color:#f92672">::</span>initiateAcc()
+      <span style="color:#f92672">-&gt;</span>LSQ<span style="color:#f92672">::</span>pushRequest()
+        <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>read()
+          <span style="color:#f92672">-&gt;</span>LSQRequest<span style="color:#f92672">::</span>buildPackets()
+          <span style="color:#f92672">-&gt;</span>LSQRequest<span style="color:#f92672">::</span>sendPacketToCache()
+    <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>checkViolation()
+DcachePort<span style="color:#f92672">::</span>recvTimingResp()<span style="color:#f92672">-&gt;</span>LSQRequest<span style="color:#f92672">::</span>recvTimingResp()
+  <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>completeDataAccess()
+    <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>writeback()
+      <span style="color:#f92672">-&gt;</span>StaticInst<span style="color:#f92672">::</span>completeAcc()
+      <span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>instToCommit()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>writebackInsts()
 </code></pre></div>
 <ul>
 <li><code>LSQUnit::executeLoad()</code> will initiate the access by invoking the
@@ -214,21 +214,21 @@ shares same path with compute instructions.</li>
 
 <p>Store instructions are similar to load instructions, but only writeback
 to cache after committed.</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>executeInsts()
-  <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>executeStore()
-    <span style="color:#666">--&gt;</span>StaticInst<span style="color:#666">::</span>initiateAcc()
-      <span style="color:#666">--&gt;</span>LSQ<span style="color:#666">::</span>pushRequest()
-        <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>write()
-    <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>checkViolation()
-Commit<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>Commit<span style="color:#666">::</span>commitInsts()<span style="color:#666">--&gt;</span>Commit<span style="color:#666">::</span>commitHead()
-IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>commitStores()
-IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>writebackStores()
-  <span style="color:#666">--&gt;</span>LSQRequest<span style="color:#666">::</span>buildPackets()
-  <span style="color:#666">--&gt;</span>LSQRequest<span style="color:#666">::</span>sendPacketToCache()
-  <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>storePostSend()
-DcachePort<span style="color:#666">::</span>recvTimingResp()<span style="color:#666">--&gt;</span>LSQRequest<span style="color:#666">::</span>recvTimingResp()
-  <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>completeDataAccess()
-    <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>completeStore()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>executeInsts()
+  <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>executeStore()
+    <span style="color:#f92672">-&gt;</span>StaticInst<span style="color:#f92672">::</span>initiateAcc()
+      <span style="color:#f92672">-&gt;</span>LSQ<span style="color:#f92672">::</span>pushRequest()
+        <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>write()
+    <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>checkViolation()
+Commit<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>Commit<span style="color:#f92672">::</span>commitInsts()<span style="color:#f92672">-&gt;</span>Commit<span style="color:#f92672">::</span>commitHead()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>commitStores()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>writebackStores()
+  <span style="color:#f92672">-&gt;</span>LSQRequest<span style="color:#f92672">::</span>buildPackets()
+  <span style="color:#f92672">-&gt;</span>LSQRequest<span style="color:#f92672">::</span>sendPacketToCache()
+  <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>storePostSend()
+DcachePort<span style="color:#f92672">::</span>recvTimingResp()<span style="color:#f92672">-&gt;</span>LSQRequest<span style="color:#f92672">::</span>recvTimingResp()
+  <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>completeDataAccess()
+    <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>completeStore()
 </code></pre></div>
 <ul>
 <li>Unlike <code>LSQUnit::read()</code>, <code>LSQUnit::write()</code> will only copy the store
@@ -245,7 +245,7 @@ release the SQ entries.</li>
 <p>Branch misspeculation is handled in the <code>IEW::executeInsts()</code>. It will
 notify the commit stage to start squashing all instructions in the ROB
 until the misspeculated branch.</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>executeInsts()<span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>squashDueToBranch()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>executeInsts()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>squashDueToBranch()
 </code></pre></div>
 <h2 id="memory-order-misspeculation">Memory Order Misspeculation</h2>
 
@@ -261,11 +261,11 @@ blocking store completes, by notifying the MemDepUnit.</p>
 to search in the LQ for possible misspeculation. If found, it will set
 <code>LSQUnit::memDepViolator</code> and later <code>IEW::executeInsts()</code> will start to
 squash.</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#666">::</span>tick()<span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>executeInsts()
-  <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>executeLoad()
-    <span style="color:#666">--&gt;</span>StaticInst<span style="color:#666">::</span>initiateAcc()
-    <span style="color:#666">--&gt;</span>LSQUnit<span style="color:#666">::</span>checkViolation()
-  <span style="color:#666">--&gt;</span>IEW<span style="color:#666">::</span>squashDueToMemOrder()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>executeInsts()
+  <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>executeLoad()
+    <span style="color:#f92672">-&gt;</span>StaticInst<span style="color:#f92672">::</span>initiateAcc()
+    <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>checkViolation()
+  <span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>squashDueToMemOrder()
 </code></pre></div>
       </div>
 

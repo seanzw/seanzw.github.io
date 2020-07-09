@@ -127,54 +127,54 @@ You can also follow the instructions on the official website of SPEC2017.</p>
 <h2 id="compile-spec2017">Compile SPEC2017</h2>
 
 <p>First go to the folder of SPEC2017, and set up the environment. This gives you many useful commands to navigate through the SPEC2017, compile and run it.</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; <span style="color:#008000">source</span> shrc</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; source shrc</code></pre></div>
 <p>Here we use <code>lbm_s</code> as an example. For other workloads it should be similar. Now let&rsquo;s go to where <code>lbm_s</code> is:</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go lbm_s</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go lbm_s</code></pre></div>
 <p>The first thing is to do fake run. This will let the building system set up all the folder, inputs and so on. You can also do a full run, which will take much
 longer time to finish, but it&rsquo;s a good way to verify that you SPEC2017 works on your native machine.</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#408080;font-style:italic"># Remove existing build</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Remove existing build</span>
 &gt; rm -r build
 &gt; runcpu --fake --config gcc-linux-x86 lbm_s</code></pre></div>
 <p>This should create <code>build</code> and <code>run</code> folder. Now let&rsquo;s compile the program:</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; <span style="color:#008000">cd</span> build/build_base_mytest-m64.0000
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; cd build/build_base_mytest-m64.0000
 &gt; specmake</code></pre></div>
 <p>This should compile and gives a <code>lbm_s</code> binary in the folder.</p>
 
 <h2 id="simulate-it-in-gem5">Simulate it in GEM5</h2>
 
 <p>First we need to get arguments to run the binary. Go the the <code>run</code> directory.</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go lbm_s 
-&gt; <span style="color:#008000">cd</span> run/run_base_refspeed_mytest-m64.0000
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; go lbm_s 
+&gt; cd run/run_base_refspeed_mytest-m64.0000
 &gt; specinvoke -n
-../run_base_refspeed_mytest-m64.0000/lbm_s_base.mytest-m64 <span style="color:#666">2000</span> reference.dat <span style="color:#666">0</span> <span style="color:#666">0</span> 200_200_260_ldc.of &gt; lbm.out <span style="color:#666">2</span>&gt;&gt; lbm.err</code></pre></div>
+../run_base_refspeed_mytest-m64.0000/lbm_s_base.mytest-m64 <span style="color:#ae81ff">2000</span> reference.dat <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> 200_200_260_ldc.of &gt; lbm.out <span style="color:#ae81ff">2</span>&gt;&gt; lbm.err</code></pre></div>
 <p>This gives us the command line arguments to run <code>lbm_s</code>:</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4">2000 reference.dat 0 0 200_200_260_ldc.of</pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">2000 reference.dat 0 0 200_200_260_ldc.of</pre></div>
 <p>Now simulate it in gem5. This command will start to simulate <code>lbm_s</code> using <code>AtomicSimpleCPU</code>. You can also specify other CPU types and add cache, and there
 are detailed instructions <a href="http://learning.gem5.org/book/part1/example_configs.html">here</a>.</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; /where/gem5/is/build/X86/gem5.opt <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; /where/gem5/is/configs/example/se.py <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --cmd<span style="color:#666">=</span>../../build/build_base_mytest-m64.0000/lbm_s <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --options<span style="color:#666">=</span><span style="color:#ba2121">&#34;2000 reference.dat 0 0 200_200_260_ldc.of&#34;</span> <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --mem-size<span style="color:#666">=</span>8GB</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; /where/gem5/is/build/X86/gem5.opt <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; /where/gem5/is/configs/example/se.py <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --cmd<span style="color:#f92672">=</span>../../build/build_base_mytest-m64.0000/lbm_s <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --options<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2000 reference.dat 0 0 200_200_260_ldc.of&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --mem-size<span style="color:#f92672">=</span>8GB</code></pre></div>
 <p>As an example to simulate using O3 cpu:</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; /where/gem5/is/build/X86/gem5.opt <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; /where/gem5/is/configs/example/se.py <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --cmd<span style="color:#666">=</span>../../build/build_base_mytest-m64.0000/lbm_s <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --options<span style="color:#666">=</span><span style="color:#ba2121">&#34;2000 reference.dat 0 0 200_200_260_ldc.of&#34;</span> <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --mem-size<span style="color:#666">=</span>8GB <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --cpu-type<span style="color:#666">=</span>DerivO3CPU <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --caches --l2cache <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --l1d_size<span style="color:#666">=</span>32kB --l1i_size<span style="color:#666">=</span>32kB --l2_size<span style="color:#666">=</span>512kB</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; /where/gem5/is/build/X86/gem5.opt <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; /where/gem5/is/configs/example/se.py <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --cmd<span style="color:#f92672">=</span>../../build/build_base_mytest-m64.0000/lbm_s <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --options<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2000 reference.dat 0 0 200_200_260_ldc.of&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --mem-size<span style="color:#f92672">=</span>8GB <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --cpu-type<span style="color:#f92672">=</span>DerivO3CPU <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --caches --l2cache <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --l1d_size<span style="color:#f92672">=</span>32kB --l1i_size<span style="color:#f92672">=</span>32kB --l2_size<span style="color:#f92672">=</span>512kB</code></pre></div>
 <p>Finally, here is how you can fast forward using <code>AtomicSimpleCPU</code> for 1 million instructions and then switch to <code>DerivO3CPU</code>:</p>
-<div class="highlight"><pre style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; /where/gem5/is/build/X86/gem5.opt <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; /where/gem5/is/configs/example/se.py <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --cmd<span style="color:#666">=</span>../../build/build_base_mytest-m64.0000/lbm_s <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --options<span style="color:#666">=</span><span style="color:#ba2121">&#34;2000 reference.dat 0 0 200_200_260_ldc.of&#34;</span> <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --mem-size<span style="color:#666">=</span>8GB <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --cpu-type<span style="color:#666">=</span>DerivO3CPU <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --caches --l2cache <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --l1d_size<span style="color:#666">=</span>32kB --l1i_size<span style="color:#666">=</span>32kB --l2_size<span style="color:#666">=</span>512kB <span style="color:#b62;font-weight:bold">\
-</span><span style="color:#b62;font-weight:bold"></span>&gt; --fast-forward<span style="color:#666">=</span><span style="color:#666">1000000</span></code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; /where/gem5/is/build/X86/gem5.opt <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; /where/gem5/is/configs/example/se.py <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --cmd<span style="color:#f92672">=</span>../../build/build_base_mytest-m64.0000/lbm_s <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --options<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2000 reference.dat 0 0 200_200_260_ldc.of&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --mem-size<span style="color:#f92672">=</span>8GB <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --cpu-type<span style="color:#f92672">=</span>DerivO3CPU <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --caches --l2cache <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --l1d_size<span style="color:#f92672">=</span>32kB --l1i_size<span style="color:#f92672">=</span>32kB --l2_size<span style="color:#f92672">=</span>512kB <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt; --fast-forward<span style="color:#f92672">=</span><span style="color:#ae81ff">1000000</span></code></pre></div>
       </div>
 
       <footer>
