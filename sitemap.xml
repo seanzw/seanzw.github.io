@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://seanzw.github.io/posts/gem5-o3-backend/</loc>
+    <lastmod>2020-07-03T12:14:04-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://seanzw.github.io/posts/gem5-spec2017/</loc>
     <lastmod>2020-03-11T14:19:34-07:00</lastmod>
   </url>
@@ -36,7 +41,7 @@
   
   <url>
     <loc>https://seanzw.github.io/posts/</loc>
-    <lastmod>2020-03-11T14:19:34-07:00</lastmod>
+    <lastmod>2020-07-03T12:14:04-07:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -47,7 +52,7 @@
   
   <url>
     <loc>https://seanzw.github.io/</loc>
-    <lastmod>2020-03-11T14:19:34-07:00</lastmod>
+    <lastmod>2020-07-03T12:14:04-07:00</lastmod>
     <priority>0</priority>
   </url>
   

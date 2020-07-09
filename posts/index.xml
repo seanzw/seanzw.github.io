@@ -6,10 +6,21 @@
     <description>Recent content in Posts on Zhengrong Wang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 11 Mar 2020 14:19:34 -0700</lastBuildDate>
+    <lastBuildDate>Fri, 03 Jul 2020 12:14:04 -0700</lastBuildDate>
     
 	<atom:link href="https://seanzw.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title></title>
+      <link>https://seanzw.github.io/posts/gem5-o3-backend/</link>
+      <pubDate>Fri, 03 Jul 2020 12:14:04 -0700</pubDate>
+      
+      <guid>https://seanzw.github.io/posts/gem5-o3-backend/</guid>
+      <description>GEM5 O3 CPU Backend This is my note on reading GEM5&amp;rsquo;s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
+Hopefully this could help more people. I assume you are already familiar with GEM5.
+Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ.</description>
+    </item>
     
     <item>
       <title>Simulating SPEC2017 on GEM5</title>
