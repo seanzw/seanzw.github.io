@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Zhengrong Wang</title>
@@ -6,11 +6,7 @@
     <description>Recent content on Zhengrong Wang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 03 Jul 2020 12:14:04 -0700</lastBuildDate>
-    
-	<atom:link href="https://seanzw.github.io/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 03 Jul 2020 12:14:04 -0700</lastBuildDate><atom:link href="https://seanzw.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>GEM5 O3 CPU Backend</title>
       <link>https://seanzw.github.io/posts/gem5-o3-backend/</link>
@@ -37,9 +33,9 @@ Compute Instructions Compute instructions are simpler as they do not access memo
       <pubDate>Fri, 13 Sep 2019 10:30:04 -0700</pubDate>
       
       <guid>https://seanzw.github.io/posts/swap-ctrl-cap/</guid>
-      <description> I find it very convenient to swap the control and cap lock key. And here is how I achieve this in the OS I am using.
+      <description>I find it very convenient to swap the control and cap lock key. And here is how I achieve this in the OS I am using.
 Ubuntu 16.04 Somehow the gnome-tweak-tool is not working in my case. I am using the following command line and it works like magic.
-/usr/bin/setxkbmap -option &amp;#34;ctrl:swapcaps&amp;#34;</description>
+/usr/bin/setxkbmap -option &amp;#34;ctrl:swapcaps&amp;#34; </description>
     </item>
     
     <item>
@@ -87,9 +83,14 @@ Prior joining UCLA, I received Bachelor of Engineering from Department of Electr
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://seanzw.github.io/publications/</guid>
-      <description>Publications Zhengrong Wang, Tony Nowatzki Stream-based Memory Access Specialization for General Purpose Processors.  [pdf] [slides] [pptx] 2019 ACM/IEEE 46th Annual International Symposium on Computer Architecture (ISCA).
-Jian Weng, Sihao Liu, Vidushi Dadu, Zhengrong Wang, Preyas Shah, Tony Nowatzki DSAGEN: Synthesizing Programmable Spatial Accelerators.  2020 ACM/IEEE 46th Annual International Symposium on Computer Architecture (ISCA) TO APPEAR.
-Jian Weng, Sihao Liu, Zhengrong Wang, Vidushi Dadu, Tony Nowatzki A Hybrid Systolic-Dataflow Architecture for Inductive Matrix Algorithms.</description>
+      <description>Publications Zhengrong Wang, Jian Weng, Jason Lowe-Power, Jayesh Gaur, Tony Nowatzki
+Stream Floating: Enabling Proactive and Decentralized Cache Optimizations
+2021 International Symposium on High-Performance Computer Architecture (HPCA) TO APPEAR.
+Zhengrong Wang, Tony Nowatzki
+Stream-based Memory Access Specialization for General Purpose Processors [pdf] [slides] [pptx]
+2019 ACM/IEEE 46th Annual International Symposium on Computer Architecture (ISCA).
+Jian Weng*, Sihao Liu*, Vidushi Dadu, Zhengrong Wang, Preyas Shah, Tony Nowatzki
+DSAGEN: Synthesizing Programmable Spatial Accelerators</description>
     </item>
     
   </channel>

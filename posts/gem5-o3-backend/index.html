@@ -21,8 +21,8 @@ Hopefully this could help more people. I assume you are already familiar with GE
 Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://seanzw.github.io/posts/gem5-o3-backend/" />
-<meta property="article:published_time" content="2020-07-03T12:14:04-07:00"/>
-<meta property="article:modified_time" content="2020-07-03T12:14:04-07:00"/>
+<meta property="article:published_time" content="2020-07-03T12:14:04-07:00" />
+<meta property="article:modified_time" content="2020-07-03T12:14:04-07:00" />
 
 
     
@@ -55,7 +55,7 @@ Compute Instructions Compute instructions are simpler as they do not access memo
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.54.0" />
+    <meta name="generator" content="Hugo 0.78.1" />
   </head>
 
   <body class=" ">
@@ -120,18 +120,13 @@ Compute Instructions Compute instructions are simpler as they do not access memo
       </header>
 
       <div>
-        
-
-<p>This is my note on reading GEM5&rsquo;s O3 cpu backend. I could not find a
+        <p>This is my note on reading GEM5&rsquo;s O3 cpu backend. I could not find a
 good document online, and the code is a little bit entangled and tricky
 to understand. So here I would extract the key function chain to show
 how an instruction is handled by the backend.</p>
-
 <p>Hopefully this could help more people. I assume you are already familiar
 with GEM5.</p>
-
 <h2 id="compute-instructions">Compute Instructions</h2>
-
 <p>Compute instructions are simpler as they do not access memory and
 not interact with the LSQ. It is actually pretty straightforward and
 here is a high-level description.
@@ -143,8 +138,7 @@ IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;<
 IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>executeInsts()
 IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>writebackInsts()
 Commit<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>Commit<span style="color:#f92672">::</span>commitInsts()<span style="color:#f92672">-&gt;</span>Commit<span style="color:#f92672">::</span>commitHead()
-</code></pre></div>
-<ul>
+</code></pre></div><ul>
 <li>Rename (<code>Rename::renameInsts()</code>)
 As suggested by the name, registers are renamed and the instruction
 is pushed to IEW stage. It checks that IQ/LSQ can hold the new
@@ -166,9 +160,7 @@ instructions will be added to the ready list for scheduling.</li>
 Once the instruction reaches the head of ROB, it will be committed and
 released from ROB.</li>
 </ul>
-
 <h2 id="load-instruction">Load Instruction</h2>
-
 <p>Load instructions shares the same path as compute instructions until
 execution.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>executeInsts()
@@ -185,8 +177,7 @@ DcachePort<span style="color:#f92672">::</span>recvTimingResp()<span style="colo
       <span style="color:#f92672">-&gt;</span>StaticInst<span style="color:#f92672">::</span>completeAcc()
       <span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>instToCommit()
 IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>writebackInsts()
-</code></pre></div>
-<ul>
+</code></pre></div><ul>
 <li><code>LSQUnit::executeLoad()</code> will initiate the access by invoking the
 instruction&rsquo;s <code>initiateAcc()</code>. Through the execution context interface,
 <code>initiateAcc()</code> will call <code>initiateMemRead()</code> and eventually be directed
@@ -196,22 +187,20 @@ It will also start translation. If the translation finished, it will
 remember the virtual address and invoke <code>LSQUnit::read()</code>.</li>
 <li><code>LSQUnit::read()</code> will check if the load is aliased with any previous
 store.
-
 <ul>
 <li>If can forward, then it schedule <code>WritebackEvent</code> for next cycle.</li>
 <li>If aliased but cannot forward, it calls
 <code>InstructionQueue::rescheduleMemInst()</code> and <code>LSQReuqest::discard()</code>.</li>
 <li>Otherwise, it send packets to cache.</li>
-</ul></li>
+</ul>
+</li>
 <li><code>LSQUnit::writeback()</code> will invoke <code>StaticInst::completeAcc()</code>, which
 will eventually write loaded value to destination register. Then the
 instruction is pushed to commit queue, so that <code>IEW::writebackInsts()</code>
 will mark it done and wake up its dependents. Starting from here it
 shares same path with compute instructions.</li>
 </ul>
-
 <h2 id="store-instruction">Store Instruction</h2>
-
 <p>Store instructions are similar to load instructions, but only writeback
 to cache after committed.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>executeInsts()
@@ -229,8 +218,7 @@ IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;<
 DcachePort<span style="color:#f92672">::</span>recvTimingResp()<span style="color:#f92672">-&gt;</span>LSQRequest<span style="color:#f92672">::</span>recvTimingResp()
   <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>completeDataAccess()
     <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>completeStore()
-</code></pre></div>
-<ul>
+</code></pre></div><ul>
 <li>Unlike <code>LSQUnit::read()</code>, <code>LSQUnit::write()</code> will only copy the store
 data, but not send packet to cache, as the store is not committed.</li>
 <li>After the store is committed, <code>LSQUnit::commitStores()</code> will mark the SQ
@@ -239,24 +227,18 @@ the store request to cache.</li>
 <li>Finally, when the response comes back, <code>LSQUnit::completeStore()</code> will
 release the SQ entries.</li>
 </ul>
-
 <h2 id="branch-misspeculation">Branch Misspeculation</h2>
-
 <p>Branch misspeculation is handled in the <code>IEW::executeInsts()</code>. It will
 notify the commit stage to start squashing all instructions in the ROB
 until the misspeculated branch.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>executeInsts()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>squashDueToBranch()
-</code></pre></div>
-<h2 id="memory-order-misspeculation">Memory Order Misspeculation</h2>
-
+</code></pre></div><h2 id="memory-order-misspeculation">Memory Order Misspeculation</h2>
 <p>The <code>InstructionQueue</code> has a <code>MemDepUnit</code> to track memory order dependence.
 The IQ will not schedule an instruction if MemDepUnit says there is no more
 dependence.</p>
-
 <p>In <code>LSQUnit::read()</code>, the LSQ will search for possible aliasing store and
 forward if possible. Otherwise, the load is blocked and rescheduled when the
 blocking store completes, by notifying the MemDepUnit.</p>
-
 <p>Both <code>LSQUnit::executeLoad/Store()</code> will call <code>LSQUnit::checkViolation()</code>
 to search in the LQ for possible misspeculation. If found, it will set
 <code>LSQUnit::memDepViolator</code> and later <code>IEW::executeInsts()</code> will start to
