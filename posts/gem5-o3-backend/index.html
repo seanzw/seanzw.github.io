@@ -111,7 +111,7 @@ Compute Instructions Compute instructions are simpler as they do not access memo
             </span>
             <span class="reading-time">
               <i class="fas fa-clock"></i>
-              3 minutes read
+              4 minutes read
             </span>
           </div>
           
@@ -227,6 +227,51 @@ the store request to cache.</li>
 <li>Finally, when the response comes back, <code>LSQUnit::completeStore()</code> will
 release the SQ entries.</li>
 </ul>
+<h2 id="atomic-instruction">Atomic Instruction</h2>
+<p>Atomic instructions are similar to store instructions, but they are executed
+non-speculatively.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">Rename<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>Rename<span style="color:#f92672">::</span>RenameInsts()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>dispatchInsts()
+  <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>insertStore()
+  <span style="color:#f92672">-&gt;</span>InstructionQueue<span style="color:#f92672">::</span>insertNonSpec()
+    <span style="color:#f92672">-&gt;</span>MemDepUnit<span style="color:#f92672">::</span>insertNonSpec()
+Commit<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>Commit<span style="color:#f92672">::</span>commitInsts()<span style="color:#f92672">-&gt;</span>Commit<span style="color:#f92672">::</span>commitHead()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>InstructionQueue<span style="color:#f92672">::</span>scheduleNonSpec()
+  <span style="color:#f92672">-&gt;</span>MemDepUnit<span style="color:#f92672">::</span>nonSpecInstReady()
+    <span style="color:#f92672">-&gt;</span>MemDepUnit<span style="color:#f92672">::</span>moveToReady()
+      <span style="color:#f92672">-&gt;</span>InstructionQueue<span style="color:#f92672">::</span>addReadyMemInst()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>InstructionQueue<span style="color:#f92672">::</span>scheduleReadyInsts()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>executeInsts()
+  <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>executeStore()
+    <span style="color:#f92672">-&gt;</span>StaticInst<span style="color:#f92672">::</span>initiateAcc()
+      <span style="color:#f92672">-&gt;</span>LSQ<span style="color:#f92672">::</span>pushRequest()
+        <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>write()
+    <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>SQEntry<span style="color:#f92672">::</span>canWB() <span style="color:#f92672">=</span> true
+    <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>checkViolation()
+IEW<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>writebackStores()
+  <span style="color:#f92672">-&gt;</span>LSQRequest<span style="color:#f92672">::</span>buildPackets()
+  <span style="color:#f92672">-&gt;</span>LSQRequest<span style="color:#f92672">::</span>sendPacketToCache()
+  <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>storePostSend()
+DcachePort<span style="color:#f92672">::</span>recvTimingResp()<span style="color:#f92672">-&gt;</span>LSQRequest<span style="color:#f92672">::</span>recvTimingResp()
+  <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>completeDataAccess()
+    <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>writeback()
+      <span style="color:#f92672">-&gt;</span>IEW<span style="color:#f92672">::</span>instToCommit()
+    <span style="color:#f92672">-&gt;</span>LSQUnit<span style="color:#f92672">::</span>completeStore()
+Commit<span style="color:#f92672">::</span>tick()<span style="color:#f92672">-&gt;</span>Commit<span style="color:#f92672">::</span>commitInsts()<span style="color:#f92672">-&gt;</span>Commit<span style="color:#f92672">::</span>commitHead()
+</code></pre></div><ul>
+<li>When dispatching, the atomic instruction is inserted into the IQ and
+marked non-speculative. Compared to normal <code>InstructionQueue::insert()</code>,
+<code>InstructionQueue::insertNonSpec()</code> won&rsquo;t call <code>addIfReady()</code>, thus not
+scheduling the instruction.</li>
+<li>When the atomic instruction reaches the ROB head, the commit stage
+checks if the instruction has been executed. If not, it sets the
+<code>nonSpecSeqNum</code> and clears its <code>canCommit</code> flag. Now the IEW
+stage knows that it can schedule the instruction.</li>
+<li>When executing the atomic instruction, the SQ entry is immediatly
+marked <code>canWB()</code>, as it&rsquo;s already the head of ROB.</li>
+<li>When the response comes back, the final value will be written back
+to register, and now the instruction can finally commit.</li>
+</ul>
 <h2 id="branch-misspeculation">Branch Misspeculation</h2>
 <p>Branch misspeculation is handled in the <code>IEW::executeInsts()</code>. It will
 notify the commit stage to start squashing all instructions in the ROB
@@ -269,7 +314,7 @@ squash.</p>
     
       <p>Enjoy it!</p>
     
-     © 2020
+     © 2021
     
     
        · 
