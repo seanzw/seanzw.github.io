@@ -84,7 +84,7 @@ Prior joining UCLA, I received Bachelor of Engineering from Department of Electr
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://seanzw.github.io/projects/</guid>
-      <description>Projects Yart-Yet Another Ray Tracer  Yart is a simple but powerful ray tracer engine. It reads in a scene description file and parses it. Then it renders the scene and prints the output image. For objects, it supports sphere and triangle mesh. For material, Lambertian, Specular, Refraction and Cook-Torrance BSDF are implemented. To solve the light equation, it can use either direct lighting or bidirectional path tracing. To accelerate the computation, multiple threads and OC-Tree are used.</description>
+      <description>Projects - No Research Just for Fun Yart-Yet Another Ray Tracer  Yart is a simple but powerful ray tracer engine. It reads in a scene description file and parses it. Then it renders the scene and prints the output image. For objects, it supports sphere and triangle mesh. For material, Lambertian, Specular, Refraction and Cook-Torrance BSDF are implemented. To solve the light equation, it can use either direct lighting or bidirectional path tracing.</description>
     </item>
     
     <item>
