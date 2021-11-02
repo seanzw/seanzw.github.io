@@ -93,15 +93,14 @@ Prior joining UCLA, I received Bachelor of Engineering from Department of Electr
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://seanzw.github.io/publications/</guid>
-      <description>Publications Zhengrong Wang, Jian Weng, Sihao Liu, Tony Nowatzki
-Near-Stream Computing: General and Transparent Near-Cache Acceleration (To Appear)
-2022 International Symposium on High-Performance Computer Architecture (HPCA).
-Zhengrong Wang, Jian Weng, Jason Lowe-Power, Jayesh Gaur, Tony Nowatzki
+      <description>Publications Zhengrong Wang, Jian Weng, Jason Lowe-Power, Jayesh Gaur, Tony Nowatzki
 Stream Floating: Enabling Proactive and Decentralized Cache Optimizations
 Best Paper Runner-Up [pdf] [slides] [pptx] [video]
 2021 International Symposium on High-Performance Computer Architecture (HPCA).
 Zhengrong Wang, Tony Nowatzki
-Stream-based Memory Access Specialization for General Purpose Processors [pdf] [slides] [pptx]</description>
+Stream-based Memory Access Specialization for General Purpose Processors [pdf] [slides] [pptx]
+2019 ACM/IEEE 46th Annual International Symposium on Computer Architecture (ISCA).
+Jian Weng*, Sihao Liu*, Vidushi Dadu, Zhengrong Wang, Preyas Shah, Tony Nowatzki</description>
     </item>
     
   </channel>
