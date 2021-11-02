@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2021.4.10)  2 NOV 2021 12:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2021.4.10)  2 NOV 2021 12:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -312,7 +312,7 @@ nts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/urw/palatino/uplb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/pala
 tino/uplr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a
 .pfb>
-Output written on CV_eng.pdf (2 pages, 87819 bytes).
+Output written on CV_eng.pdf (2 pages, 87755 bytes).
 PDF statistics:
  48 PDF objects out of 1000 (max. 8388607)
  37 compressed objects within 1 object stream
