@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2021.4.10)  2 NOV 2021 12:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2021.4.10)  4 NOV 2021 12:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -272,30 +272,30 @@ LaTeX Font Info:    Font shape `OT1/ppl/bx/sc' in size <10> not available
 (Font)              Font shape `OT1/ppl/b/sc' tried instead on input line 79.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ppl/b/n' tried instead on input line 85.
-LaTeX Font Info:    Try loading font information for OMS+ppl on input line 163.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 173.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 173.
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 193.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsppl.fd
 File: omsppl.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 163.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 193.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 289.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 289.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 354.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 361.
  [2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 354.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 361.
  (./CV_eng.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 354.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 354.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 361.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 361.
 Package rerunfilecheck Info: File `CV_eng.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 354.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 361.
  ) 
 Here is how much of TeX's memory you used:
  5266 strings out of 494847
@@ -304,7 +304,7 @@ Here is how much of TeX's memory you used:
  8573 multiletter control sequences out of 15000+600000
  10517 words of font info for 27 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 28i,5n,24p,202b,472s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 28i,5n,24p,202b,466s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fo
@@ -312,7 +312,7 @@ nts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/urw/palatino/uplb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/pala
 tino/uplr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a
 .pfb>
-Output written on CV_eng.pdf (2 pages, 87755 bytes).
+Output written on CV_eng.pdf (2 pages, 88827 bytes).
 PDF statistics:
  48 PDF objects out of 1000 (max. 8388607)
  37 compressed objects within 1 object stream
