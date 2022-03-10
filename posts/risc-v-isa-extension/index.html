@@ -214,16 +214,16 @@ DECLARE_INSN(matrix_st, MATCH_MATRIX_ST, MASK_MATRIX_ST)
       0x1: matrix_ld({{
           Rd = Mem;
           uint64_t reg = xc-&gt;readIntRegOperand(this, 0);
-          Addr EA = reg + offset;
-          xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.load(xc, EA);
+          Addr addr = reg + offset;
+          xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.load(xc, addr);
       }});
   }
   format Store {
       0x2: matrix_st({{
           Mem_ud = Rs2_ud;
           uint64_t reg = xc-&gt;readIntRegOperand(this, 0);
-          Addr EA = reg + offset;
-          Mem = xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.store(xc, EA);
+          Addr addr = reg + offset;
+          Mem = xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.store(xc, addr);
       }});
   }
 }
