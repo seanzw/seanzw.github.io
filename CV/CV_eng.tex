@@ -3,7 +3,7 @@
 \usepackage{fullpage}
 % \usepackage{CJK}
 \usepackage{geometry}
-\usepackage[colorlinks = true,
+\usepackage[colorlinks = false,
             linkcolor = red,
             ]{hyperref}
 
@@ -11,8 +11,8 @@
 \leftmargin=0.25in
 \oddsidemargin=0.25in
 \textwidth=6.0in
-\topmargin=0in
-\textheight=9.25in
+\topmargin=-0.25in
+\textheight=10in
 
 \raggedright
 
@@ -50,7 +50,7 @@
 	\begin{changemargin}{-0.5in}{-0.5in}
 		\begin{center}
 			{\Large \scshape {#1}}\\ \smallskip
-			{\href{#2}{#2}} \\ \smallskip 
+			{\href{#2}{#2}} / \smallskip 
 			{\href{#3}{Website}} /
 			{\href{#4}{Google Scholar}}\smallskip
 			% {\href{#6}{#6}}\smallskip
@@ -60,7 +60,7 @@
 
 \newenvironment{body} {
 	\vspace*{-16pt}
-	\begin{changemargin}{-0.25in}{-0.5in}
+	\begin{changemargin}{-0.5in}{-0.5in}
   }	
 	{\end{changemargin}
 }	
@@ -118,32 +118,44 @@ Bachlor of Engineering in Electronic Engineering, GPA: 91/100 \hfill \emph{Aug. 
 \begin{body}
 	\vspace{14pt}
 	% -----
+	\textbf{Z. Wang}, C. Liu, A. Arora, L. John, T. Nowatzki. \\
+    Infinity Stream: Portable and Programmer-Friendly In-/Near-Memory Fusion. \emph{ASPLOS '23}, Vancouver, Canada.\\
+	\smallskip
+	% -----
 	\textbf{Z. Wang}, J. Weng, S. Liu, T. Nowatzki. \\
-	Near-Stream Computing: General and Transparent Near-Cache Acceleration. To Appear in \emph{HPCA '22}.\\
+	Near-Stream Computing: General and Transparent Near-Cache Acceleration. \emph{HPCA '22}, Seoul, South Koera.\\
 	\smallskip
 	% -----
 	\textbf{Best Paper Runner-Up: Z. Wang}, J. Weng, J. Lowe-Power, J. Gaur, T. Nowatzki. \\
-	Stream Floating: Enabling Proactive and Decentralized Cache Optimizations. In \emph{HPCA '21}.\\
+	Stream Floating: Enabling Proactive and Decentralized Cache Optimizations. \emph{HPCA '21}, Seoul, South Koera.\\
 	\smallskip
 	% -----
 	\textbf{Z. Wang}, T. Nowatzki. \\
-	Stream-Based Memory Access Specialization for General Purpose Processors. In \emph{ISCA '19}.\\
+	Stream-Based Memory Access Specialization for General Purpose Processors. \emph{ISCA '19}, Phoenix, USA.\\
+	\smallskip
+	% -----
+	\textbf{Z. Wang}, C. Liu, T. Nowatzki. \\
+    Infinity Stream: Enabling Transparent and Automated In-Memory Computing. \emph{IEEE CAL, vol. 21, 2022}.\\
 	\smallskip
 	% -----
 	\textbf{IEEE Micro Top Picks Honorable Mention:} J. Weng*, S. Liu*, V. Dadu, \textbf{Z. Wang}, P. Shah, T. Nowatzki. \\
-	DSAGEN: Synthesizing Programmable Spatial Accelerators. In \emph{ISCA '20}.\\
+	DSAGEN: Synthesizing Programmable Spatial Accelerators. \emph{ISCA '20}, virtual.\\
+	\smallskip
+	% -----
+	J. Weng*, S. Liu*, D. Kupsh, A. Sohrabizadeh, \textbf{Z. Wang}, et al. \\
+	OverGen: Improving FPGA Usability through Domain-specific Overlay Generation. \emph{MICRO '22}, Chicago, USA.\\
 	\smallskip
 	% -----
 	J. Weng, S. Liu, \textbf{Z. Wang}, V. Dadu, T. Nowatzki. \\
-	A Hybrid Systolic-Dataflow Architecture for Inductive Matrix Algorithms. In \emph{HPCA '20}.\\
+	A Hybrid Systolic-Dataflow Architecture for Inductive Matrix Algorithms. \emph{HPCA '20}, San Diego, USA.\\
 	\smallskip
 	% -----
 	J. Lowe-Power, ..., \textbf{Z. Wang}, et al. \\
-	The gem5 Simulator: Version 20.0+. In \emph{arXiv:2007.03152v2}.\\
+	The gem5 Simulator: Version 20.0+. \emph{arXiv:2007.03152v2}.\\
 	\smallskip
 	% -----
 	\textbf{Z. Wang}, F. Qiao, Z. Liu, Y. Shan, X. Zhou, L. Luo, and H. Zhong. \\
-	Optimizing Convolutional Neural Network on FPGA under Heterogeneous Computing Framework with OpenCL. In \emph{TENCON '16}.\\
+	Optimizing Convolutional Neural Network on FPGA under Heterogeneous Computing Framework with OpenCL. \emph{TENCON '16}.\\
 \end{body}
 
 \smallskip
@@ -196,7 +208,7 @@ Bachlor of Engineering in Electronic Engineering, GPA: 91/100 \hfill \emph{Aug. 
 	\item Research project of full-stack trace-based simulation for stream-specialized systems.
 	\item Implement LLVM passes to recognize streams and transform program with new stream instructions.
 	\item End-to-End execution-based simulation in gem5.
-	\item Results published in ISCA' 19 and HPCA' 21. More in submission.
+	\item Results published in ISCA' 19, HPCA' 21, HPCA '22 and ASPLOS '23. More in submission.
 	\item Repo: \href{https://github.com/PolyArch/gem-forge-framework}{https://github.com/PolyArch/gem-forge-framework}
 	\end{itemize}
 	\smallskip

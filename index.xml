@@ -74,7 +74,7 @@ The Manual has a very detailed explanation on what ISA encoding is reserved for 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://seanzw.github.io/about/</guid>
-      <description>About Me I am a fourth year Ph.D. student at UCLA, advised by Prof. Tony Nowatzki. I am generally interested in developing high performance computer architecture for both general and domain specific computing with compiler support. I am also looking into how to accurately and efficiently model and simulate current architectures.
+      <description>About Me I am a fifth year Ph.D. student at UCLA, advised by Prof. Tony Nowatzki. I am generally interested in developing high performance computer architecture for both general and domain specific computing with compiler support. I am also looking into how to accurately and efficiently model and simulate current architectures.
 Prior joining UCLA, I received Bachelor of Engineering from Department of Electronic Enginerring, Tsinghua University. I also studied at ETH Zürich for half a year as a exhange student.</description>
     </item>
     
@@ -93,15 +93,15 @@ Prior joining UCLA, I received Bachelor of Engineering from Department of Electr
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://seanzw.github.io/publications/</guid>
-      <description>Publications Zhengrong Wang, Christopher Liu, Tony Nowatzki
+      <description>Publications Zhengrong Wang, Christopher Liu, Aman Arora, Lizy John, Tony Nowatzki
+Infinity Stream: Portable and Programmer-Friendly In-/Near-Memory Fusion [pdf]
+2023 International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS).
+Zhengrong Wang, Christopher Liu, Tony Nowatzki
 Infinity Stream: Enabling Transparent and Automated In-Memory Computing [pdf]
-Computer Architecture Letter 2022 (CAL Early Access).
+Computer Architecture Letter 2022.
 Zhengrong Wang, Jian Weng, Sihao Liu, Tony Nowatzki
 Near-Stream Computing: General and Transparent Near-Cache Acceleration [pdf] [slides] [pptx]
-2022 International Symposium on High-Performance Computer Architecture (HPCA).
-Zhengrong Wang, Jian Weng, Jason Lowe-Power, Jayesh Gaur, Tony Nowatzki
-Stream Floating: Enabling Proactive and Decentralized Cache Optimizations
-Best Paper Runner-Up [pdf] [slides] [pptx] [video]</description>
+2022 International Symposium on High-Performance Computer Architecture (HPCA).</description>
     </item>
     
   </channel>
