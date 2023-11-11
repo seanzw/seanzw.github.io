@@ -16,7 +16,7 @@
     <meta property="og:title" content="Extend RISC-V ISA with Matrix Multiply" />
 <meta property="og:description" content="Notes on how to extend RISC-V with a matrix multiply instruction." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://seanzw.github.io/posts/risc-v-isa-extension/" />
+<meta property="og:url" content="https://seanzw.github.io/posts/risc-v-isa-extension/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-06-28T14:55:52-07:00" />
 <meta property="article:modified_time" content="2019-06-28T14:55:52-07:00" />
 
@@ -53,7 +53,7 @@
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.78.1" />
+    <meta name="generator" content="Hugo 0.117.0">
   </head>
 
   <body class=" ">
@@ -132,52 +132,51 @@ not be hold in a normal register. We also need to introduce new registers as wel
 <h2 id="define-new-instructions">Define New Instructions.</h2>
 <p>First, let&rsquo;s set up <a href="https://github.com/riscv/riscv-tools">riscv-tools</a> and
 <a href="https://github.com/riscv/riscv-gnu-toolchain">riscv-gnu-toolchain</a>. We then define our new instructions in <code>riscv-tools/riscv-opcodes/opcodes</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">matrix_multiply rd rs1 rs2     31..25=0 14..12=0  6..5=0 4..2=2 1..0=3 # R-type
-matrix_ld       rd rs1 imm12            14..12=1  6..5=0 4..2=2 1..0=3 # I-type
-matrix_st       imm12hi rs1 rs2 imm12lo 14..12=2  6..5=0 4..2=2 1..0=3 # S-type
-</code></pre></div><p>Notice the bit 0 to 6 is set to <code>00 010 11</code>, which indicates these are non-standard extension instructions. Rebuild the repo.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&gt; ./build.sh
-</code></pre></div><p>You can find something new in <code>riscv-tools/riscv-isa-sim/riscv/encoding.h</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#75715e">#define MATCH_MATRIX_MULTIPLY 0xb
-</span><span style="color:#75715e">#define MASK_MATRIX_MULTIPLY  0xfe00707f
-</span><span style="color:#75715e">#define MATCH_MATRIX_LD 0x100b
-</span><span style="color:#75715e">#define MASK_MATRIX_LD  0x707f
-</span><span style="color:#75715e">#define MATCH_MATRIX_ST 0x200b
-</span><span style="color:#75715e">#define MASK_MATRIX_ST  0x707f
-</span></code></pre></div><h2 id="add-new-instructions-to-gnu-toolchain">Add New Instructions to GNU Toolchain.</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>matrix_multiply rd rs1 rs2     31..25=0 14..12=0  6..5=0 4..2=2 1..0=3 # R-type
+</span></span><span style="display:flex;"><span>matrix_ld       rd rs1 imm12            14..12=1  6..5=0 4..2=2 1..0=3 # I-type
+</span></span><span style="display:flex;"><span>matrix_st       imm12hi rs1 rs2 imm12lo 14..12=2  6..5=0 4..2=2 1..0=3 # S-type
+</span></span></code></pre></div><p>Notice the bit 0 to 6 is set to <code>00 010 11</code>, which indicates these are non-standard extension instructions. Rebuild the repo.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>&gt; ./build.sh
+</span></span></code></pre></div><p>You can find something new in <code>riscv-tools/riscv-isa-sim/riscv/encoding.h</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#75715e">#define MATCH_MATRIX_MULTIPLY 0xb
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define MASK_MATRIX_MULTIPLY  0xfe00707f
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define MATCH_MATRIX_LD 0x100b
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define MASK_MATRIX_LD  0x707f
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define MATCH_MATRIX_ST 0x200b
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define MASK_MATRIX_ST  0x707f
+</span></span></span></code></pre></div><h2 id="add-new-instructions-to-gnu-toolchain">Add New Instructions to GNU Toolchain.</h2>
 <p>Now we add our new instructions to the GNU toolchain so that we can write inline assembly. This is fairly simple. Add the above macros to <code>riscv-gnu-toolchain/riscv-gdb/include/opcode/riscv-opc.h</code> and <code>riscv-gnu-toolchain/riscv-binutils/include/opcode/riscv-opc.h</code>. Then add the following lines to <code>riscv-opc.c</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">{<span style="color:#e6db74">&#34;matrix.multiply&#34;</span>, <span style="color:#ae81ff">0</span>, {<span style="color:#e6db74">&#34;I&#34;</span>, <span style="color:#ae81ff">0</span>},   <span style="color:#e6db74">&#34;d,s,t&#34;</span>,  MATCH_MATRIX_MULTIPLY, MASK_MATRIX_MULTIPLY, match_opcode, <span style="color:#ae81ff">0</span> },
-{<span style="color:#e6db74">&#34;matrix.ld&#34;</span>,       <span style="color:#ae81ff">0</span>, {<span style="color:#e6db74">&#34;I&#34;</span>, <span style="color:#ae81ff">0</span>},   <span style="color:#e6db74">&#34;d,o(s)&#34;</span>,  MATCH_MATRIX_LD, MASK_MATRIX_LD, match_opcode, <span style="color:#ae81ff">0</span> },
-{<span style="color:#e6db74">&#34;matrix.st&#34;</span>,       <span style="color:#ae81ff">0</span>, {<span style="color:#e6db74">&#34;I&#34;</span>, <span style="color:#ae81ff">0</span>},   <span style="color:#e6db74">&#34;t,q(s)&#34;</span>,  MATCH_MATRIX_ST, MASK_MATRIX_ST, match_opcode, <span style="color:#ae81ff">0</span> },
-
-</code></pre></div><p>Recompile the GNU toolchain and now let&rsquo;s write a test program. We assume the
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span>{<span style="color:#e6db74">&#34;matrix.multiply&#34;</span>, <span style="color:#ae81ff">0</span>, {<span style="color:#e6db74">&#34;I&#34;</span>, <span style="color:#ae81ff">0</span>},   <span style="color:#e6db74">&#34;d,s,t&#34;</span>,  MATCH_MATRIX_MULTIPLY, MASK_MATRIX_MULTIPLY, match_opcode, <span style="color:#ae81ff">0</span> },
+</span></span><span style="display:flex;"><span>{<span style="color:#e6db74">&#34;matrix.ld&#34;</span>,       <span style="color:#ae81ff">0</span>, {<span style="color:#e6db74">&#34;I&#34;</span>, <span style="color:#ae81ff">0</span>},   <span style="color:#e6db74">&#34;d,o(s)&#34;</span>,  MATCH_MATRIX_LD, MASK_MATRIX_LD, match_opcode, <span style="color:#ae81ff">0</span> },
+</span></span><span style="display:flex;"><span>{<span style="color:#e6db74">&#34;matrix.st&#34;</span>,       <span style="color:#ae81ff">0</span>, {<span style="color:#e6db74">&#34;I&#34;</span>, <span style="color:#ae81ff">0</span>},   <span style="color:#e6db74">&#34;t,q(s)&#34;</span>,  MATCH_MATRIX_ST, MASK_MATRIX_ST, match_opcode, <span style="color:#ae81ff">0</span> },
+</span></span></code></pre></div><p>Recompile the GNU toolchain and now let&rsquo;s write a test program. We assume the
 matrix&rsquo;s layout is already block-wise.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#75715e">// Use our pseudo-instruction.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">register</span> VTYPE tmp_a;
-<span style="color:#66d9ef">register</span> VTYPE tmp_b;
-<span style="color:#75715e">#pragma GCC unroll 0
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> N_BLOCKS; <span style="color:#f92672">++</span>i) {
-  <span style="color:#75715e">#pragma GCC unroll 0
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">for</span> (j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> N_BLOCKS; <span style="color:#f92672">++</span>j) {
-    <span style="color:#75715e">// Load the output.
-</span><span style="color:#75715e"></span>    VTYPE <span style="color:#f92672">*</span>pc <span style="color:#f92672">=</span> c2[i][j];
-    <span style="color:#66d9ef">register</span> VTYPE tmp_c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-    <span style="color:#75715e">#pragma GCC unroll 0
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> (k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; k <span style="color:#f92672">&lt;</span> N_BLOCKS; <span style="color:#f92672">++</span>k) {
-      VTYPE <span style="color:#f92672">*</span>pa <span style="color:#f92672">=</span> a[i][k];
-      VTYPE <span style="color:#f92672">*</span>pb <span style="color:#f92672">=</span> b[k][j];
-      __asm__ <span style="color:#a6e22e">volatile</span>(<span style="color:#e6db74">&#34;matrix.ld %[tmp_a], %[a]</span><span style="color:#ae81ff">\n\t</span><span style="color:#e6db74">&#34;</span>
-                       <span style="color:#e6db74">&#34;matrix.ld %[tmp_b], %[b]</span><span style="color:#ae81ff">\n\t</span><span style="color:#e6db74">&#34;</span>
-                       <span style="color:#e6db74">&#34;matrix.multiply %[tmp_c], %[tmp_a], %[tmp_b]</span><span style="color:#ae81ff">\n\t</span><span style="color:#e6db74">&#34;</span>
-                       <span style="color:#f92672">:</span> [tmp_c] <span style="color:#e6db74">&#34;=&amp;r&#34;</span>(tmp_c), [tmp_a] <span style="color:#e6db74">&#34;=r&#34;</span>(tmp_a), [tmp_b] <span style="color:#e6db74">&#34;=r&#34;</span>(tmp_b)
-                       <span style="color:#f92672">:</span> [a] <span style="color:#e6db74">&#34;r&#34;</span>(pa), [b] <span style="color:#e6db74">&#34;r&#34;</span>(pb));
-    }
-    __asm__ <span style="color:#66d9ef">volatile</span>(<span style="color:#e6db74">&#34;matrix.st %[tmp_c], %[c]</span><span style="color:#ae81ff">\n\t</span><span style="color:#e6db74">&#34;</span>
-                     <span style="color:#f92672">:</span>
-                     <span style="color:#f92672">:</span> [c] <span style="color:#e6db74">&#34;r&#34;</span>(pc), [tmp_c] <span style="color:#e6db74">&#34;r&#34;</span>(tmp_c));
-  }
-}
-</code></pre></div><p>There are some interesting points here:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#75715e">// Use our pseudo-instruction.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">register</span> VTYPE tmp_a;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">register</span> VTYPE tmp_b;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#pragma GCC unroll 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> N_BLOCKS; <span style="color:#f92672">++</span>i) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">#pragma GCC unroll 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">for</span> (j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> N_BLOCKS; <span style="color:#f92672">++</span>j) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Load the output.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    VTYPE <span style="color:#f92672">*</span>pc <span style="color:#f92672">=</span> c2[i][j];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">register</span> VTYPE tmp_c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#pragma GCC unroll 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> (k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; k <span style="color:#f92672">&lt;</span> N_BLOCKS; <span style="color:#f92672">++</span>k) {
+</span></span><span style="display:flex;"><span>      VTYPE <span style="color:#f92672">*</span>pa <span style="color:#f92672">=</span> a[i][k];
+</span></span><span style="display:flex;"><span>      VTYPE <span style="color:#f92672">*</span>pb <span style="color:#f92672">=</span> b[k][j];
+</span></span><span style="display:flex;"><span>      __asm__ <span style="color:#a6e22e">volatile</span>(<span style="color:#e6db74">&#34;matrix.ld %[tmp_a], %[a]</span><span style="color:#ae81ff">\n\t</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>                       <span style="color:#e6db74">&#34;matrix.ld %[tmp_b], %[b]</span><span style="color:#ae81ff">\n\t</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>                       <span style="color:#e6db74">&#34;matrix.multiply %[tmp_c], %[tmp_a], %[tmp_b]</span><span style="color:#ae81ff">\n\t</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>                       <span style="color:#f92672">:</span> [tmp_c] <span style="color:#e6db74">&#34;=&amp;r&#34;</span>(tmp_c), [tmp_a] <span style="color:#e6db74">&#34;=r&#34;</span>(tmp_a), [tmp_b] <span style="color:#e6db74">&#34;=r&#34;</span>(tmp_b)
+</span></span><span style="display:flex;"><span>                       <span style="color:#f92672">:</span> [a] <span style="color:#e6db74">&#34;r&#34;</span>(pa), [b] <span style="color:#e6db74">&#34;r&#34;</span>(pb));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    __asm__ <span style="color:#66d9ef">volatile</span>(<span style="color:#e6db74">&#34;matrix.st %[tmp_c], %[c]</span><span style="color:#ae81ff">\n\t</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">:</span> [c] <span style="color:#e6db74">&#34;r&#34;</span>(pc), [tmp_c] <span style="color:#e6db74">&#34;r&#34;</span>(tmp_c));
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>There are some interesting points here:</p>
 <ul>
 <li>We disable loop unrolling here via a pragma. This pragam is supported in
 GCC 8 (they really should have supported this before).</li>
@@ -189,45 +188,45 @@ a register with other input operands.</li>
 <p>We first want to implement these new instructions in Spike, a ISA simulator for
 RISC-V. Although we use</p>
 <p>Add this to <code>riscv-insn-list</code> in <code>riscv-tools/riscv-isa-sim/riscv/riscv.mk.in</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	matrix_multiply \
-	matrix_ld \
-	matrix_st \
-</code></pre></div><p>Declare the disassembly in <code>riscv-tools/riscv-isa-sim/spike_main/disasm.cc</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">DEFINE_RTYPE(matrix_multiply);
-DEFINE_XLOAD(matrix_ld);
-DEFINE_XSTORE(matrix_st);
-</code></pre></div><p>Also add this to <code>riscv-tools/riscv-isa-sim/fesvr/encoding.h</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">DECLARE_INSN(matrix_multiply, MATCH_MATRIX_MULTIPLY, MASK_MATRIX_MULTIPLY)
-DECLARE_INSN(matrix_ld, MATCH_MATRIX_LD, MASK_MATRIX_LD)
-DECLARE_INSN(matrix_st, MATCH_MATRIX_ST, MASK_MATRIX_ST)
-</code></pre></div><p>Now it is time to actually implement it in Spike. This involves changing <code>decode.h</code> and add the functionality implementation in <code>riscv/insns/*.h</code>. The architectural states are defined in <code>riscv/processor.h</code>. Take a look at other examples and you will soon figure it out.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>	matrix_multiply \
+</span></span><span style="display:flex;"><span>	matrix_ld \
+</span></span><span style="display:flex;"><span>	matrix_st \
+</span></span></code></pre></div><p>Declare the disassembly in <code>riscv-tools/riscv-isa-sim/spike_main/disasm.cc</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#a6e22e">DEFINE_RTYPE</span>(matrix_multiply);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">DEFINE_XLOAD</span>(matrix_ld);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">DEFINE_XSTORE</span>(matrix_st);
+</span></span></code></pre></div><p>Also add this to <code>riscv-tools/riscv-isa-sim/fesvr/encoding.h</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#a6e22e">DECLARE_INSN</span>(matrix_multiply, MATCH_MATRIX_MULTIPLY, MASK_MATRIX_MULTIPLY)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">DECLARE_INSN</span>(matrix_ld, MATCH_MATRIX_LD, MASK_MATRIX_LD)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">DECLARE_INSN</span>(matrix_st, MATCH_MATRIX_ST, MASK_MATRIX_ST)
+</span></span></code></pre></div><p>Now it is time to actually implement it in Spike. This involves changing <code>decode.h</code> and add the functionality implementation in <code>riscv/insns/*.h</code>. The architectural states are defined in <code>riscv/processor.h</code>. Take a look at other examples and you will soon figure it out.</p>
 <h2 id="add-the-instruction-in-gem5">Add the instruction in gem5.</h2>
 <p>Finally, we want to simulate the binary in a cycle-level simulator like gem5. Fortunately, the RISC-V implementation in gem5 has a really nice and extendable instruction decoder (compared to x86). The decoder is defined in <code>src/arch/riscv/isa/decoder.isa</code>. Find the correct place to insert your new instruction based on the binary format. <code>ROp</code> and <code>Load/Store</code> are predefined instruction templates. Notice that gem5&rsquo;s instruction decoder is a python-based template generator. The input and output registers are detected by the generator analyzing the instruction&rsquo;s functionality. For example, for our matrix multiply accumulation instruction, since <code>Rd</code> appears on both sides of the assign, it will be marked as both input and output register. Then in the out-of-order execution, there will be dependence chain on the this instruction.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">0x02: decode FUNCT3 {
-  format ROp {
-      0x0: matrix_multiply({{
-          Rd = Rd + Rs1 + Rs2;
-          xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.multiply();
-      }}, MatrixOp);
-  }
-  format Load {
-      0x1: matrix_ld({{
-          Rd = Mem;
-          uint64_t reg = xc-&gt;readIntRegOperand(this, 0);
-          Addr addr = reg + offset;
-          xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.load(xc, addr);
-      }});
-  }
-  format Store {
-      0x2: matrix_st({{
-          Mem_ud = Rs2_ud;
-          uint64_t reg = xc-&gt;readIntRegOperand(this, 0);
-          Addr addr = reg + offset;
-          Mem = xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.store(xc, addr);
-      }});
-  }
-}
-</code></pre></div><p>I will not show the details of implementing this within gem5. It&rsquo;s just labor work.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>0x02: decode FUNCT3 {
+</span></span><span style="display:flex;"><span>  format ROp {
+</span></span><span style="display:flex;"><span>      0x0: matrix_multiply({{
+</span></span><span style="display:flex;"><span>          Rd = Rd + Rs1 + Rs2;
+</span></span><span style="display:flex;"><span>          xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.multiply();
+</span></span><span style="display:flex;"><span>      }}, MatrixOp);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  format Load {
+</span></span><span style="display:flex;"><span>      0x1: matrix_ld({{
+</span></span><span style="display:flex;"><span>          Rd = Mem;
+</span></span><span style="display:flex;"><span>          uint64_t reg = xc-&gt;readIntRegOperand(this, 0);
+</span></span><span style="display:flex;"><span>          Addr addr = reg + offset;
+</span></span><span style="display:flex;"><span>          xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.load(xc, addr);
+</span></span><span style="display:flex;"><span>      }});
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  format Store {
+</span></span><span style="display:flex;"><span>      0x2: matrix_st({{
+</span></span><span style="display:flex;"><span>          Mem_ud = Rs2_ud;
+</span></span><span style="display:flex;"><span>          uint64_t reg = xc-&gt;readIntRegOperand(this, 0);
+</span></span><span style="display:flex;"><span>          Addr addr = reg + offset;
+</span></span><span style="display:flex;"><span>          Mem = xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.store(xc, addr);
+</span></span><span style="display:flex;"><span>      }});
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>I will not show the details of implementing this within gem5. It&rsquo;s just labor work.</p>
 
       </div>
 
@@ -251,10 +250,6 @@ DECLARE_INSN(matrix_st, MATCH_MATRIX_ST, MASK_MATRIX_ST)
     
      © 2023
     
-    
-       · 
-      [<a href="https://github.com/luizdepra/hugo-coder/tree/"></a>]
-    
   </section>
 </footer>
 
@@ -273,7 +268,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
 
   </body>
 

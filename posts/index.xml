@@ -65,7 +65,7 @@ The Manual has a very detailed explanation on what ISA encoding is reserved for 
       
       <guid>https://seanzw.github.io/posts/setting-up-this/</guid>
       <description>After 2 years with my previous dummy personal website, I was urged to create a better one. After some googling, I made this tiny website using Hugo. Here are some notes for a n00b in front-end like me.
- Make sure you download the extended version of Hugo. Otherwise you won&amp;rsquo;t have support for SASS and SCSS (I have no idea what these are). Just scroll down in the release page and you will find it.</description>
+Make sure you download the extended version of Hugo. Otherwise you won&amp;rsquo;t have support for SASS and SCSS (I have no idea what these are). Just scroll down in the release page and you will find it.</description>
     </item>
     
   </channel>
