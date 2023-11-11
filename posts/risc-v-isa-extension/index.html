@@ -21,6 +21,7 @@
 <meta property="article:modified_time" content="2019-06-28T14:55:52-07:00" />
 
 
+
     
       <base href="https://seanzw.github.io/posts/risc-v-isa-extension/">
     
@@ -53,7 +54,7 @@
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.117.0">
+    <meta name="generator" content="Hugo 0.120.4">
   </head>
 
   <body class=" ">
@@ -202,27 +203,27 @@ RISC-V. Although we use</p>
 </span></span></code></pre></div><p>Now it is time to actually implement it in Spike. This involves changing <code>decode.h</code> and add the functionality implementation in <code>riscv/insns/*.h</code>. The architectural states are defined in <code>riscv/processor.h</code>. Take a look at other examples and you will soon figure it out.</p>
 <h2 id="add-the-instruction-in-gem5">Add the instruction in gem5.</h2>
 <p>Finally, we want to simulate the binary in a cycle-level simulator like gem5. Fortunately, the RISC-V implementation in gem5 has a really nice and extendable instruction decoder (compared to x86). The decoder is defined in <code>src/arch/riscv/isa/decoder.isa</code>. Find the correct place to insert your new instruction based on the binary format. <code>ROp</code> and <code>Load/Store</code> are predefined instruction templates. Notice that gem5&rsquo;s instruction decoder is a python-based template generator. The input and output registers are detected by the generator analyzing the instruction&rsquo;s functionality. For example, for our matrix multiply accumulation instruction, since <code>Rd</code> appears on both sides of the assign, it will be marked as both input and output register. Then in the out-of-order execution, there will be dependence chain on the this instruction.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>0x02: decode FUNCT3 {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span><span style="color:#ae81ff">0x02</span>: decode FUNCT3 {
 </span></span><span style="display:flex;"><span>  format ROp {
-</span></span><span style="display:flex;"><span>      0x0: matrix_multiply({{
-</span></span><span style="display:flex;"><span>          Rd = Rd + Rs1 + Rs2;
-</span></span><span style="display:flex;"><span>          xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.multiply();
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">0x0</span>: matrix_multiply({{
+</span></span><span style="display:flex;"><span>          Rd <span style="color:#f92672">=</span> Rd <span style="color:#f92672">+</span> Rs1 <span style="color:#f92672">+</span> Rs2;
+</span></span><span style="display:flex;"><span>          xc<span style="color:#f92672">-&gt;</span>tcBase()<span style="color:#f92672">-&gt;</span>getCpuPtr()<span style="color:#f92672">-&gt;</span>matrixUnit<span style="color:#f92672">.</span>multiply();
 </span></span><span style="display:flex;"><span>      }}, MatrixOp);
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  format Load {
-</span></span><span style="display:flex;"><span>      0x1: matrix_ld({{
-</span></span><span style="display:flex;"><span>          Rd = Mem;
-</span></span><span style="display:flex;"><span>          uint64_t reg = xc-&gt;readIntRegOperand(this, 0);
-</span></span><span style="display:flex;"><span>          Addr addr = reg + offset;
-</span></span><span style="display:flex;"><span>          xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.load(xc, addr);
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">0x1</span>: matrix_ld({{
+</span></span><span style="display:flex;"><span>          Rd <span style="color:#f92672">=</span> Mem;
+</span></span><span style="display:flex;"><span>          uint64_t reg <span style="color:#f92672">=</span> xc<span style="color:#f92672">-&gt;</span>readIntRegOperand(this, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>          Addr addr <span style="color:#f92672">=</span> reg <span style="color:#f92672">+</span> offset;
+</span></span><span style="display:flex;"><span>          xc<span style="color:#f92672">-&gt;</span>tcBase()<span style="color:#f92672">-&gt;</span>getCpuPtr()<span style="color:#f92672">-&gt;</span>matrixUnit<span style="color:#f92672">.</span>load(xc, addr);
 </span></span><span style="display:flex;"><span>      }});
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  format Store {
-</span></span><span style="display:flex;"><span>      0x2: matrix_st({{
-</span></span><span style="display:flex;"><span>          Mem_ud = Rs2_ud;
-</span></span><span style="display:flex;"><span>          uint64_t reg = xc-&gt;readIntRegOperand(this, 0);
-</span></span><span style="display:flex;"><span>          Addr addr = reg + offset;
-</span></span><span style="display:flex;"><span>          Mem = xc-&gt;tcBase()-&gt;getCpuPtr()-&gt;matrixUnit.store(xc, addr);
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">0x2</span>: matrix_st({{
+</span></span><span style="display:flex;"><span>          Mem_ud <span style="color:#f92672">=</span> Rs2_ud;
+</span></span><span style="display:flex;"><span>          uint64_t reg <span style="color:#f92672">=</span> xc<span style="color:#f92672">-&gt;</span>readIntRegOperand(this, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>          Addr addr <span style="color:#f92672">=</span> reg <span style="color:#f92672">+</span> offset;
+</span></span><span style="display:flex;"><span>          Mem <span style="color:#f92672">=</span> xc<span style="color:#f92672">-&gt;</span>tcBase()<span style="color:#f92672">-&gt;</span>getCpuPtr()<span style="color:#f92672">-&gt;</span>matrixUnit<span style="color:#f92672">.</span>store(xc, addr);
 </span></span><span style="display:flex;"><span>      }});
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}

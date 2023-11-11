@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Zhengrong Wang">
+    <meta name="description" content="Zhengrong Wang&#39;s personal website">
+    <meta name="keywords" content="Ph.D. Student;Blog.">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Benchmarking GEMM on Modern CPU"/>
+<meta name="twitter:description" content="Recently I got interested to understand what&rsquo;s the actual performance of GEMM on modern CPUs. We all understand that GEMM is the backbone for many critical applications and can never emphasize enough how important to optimize it. That being said, I never had a good first-hand experience on benchmarking GEMM on modern CPUs, and here I am.
+We know that Intel has the famous MKL library that is mainly optimized for Intel&rsquo;s CPU (of course), and there are open-sourced third party library such as OpenBLAS (come with numpy if you install using pip)."/>
+
+    <meta property="og:title" content="Benchmarking GEMM on Modern CPU" />
+<meta property="og:description" content="Recently I got interested to understand what&rsquo;s the actual performance of GEMM on modern CPUs. We all understand that GEMM is the backbone for many critical applications and can never emphasize enough how important to optimize it. That being said, I never had a good first-hand experience on benchmarking GEMM on modern CPUs, and here I am.
+We know that Intel has the famous MKL library that is mainly optimized for Intel&rsquo;s CPU (of course), and there are open-sourced third party library such as OpenBLAS (come with numpy if you install using pip)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://seanzw.github.io/posts/evaluate-gemm-on-epyc/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-08-30T19:32:14-07:00" />
+<meta property="article:modified_time" content="2023-08-30T19:32:14-07:00" />
+
+
+
+    
+      <base href="https://seanzw.github.io/posts/evaluate-gemm-on-epyc/">
+    
+    <title>
+  Benchmarking GEMM on Modern CPU · Zhengrong Wang
+</title>
+
+    
+      <link rel="canonical" href="https://seanzw.github.io/posts/evaluate-gemm-on-epyc/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://seanzw.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://seanzw.github.io/academicons/css/academicons.css">
+    
+
+    <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.120.4">
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <link rel="stylesheet" href="https://seanzw.github.io/academicons/css/academicons.css">
+
+<nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://seanzw.github.io">
+      Zhengrong Wang
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/projects/">Projects</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/publications/">Publications</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Benchmarking GEMM on Modern CPU</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2023-08-30T19:32:14-07:00'>
+                August 30, 2023
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              2 minutes read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        <p>Recently I got interested to understand what&rsquo;s
+the actual performance of GEMM on modern CPUs.
+We all understand that GEMM is the backbone for
+many critical applications and can never emphasize
+enough how important to optimize it. That being
+said, I never had a good first-hand experience
+on benchmarking GEMM on modern CPUs, and here I am.</p>
+<p>We know that Intel has the famous MKL library that
+is mainly optimized for Intel&rsquo;s CPU (of course), and
+there are open-sourced third party library such as
+OpenBLAS (come with <code>numpy</code> if you install using
+<code>pip</code>). However, what&rsquo;s our choice for AMD architectures?
+It turns out they also have their own optimized
+library &ndash; AOCL (AMD Optmized CPU Library). And
+even better, AOCL is open-sourced (unlike MKL).
+Let&rsquo;s start our journey now.</p>
+<h2 id="set-up-aocl">Set up AOCL</h2>
+<p>First we download the AOCL master installer from
+their website, and decompress it. Then we simply
+install it somewhere:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tar xvf aocl.xxx
+</span></span><span style="display:flex;"><span>cd aocl.xxx
+</span></span><span style="display:flex;"><span>./install.sh -t /opt/aocl
+</span></span></code></pre></div><h2 id="benchmark-gemm">Benchmark GEMM</h2>
+<p>After install AOCL, it&rsquo;s very simple to write
+a gemm kernel and measure the performance.
+Since I am intersted in the maximal performance,
+I will run it many times and only take the best
+performance. So here is the source code for
+benchmarking a GEMM</p>
+<h2 id="build-blis">Build BLIS</h2>
+<p>Sometimes you may want to build blis manually.
+For example, to get rid of dynamic dispatching
+and simulate it in gem5. Here are the simple
+steps to build and link blis manually.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone git@github.com:amd/blis.git
+</span></span><span style="display:flex;"><span>cd blis
+</span></span><span style="display:flex;"><span>./configure --enable-cblas --enable-threading<span style="color:#f92672">=</span>openmp --prefix<span style="color:#f92672">=</span>/usr/local zen2
+</span></span><span style="display:flex;"><span>make install
+</span></span></code></pre></div><p>Replace <code>zen2</code> with other architectures or <code>auto</code>
+to enable dynamic dispatching at runtime. Remove
+<code>--enable-threading</code> to build a single thread
+version. The following command should build the
+kernel and link it with BLIS.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc gemm.c -O3 -I/usr/local/include/blis -lblis-mt -lm -fopenmp -o gemm.exe
+</span></span></code></pre></div>
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>Enjoy it!</p>
+    
+     © 2023
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137273352-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+
+</html>
