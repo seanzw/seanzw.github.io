@@ -9,20 +9,24 @@
     <meta name="description" content="Zhengrong Wang&#39;s personal website">
     <meta name="keywords" content="Ph.D. Student;Blog.">
 
-    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="GEM5 O3 CPU Backend"/>
-<meta name="twitter:description" content="This is my note on reading GEM5&rsquo;s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
+    
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="GEM5 O3 CPU Backend">
+  <meta name="twitter:description" content="This is my note on reading GEM5’s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
 Hopefully this could help more people. I assume you are already familiar with GEM5.
-Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ."/>
+Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ.">
 
-    <meta property="og:title" content="GEM5 O3 CPU Backend" />
-<meta property="og:description" content="This is my note on reading GEM5&rsquo;s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
+    <meta property="og:url" content="https://seanzw.github.io/posts/gem5-o3-backend/">
+  <meta property="og:site_name" content="Zhengrong Wang">
+  <meta property="og:title" content="GEM5 O3 CPU Backend">
+  <meta property="og:description" content="This is my note on reading GEM5’s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
 Hopefully this could help more people. I assume you are already familiar with GEM5.
-Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://seanzw.github.io/posts/gem5-o3-backend/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-07-03T12:14:04-07:00" />
-<meta property="article:modified_time" content="2020-07-03T12:14:04-07:00" />
-
+Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2020-07-03T12:14:04-07:00">
+    <meta property="article:modified_time" content="2020-07-03T12:14:04-07:00">
 
 
     
@@ -57,7 +61,7 @@ Compute Instructions Compute instructions are simpler as they do not access memo
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.122.0">
+    <meta name="generator" content="Hugo 0.126.0">
   </head>
 
   <body class=" ">
@@ -66,7 +70,7 @@ Compute Instructions Compute instructions are simpler as they do not access memo
 
 <nav class="navigation">
   <section class="container">
-    <a class="navigation-title" href="https://seanzw.github.io">
+    <a class="navigation-title" href="https://seanzw.github.io/">
       Zhengrong Wang
     </a>
     <input type="checkbox" id="menu-toggle" />
@@ -326,18 +330,13 @@ squash.</p>
     </main>
 
     
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-137273352-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+  
+    
+      
+    
+  
+
+
 
   </body>
 

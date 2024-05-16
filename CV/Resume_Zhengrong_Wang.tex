@@ -1,0 +1,519 @@
+\documentclass[a4paper]{article}
+\usepackage{tikz}
+\usepackage{palatino}
+\usepackage{fullpage}
+% \usepackage{CJK}
+\usepackage{geometry}
+\usepackage[colorlinks = false,
+            linkcolor = red,
+            ]{hyperref}
+\usepackage[normalem]{ulem}
+
+% set margins
+\leftmargin=0.25in
+\oddsidemargin=0.25in
+\textwidth=6.0in
+\topmargin=-0.25in
+\textheight=10in
+
+\raggedright
+
+\def\justifying{%
+  \rightskip=0pt
+  \spaceskip=0pt
+  \xspaceskip=0pt
+  \relax
+}
+
+\newcommand{\ExternalLink}{%
+    \tikz[x=1.2ex, y=1.2ex, baseline=-0.05ex]{% 
+        \begin{scope}[x=1ex, y=1ex]
+            \clip (-0.1,-0.1) 
+                --++ (-0, 1.2) 
+                --++ (0.6, 0) 
+                --++ (0, -0.6) 
+                --++ (0.6, 0) 
+                --++ (0, -1);
+            \path[draw, 
+                line width = 0.5, 
+                rounded corners=0.5] 
+                (0,0) rectangle (1,1);
+        \end{scope}
+        \path[draw, line width = 0.5] (0.5, 0.5) 
+            -- (1, 1);
+        \path[draw, line width = 0.5] (0.6, 1) 
+            -- (1, 1) -- (1, 0.6);
+        }
+    }
+
+\thispagestyle{empty}
+
+\newenvironment{changemargin}[2]{%
+  \begin{list}{}{%
+    \setlength{\topsep}{0pt}%
+    \setlength{\leftmargin}{#1}%
+    \setlength{\rightmargin}{#2}%
+    \setlength{\listparindent}{\parindent}%
+    \setlength{\itemindent}{\parindent}%
+    \setlength{\parsep}{\parskip}%
+  }%
+  \item[]}{\end{list}
+}
+
+\newcommand{\lineover}{
+	\begin{changemargin}{-0.05in}{-0.05in}
+		\vspace*{-8pt}
+		\hrulefill \\
+		\vspace*{-2pt}
+	\end{changemargin}
+}
+
+\newcommand{\header}[1]{
+	\begin{changemargin}{-0.5in}{-0.5in}
+		\scshape{\large \textbf{#1}}\\
+  	\lineover
+	\end{changemargin}
+}
+
+\newcommand{\thesis}[1]{
+	\small\emph{#1}\normalsize
+}
+
+\newcommand{\contact}[4]{
+	\begin{changemargin}{-0.5in}{-0.5in}
+		\begin{center}
+			{\LARGE \scshape \textbf{#1}}\\ \smallskip
+			404 Westwood Plaza, EVI 468 – 90095, Los Angeles, CA, USA\\ \smallskip
+			{\href{#2}{#2}} ~ \smallskip 
+			{\href{#3}{#3}} ~
+			{\href{#4}{Google Scholar}}\smallskip
+			% {\href{#6}{#6}}\smallskip
+		\end{center}
+	\end{changemargin}
+}
+
+\newenvironment{body} {
+	\vspace*{-16pt}
+	\begin{changemargin}{-0.5in}{-0.5in}
+  }	
+	{\end{changemargin}
+}	
+
+\newcommand{\school}[4]{
+	\textbf{#1} \hfill \emph{#2\\}
+	#3\\ 
+	#4\\
+}
+
+\begin{document}
+\contact{Zhengrong Wang}{seanzw@ucla.edu}{https://seanzw.github.io}{https://scholar.google.com/citations?user=h\_GwGfQAAAAJ\&hl=en}
+
+% % Bio
+% \header{Bio}
+
+% \begin{body}
+% 	\vspace{14pt}
+% 	\justifying
+%     \setlength{\parindent}{20pt}%
+	
+% 	% \indent
+
+% 	Computer architecture, cache, microarchitecture, network-on-chip, CPU, GPU,
+% 	compiler, simulator, C/C++/Python.
+
+% \end{body}
+
+% \smallskip
+% \smallskip
+
+% Education
+\header{Education}
+
+\begin{body}
+	\vspace{14pt}
+
+% ------
+	\textbf{University of California, Los Angeles}, \emph{Department of Computer Science} \hfill Los Angeles, USA \\
+Ph.D. in Computer Science, Advisor: Tony Nowatzki \hfill \emph{Aug. 2018 - Nov. 2023}{} \\
+\thesis{Dissertation: General, Flexible and Unified Near-Data Computing} \\
+
+\vspace{6pt}
+
+% -----
+	\textbf{University of California, Los Angeles}, \emph{Department of Computer Science} \hfill Los Angeles, USA \\
+Master of Science in Computer Science \hfill \emph{Sep. 2016 - Jul. 2018}{} \\
+\thesis{Thesis: An LLVM-IR Datagraph-Based Simulator for Flexible Design Space Exploration over Accelerator Architectures} \\
+
+\vspace{6pt}
+
+% -----
+	\textbf{Tsinghua University}, \emph{Department of Electronic Engineering} \hfill Beijing, China \\
+Bachlor of Engineering in Electronic Engineering, GPA: 91/100 \hfill \emph{Aug. 2012 - Jul. 2016}{} \\
+\thesis{Thesis: Optimizing Convolutional Neural Network on FPGA under Heterogeneous Computing Framework with OpenCL} \\
+% Rank: 30/241\\
+\vspace{6pt}
+
+% % -----
+% 	\textbf{ETH Z\"urich}, \emph{Department of Information Technology} \hfill Z\"urich, Switzerland \\
+% 	Exchange Student, International Academic Program, GPA: 5.50/ 6.00 \hfill \emph{Sept. 2014 - Feb. 2015}{} \\
+
+\end{body}
+
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Skills
+\header{Professional Skills}
+
+\begin{body}
+	\vspace{14pt}
+% -----
+	Mathematic: Familiar with calculus, linear algebra, probability theory, discrete mathematics, algorithms.\\
+	\smallskip
+% -----
+  Research Areas: Computer architecture, compiler, cache, microarchitecture, network-on-chip, CPU, GPU.\\
+	\smallskip
+% -----
+	Programming: Skilled at C/C++, Python, assembly, LLVM IR.\\
+	\smallskip
+
+\end{body}
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\header{Professional Experiences}
+
+\begin{body}
+	\vspace{14pt}
+	\textbf{Nvidia Research} \hfill \emph{Jun. 2022 - Sep. 2022} \\
+	Research Scientist, Mentor: Neal Crago, Manager: Steve Keckler
+	\begin{itemize}
+	\itemsep 0pt
+	\item Examine memory bottleneck in GPU for key machine learning kernels.
+	\item Build a prototype of an enhanced tensor memory accelerator (TMA).
+	\item Evaluted with state-of-the-art point cloud applications.
+	\end{itemize}
+	\smallskip
+
+\end{body}
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Projects
+\header{Open Source Projects \& Infrastructures}
+
+\begin{body}
+	\vspace{14pt}
+
+% -----
+	\textbf{Gem5-AVX} \href{https://github.com/seanzw/gem5-avx}{\ExternalLink} \hfill \emph{Jan. 2019 - Present}\\
+	First Author \& Maintainer \\
+	\begin{itemize}
+	\itemsep 0pt
+	\item Add AVX-512 support to gem5 simulator, extensively used in research.
+	\item Faithfully model the microarchiecture of vectorized instructions, including microops.
+	\item Detailed tutorials on how to support new instructions.
+	\end{itemize}
+	\smallskip
+
+% -----
+	\textbf{Stream-Specialized Near-Data Acceleration Framework} \href{https://github.com/PolyArch/gem-forge-framework}{\ExternalLink} \hfill \emph{Jan. 2018 - Present}\\
+	First Author \& Maintainer \\
+	\begin{itemize}
+	\itemsep 0pt
+	\item Full-stack implementation of stream-specialized near-data acceleration.
+	\item Include LLVM-based compiler transformation and end-to-end simulation in gem5.
+	\item Results published in ISCA' 19, HPCA' 21, HPCA '22, MICRO '23, ASPLOS '23.
+	\end{itemize}
+	\smallskip
+
+% -----
+
+\end{body}
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Skills
+\header{Publication}
+
+\begin{body}
+	\vspace{14pt}
+	% -----
+    Affinity Alloc: Taming \sout{Not-So} Near-Data Computing \\
+	\textbf{Zhengrong Wang}, Christopher Liu, Nathan Beckmann, Tony Nowatzki \\
+	\emph{IEEE/ACM International Symposium on Microarchitecture (MICRO)}, 2023, Toronto, Canada.\\
+	\vspace{6pt}
+	% -----
+	% -----
+    \underline{Inf}inity Stream: Portable and Programmer-Friendly \underline{I}n-/\underline{N}ear-Memory \underline{F}usion \\
+	\textbf{Zhengrong Wang}, Christopher Liu, Aman Arora, Lizy John, Tony Nowatzki \\
+	\emph{ACM International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS)}, 2023, Vancouver, Canada.\\
+	\vspace{6pt}
+	% -----
+    Infinity Stream: Enabling Transparent and Automated In-Memory Computing \\
+	\textbf{Zhengrong Wang}, Christopher Liu, Tony Nowatzki \\
+    \emph{IEEE Computer Architecture Letters, Vol. 21, No. 2, 2022}.\\
+	\vspace{6pt}
+	% -----
+	OverGen: Improving FPGA Usability through Domain-specific Overlay Generation\\
+	Sihao Liu, Jian Weng, Dylan Kupsh, Atefeh Sohrabizadeh, \textbf{Zhengrong Wang}, Licheng Guo, Jiuyang Liu, Maxim Zhulin, Lucheng Zhang, Jason Cong, Tony Nowatzki \\
+	\emph{IEEE/ACM International Symposium on Microarchitecture (MICRO)}, 2022, Chicago, USA.\\
+	\textbf{Best Paper Runner-Up} \\
+	\vspace{6pt}
+	% -----
+	Near-Stream Computing: General and Transparent Near-Cache Acceleration \\
+	\textbf{Zhengrong Wang}, Jian Weng, Sihao Liu, Tony Nowatzki \\
+	\emph{IEEE International Symposium on High-Performance Computer Architecture (HPCA)}, 2022, Seoul, South Koera.\\
+	\vspace{6pt}
+	% -----
+	Stream Floating: Enabling Proactive and Decentralized Cache Optimizations \\
+	\textbf{Zhengrong Wang}, Jian Weng, Jason Lowe-Power, Jayesh Gaur, Tony Nowatzki \\
+	\emph{IEEE International Symposium on High-Performance Computer Architecture (HPCA)}, 2021, Seoul, South Koera.\\
+	\textbf{Best Paper Runner-Up} \\
+	\vspace{6pt}
+	% -----
+	DSAGEN: Synthesizing Programmable Spatial Accelerators \\
+	Jian Weng, Sihao Liu, Vidushi Dadu, \textbf{Zhengrong Wang}, Preyas Shah, Tony Nowatzki \\
+	\emph{ACM International Symposium on Computer Architecture (ISCA)}, 2020, virtual.\\
+	\textbf{IEEE Micro Top Picks Honorable Mention}\\
+	\vspace{6pt}
+	% -----
+	A Hybrid Systolic-Dataflow Architecture for Inductive Matrix Algorithms\\
+	Jian Weng, Sihao Liu, \textbf{Zhengrong Wang}, Vidush Dadu, Tony Nowatzki \\
+	\emph{IEEE International Symposium on High-Performance Computer Architecture (HPCA)}, 2020, San Diego, USA.\\
+	\vspace{6pt}
+	% -----
+	Stream-Based Memory Access Specialization for General Purpose Processors\\
+	\textbf{Zhengrong Wang}, Tony Nowatzki \\
+	\emph{ACM International Symposium on Computer Architecture (ISCA)}, 2019, Phoenix, USA.\\
+	\vspace{6pt}
+	% -----
+	The Gem5 Simulator: Version 20.0+\\
+	Jason Lowe-Power, Abdul Mutaal Ahmad, Ayaz Akram, ..., \textbf{Zhengrong Wang}, et al. \\
+	\emph{arXiv:2007.03152v2}, 2020.\\
+	\vspace{6pt}
+	% -----
+	Optimizing Convolutional Neural Network on FPGA under Heterogeneous Computing Framework with OpenCL\\
+	\textbf{Zhengrong Wang}, Fei Qiao, Zhen Liu, Yuxiang Shan, Xunyi Zhou, Li Luo, Huazhong Yang \\
+	\emph{IEEE Region 10 Conference (TENCON)}, 2016, Singapore.\\
+\end{body}
+
+\smallskip
+\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Awards and Honors
+
+% \newpage
+\header{Awards and Honors}
+
+\begin{body}
+	\vspace{14pt}
+	% -----
+	Dissertation Year Fellowship, \emph{UCLA} \hfill{} \emph{June. 2023}\\
+	\smallskip
+	% -----
+	Best Paper Runner-Up (OverGen, in \emph{MICRO '22}), \emph{IEEE} \hfill{} \emph{Oct. 2022}\\
+	\smallskip
+	% -----
+	Best Paper Runner-Up (Stream Floating, in \emph{HPCA '21}), \emph{IEEE} \hfill{} \emph{Feb. 2021}\\
+	\smallskip
+	% -----
+	IEEE Micro Top Picks 2020 Honorable Mention (DSAGEN, in \emph{ISCA '20}), \emph{IEEE} \hfill{} \emph{Jan. 2021}\\
+	\smallskip
+	% -----
+	2021 Dongguan Entrepreneur Scholarship, \emph{Dongguan Entrepreneurs Federation} \hfill{} \emph{Nov. 2021}\\
+	\smallskip
+	% -----
+	Second-class Scholarship for Excellent Freshmen, \emph{Tsinghua University} \hfill{} \emph{Oct. 2012}\\
+	\smallskip
+	% -----
+	Wang Zhaosheng Scholarship for Excellent Student from Dongguan, \emph{Wang Zhaosheng Foundation} \hfill{} \emph{Oct. 2012}\\
+	% \smallskip
+	% % -----
+	% Second Prize in $30^{\mathrm{th}}$ Chinese National Physics Contest (Non-Physical Group A) \hfill{} \emph{Dec. 2013}\\
+	% \smallskip
+	% % -----
+	% Ranked No.5 in National Matriculation Test(Science), Guangdong Province (5/600,000) \hfill{} \emph{Jun. 2012}
+\end{body}
+
+\smallskip
+\smallskip
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \newpage
+% \header{Teaching}
+
+% \begin{body}
+% 	\vspace{14pt}
+% 	\textbf{CS33: Introduction to Computer Organization} \hfill \emph{Mar. 2022 - June. 2022} \\
+% 	Teaching Assistant w/ Prof. Glenn Reinman
+% 	\begin{itemize}
+% 	\itemsep 0pt
+% 	\item Lead two-hour discussion every week, lab grading.
+% 	\item Overall evaluation: 8/9.
+% 	\item ``Very knowledgeable, helpful, and encouraging. He ensured that I understood the content."
+% 	\end{itemize}
+% 	\smallskip
+
+% \end{body}
+% \smallskip
+% \smallskip
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \header{Research Mentoring}
+
+% \begin{body}
+% 	\vspace{14pt}
+% 	\textbf{Christopher Liu} \href{https://chrisliu.org/}{\ExternalLink} \hfill \emph{CS PhD Student, UCLA} \\
+% 	Develop the compiler support for Infinity Stream (Published in ASPLOS '23)	\hfill \emph{Dec. 2021 - Present} \\
+% 	\smallskip
+% 	\textbf{Nicholas Johnson} \hfill \emph{CS Undergraduate, UCLA} \\
+% 	Improve stream support for high-performance join. \hfill \emph{Jun. 2023 - Sep. 2023} \\
+% 	\smallskip
+% 	\textbf{Arteen Abrishami} \href{arteen1000.github.io}{\ExternalLink} \hfill \emph{CS Undergraduate, UCLA} \\
+% 	Explore near-data acceleration on chiplet architectures. \hfill \emph{Jan. 2023 - Now} \\
+% 	\smallskip
+% 	\textbf{Shyandeep Das} \hfill \emph{EE Master, UCLA} \\
+% 	Support reuse for near-stream computing. Now Graduate Research Architect at ARM. \hfill \emph{Jan. 2023 - Jun. 2023} \\
+
+% \end{body}
+% \smallskip
+% \smallskip
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \header{Community Services}
+
+% \begin{body}
+% 	\vspace{14pt}
+% 	\textbf{IEEE Transactions on Computers} Reviewer \hfill \emph{Jul. 2023} \\
+% 	\smallskip
+% 	\textbf{ACM Transactions on Architecture and Code Optimization} Reviewer \hfill \emph{Jul. 2023} \\
+% 	\smallskip
+% 	\textbf{IEEE Transactions on Cloud Computing} Reviewer \hfill \emph{Oct. 2023} \\
+% 	\smallskip
+% 	\textbf{ISCA '23 uArch Workshop} \hfill \emph{Jun. 2023} \\
+% 	Mentor for 4 talented undergraduate computer architects: \\
+% 	Shujuan Chen (UC Davis), Viansa Schmulbach (UC Berkeley), \\
+% 	Eden Alem (Washington University in St. Louis), and Evan Cheng (Stanford). \\
+% 	\smallskip
+% 	\textbf{HPCA '21} Student Reviewer \hfill \emph{Aug. 2020}\\
+
+% \end{body}
+% \smallskip
+% \smallskip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Projects
+% \header{Selected Projects \& Internships}
+
+% \begin{body}
+% 	\vspace{14pt}
+
+% 	Yart-cpp, yet another ray tracer in C++ \hfill \emph{Sep. 2015 - Mar. 2016}
+% 	\begin{itemize}
+% 	\itemsep 0pt
+% 	\item Implement direct lighting and bidirectional path tracing.
+% 	\item Lambertian, specular, refraction and Cook-Torrance BRDF are supported.
+% 	\item Use OC-Tree to accelerate complex mesh.
+% 	\item Repo: \href{https://github.com/seanzw/yart-cpp}{https://github.com/seanzw/yart-cpp}
+% 	\end{itemize}
+% 	\smallskip
+
+% % -----
+% % -----
+
+% 	Light C-Compiler in C\# \hfill \emph{Dec. 2015 - Mar. 2016}
+% 	\begin{itemize}
+% 	\itemsep 0pt
+% 	\item Support C99 standard and generate x86 assembly.
+% 	\item Handwritten regular expression, NFA scanner generator and parser combinator library.
+% 	\item Scanner generated by handwritten scanner generator.
+% 	\item Parser generated by handwritten parser combinator library.
+% 	\item Semantic analysis that checks types and symbols;
+% 	\item Code generation to x86 assembly on Windows (can be directly used by clang assembler)
+% 	\item Repo: \href{https://github.com/seanzw/lcc}{https://github.com/seanzw/lcc}
+% 	\end{itemize}
+% 	\smallskip
+
+% -----
+% -----
+
+	% OpenCL@FPGA (Undergraduate Thesis) \hfill \emph{Sep. 2015 - Jun. 2016}
+	% \begin{itemize}
+	% \itemsep 0pt
+	% \item Supervised by Assoc. Prof. Fei Qiao, Tsinghua University
+	% \item Use OpenCL to implement CNN on Xilinx Alpha Data FPGA, and accelerate with pipeline.
+	% \item Paper on TENCON 16: Optimizing Convolutional Neural Network on FPGA under Heterogeneous Computing Framework with OpenCL
+	% \end{itemize}
+	% \smallskip
+
+% \end{body}
+% \smallskip
+% \smallskip
+
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % Major Courses
+% % \header{Main Courses}
+
+% % \begin{body}
+% % 	\vspace{14pt}
+
+% % 	\begin{itemize} \itemsep -0pt
+% % 		\item Mining Massive Datasets (Stanford CS246, Coursera)
+% % 		\item Computer Program Design -- 98, 97 (2012 Fall \& 2013 Spring)
+% % 		\item Data Structure, Numerical Analysis and Algorithms -- 89 (2013 Fall)
+% % 		\item Probability and Stochastic Processes(1) -- 100 (2014 Spring)
+% % 		\item Probability and Stochastic Processes(2) -- A (UW-Madison ECE 730, 2014 Fall)
+% % 	\end{itemize}
+
+% % \end{body}
+
+% % \smallskip
+% % \smallskip
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % Experience
+% \header{Experience}
+
+% \begin{body}
+% 	\vspace{14pt}
+% 	% -----
+% 	\textbf{Courses in CS}
+% 	\begin{itemize}
+% 	\itemsep 0pt
+% 	\item Compilers by Alex Aiken, Stanford University
+% 	\item Operating System Engineering, MIT
+% 	\item Programming Languages by Dan Grossman, University of Washington
+% 	\item Machine Learning by Andrew Ng, Stanford University
+% 	\item Algorithms Part I \& II by Robert Sedgewick, Princeton University
+% 	\item Introduction to Computer Science and Programming, MIT
+% 	\item Introduction to Probability, MIT
+% 	\item Advanced Computer Graphics, Tsinghua University
+% 	\item Computer Networks, Tsinghua University
+% 	\item Software Engineering, Tsinghua University
+% 	\item Computer Graphics (5.25/6), ETH Zurich
+% 	\item Computer Vision (5.5/6), ETH Zurich
+% 	\end{itemize}
+% 	\smallskip
+
+% 	% -----
+% 	Children Education Program Volunteer, \emph{Dream a Dream, Bangalore, India} \hfill \emph{Jul. 2013 - Sept. 2013}\\
+% 	\smallskip
+
+% \end{body}
+
+\smallskip
+\smallskip
+
+
+
+\end{document}

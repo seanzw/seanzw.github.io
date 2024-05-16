@@ -4,7 +4,7 @@
     <title>Zhengrong Wang</title>
     <link>https://seanzw.github.io/</link>
     <description>Recent content on Zhengrong Wang</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Wed, 30 Aug 2023 19:32:14 -0700</lastBuildDate>
     <atom:link href="https://seanzw.github.io/index.xml" rel="self" type="application/rss+xml" />
@@ -62,7 +62,7 @@
       <link>https://seanzw.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://seanzw.github.io/about/</guid>
-      <description>About Me I am a postdoc at UCLA, working with Prof. Tony Nowatzki. I am generally interested in developing high performance computer architecture for both general and domain specific computing with compiler support. I am also looking into how to accurately and efficiently model and simulate current architectures.&#xA;Prior joining UCLA, I received Bachelor of Engineering from Department of Electronic Enginerring, Tsinghua University. I also studied at ETH Zürich for half a year as a exhange student.</description>
+      <description>About Me I am a computer architect researcher. I am generally interested in developing high performance computer architecture for both general and domain specific computing with compiler support. I am also looking into how to accurately and efficiently model and simulate current architectures.&#xA;I was a postdoc at UCLA, working with Prof. Tony Nowatzki.&#xA;Prior joining UCLA, I received Bachelor of Engineering from Department of Electronic Enginerring, Tsinghua University. I also studied at ETH Zürich for half a year as a exhange student.</description>
     </item>
     <item>
       <title></title>
