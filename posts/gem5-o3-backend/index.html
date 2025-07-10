@@ -14,14 +14,14 @@
   <meta name="twitter:title" content="GEM5 O3 CPU Backend">
   <meta name="twitter:description" content="This is my note on reading GEM5’s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
 Hopefully this could help more people. I assume you are already familiar with GEM5.
-Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ.">
+Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ. It is actually pretty straightforward and here is a high-level description. I first show the calling chain (only important functions), and then describe its functionality.">
 
     <meta property="og:url" content="https://seanzw.github.io/posts/gem5-o3-backend/">
   <meta property="og:site_name" content="Zhengrong Wang">
   <meta property="og:title" content="GEM5 O3 CPU Backend">
   <meta property="og:description" content="This is my note on reading GEM5’s O3 cpu backend. I could not find a good document online, and the code is a little bit entangled and tricky to understand. So here I would extract the key function chain to show how an instruction is handled by the backend.
 Hopefully this could help more people. I assume you are already familiar with GEM5.
-Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ.">
+Compute Instructions Compute instructions are simpler as they do not access memory and not interact with the LSQ. It is actually pretty straightforward and here is a high-level description. I first show the calling chain (only important functions), and then describe its functionality.">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -47,7 +47,7 @@ Compute Instructions Compute instructions are simpler as they do not access memo
     
       
       
-      <link rel="stylesheet" href="https://seanzw.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://seanzw.github.io/css/coder.min.1929b0dbd7e1f08e81f4b7e4cecd8b1962df4cefc41c5cf7893d2eaa2b303713.css" integrity="sha256-GSmw29fh8I6B9Lfkzs2LGWLfTO/EHFz3iT0uqiswNxM=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -61,7 +61,7 @@ Compute Instructions Compute instructions are simpler as they do not access memo
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.126.1">
+    <meta name="generator" content="Hugo 0.148.0">
   </head>
 
   <body class=" ">
@@ -322,7 +322,7 @@ squash.</p>
     
       <p>Enjoy it!</p>
     
-     © 2024
+     © 2025
     
   </section>
 </footer>
@@ -330,13 +330,6 @@ squash.</p>
     </main>
 
     
-  
-    
-      
-    
-  
-
-
 
   </body>
 

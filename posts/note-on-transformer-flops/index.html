@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Zhengrong Wang">
+    <meta name="description" content="Zhengrong Wang&#39;s personal website">
+    <meta name="keywords" content="Researcher;Blog.">
+
+    
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Understanding Transformer as A Computer Architect">
+  <meta name="twitter:description" content="Notes on transformers">
+
+    <meta property="og:url" content="https://seanzw.github.io/posts/note-on-transformer-flops/">
+  <meta property="og:site_name" content="Zhengrong Wang">
+  <meta property="og:title" content="Understanding Transformer as A Computer Architect">
+  <meta property="og:description" content="Notes on transformers">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-03-02T22:42:20+08:00">
+    <meta property="article:modified_time" content="2025-03-02T22:42:20+08:00">
+
+
+    
+      <base href="https://seanzw.github.io/posts/note-on-transformer-flops/">
+    
+    <title>
+  Understanding Transformer as A Computer Architect · Zhengrong Wang
+</title>
+
+    
+      <link rel="canonical" href="https://seanzw.github.io/posts/note-on-transformer-flops/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://seanzw.github.io/css/coder.min.1929b0dbd7e1f08e81f4b7e4cecd8b1962df4cefc41c5cf7893d2eaa2b303713.css" integrity="sha256-GSmw29fh8I6B9Lfkzs2LGWLfTO/EHFz3iT0uqiswNxM=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://seanzw.github.io/academicons/css/academicons.css">
+    
+
+    <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.148.0">
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <link rel="stylesheet" href="https://seanzw.github.io/academicons/css/academicons.css">
+
+<nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://seanzw.github.io/">
+      Zhengrong Wang
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/projects/">Projects</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/publications/">Publications</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Understanding Transformer as A Computer Architect</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2025-03-02T22:42:20&#43;08:00'>
+                March 2, 2025
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              10 minutes read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        <h1 id="understanding-transformer-decoder">Understanding Transformer Decoder</h1>
+<p>I have been extremly late to the party of transformer,
+and here is my note on understanding the flops, data
+movements, compute intensity, etc.</p>
+<p><strong>Note: For simplicity, I omit the data type for now.</strong></p>
+<h2 id="decoder-only-transformer">Decoder-Only Transformer</h2>
+<p>Let&rsquo;s start with something simple: a decoder-only transformer.
+Also, we skip the initial step to map token into the dictionary
+space with positionary encoding. If we look at a single layer
+of the decoder architecture, it contains three parameters:</p>
+<ul>
+<li>Batch size $B$</li>
+<li>Sequence length $S$</li>
+<li>Hidden dimension $D$</li>
+</ul>
+<p>For the forward pass, it contains the following stages:</p>
+<h3 id="scaled-dot-product-attention">Scaled Dot-Product Attention</h3>
+<p>First, we compute the QKV matrix from linear transformation
+of the input:</p>
+<ul>
+<li>Input (from positionary encoding or previous layer): $[BS, D]$</li>
+<li>Weight: Each Q/K/V matrix requires $[D, D]$ weight</li>
+<li>Output: Q/K/V matrix each of size $[BS, D]$</li>
+<li>Flop (three matrix Q/K/V): $3\times2BSDD=6BSD^2$</li>
+<li>Data Read: $(BSD + 3D^2)$</li>
+<li>Data Write: $3BSD$</li>
+</ul>
+<p>Then we apply the attention:</p>
+<p>$\mathrm{Attention}(Q,K,V)=\mathrm{softmax}(\frac{QK^{T}}{\sqrt{D}})V$</p>
+<p>This involves two matrix multiplication: $QK^T$ and
+finally multiply with $V$.</p>
+<p>For $QK^T$:</p>
+<ul>
+<li>Input: $Q=[S, D]$, $K^T=[D, S]$</li>
+<li>Output: $A=[S, S]$</li>
+<li>Flop (notice the batch size $B$): $2BS^2D$</li>
+<li>Data Read: $2BSD$</li>
+<li>Data Write: $BS^2$</li>
+</ul>
+<p>For multiplication with $V$:</p>
+<ul>
+<li>Input: $A=[S, S]$, $V=[S, D]$</li>
+<li>Output: $O=[S, D]$</li>
+<li>Flop (notice the batch size $B$): $2BS^2D$</li>
+<li>Data Read: $(BS^2 + BSD)$</li>
+<li>Data Write: $BSD$</li>
+</ul>
+<h3 id="ffn">FFN</h3>
+<p>This usually first uses $W_1$ to project $x$ to some higher
+dimensions $D_{up}$, applies an activation function, then projects
+down to the original hidden space.</p>
+<p>$\mathrm{FFN}(x) = \mathrm{Activation}(xW_1+b_1)W_2+b_2$</p>
+<p>The activation function can be simple as <code>ReLU</code>, or more complicated
+ones involving more matrix multiplication (see below for the case
+study of Llama). Here we assume the activation function does not
+introduce more tensor operation.</p>
+<p>For up projection:</p>
+<ul>
+<li>Input: $[S, D]$, $[D, D_{up}]$</li>
+<li>Output: $A=[S, D_{up}]$</li>
+<li>Flop (notice the batch size $B$): $2BSDD_{up}$</li>
+<li>Data Read: $(BSD + DD_{up})$</li>
+<li>Data Write: $BSD_{up}$</li>
+</ul>
+<p>For down projection:</p>
+<ul>
+<li>Input: $[S, D_{up}]$, $[D_{up}, D]$</li>
+<li>Output: $A=[S, D]$</li>
+<li>Flop (notice the batch size $B$): $2BSDD_{up}$</li>
+<li>Data Read: $(BSD_{up} + DD_{up})$</li>
+<li>Data Write: $BSD$</li>
+</ul>
+<p><strong>Note: These stages make the backbone of transformer.</strong></p>
+<h3 id="multi-head-attention-mha">Multi-Head Attention (MHA)</h3>
+<p>Now we move on to some variants.
+We can also replace the scaled dot-product attention with
+multi-head attention, which essentially requires breaking
+the attention into $N$ heads, each with lower dimensions $D_h$
+and with $D=ND_h$:</p>
+<p>$\mathrm{MultiHead}(Q,K,V)=\mathrm{Concat}(head_i)W_o$</p>
+<p>Where each head is an output of the attention:</p>
+<p>$head_i=\mathrm{Attention}(QW_{Qi}, KW_{Ki}, VW_{Vi})$</p>
+<p>Here each $W_i$ is learned parameters. Since $Q$, $K$, $V$
+are also learned linear transformation from the embedding,
+we can immediately fuse those two weight together:</p>
+<p>$Q_i=QW_{Qi}=Input\times W_Q\times W_{Qi}=Input\times W&rsquo;_{Qi}$</p>
+<p>Hence, the <code>QKV</code> generation stays the same.</p>
+<p>Therefore, for all heads (reusing prior attention results):</p>
+<ul>
+<li>Input: $Q_i=[S, D_h]$, $K_i^T=[D_h, S]$</li>
+<li>Output: $A_i=[S, S]$</li>
+<li>Flop (notice the batch size $B$ and heads num $N$): $4BNS^2D_h=4BS^2D$</li>
+</ul>
+<p><strong>Note: breaking the attention into multiple heads does not save
+computation, but simply allows each head focus on different
+representation subspace.</strong></p>
+<p>The final output weight:</p>
+<ul>
+<li>Input: $[S, D]$, $[D, D]$</li>
+<li>Output: $O=[S, D]$</li>
+<li>Flop (notice the batch size $B$): $2BSD^2$</li>
+</ul>
+<h3 id="group-query-attention-gqa">Group Query Attention (GQA)</h3>
+<p>In order to save some storage and computation, group query attention
+(GQA) groups attention heads into $G$ groups. Heads within the same
+group share the key and value. Therefore, it saves the memory space
+for the K-V cache (see below) and the computation to generate the
+key/value.</p>
+<p>The Q matrix is generated the same as in MHA. However, there is only
+$G$ keys and values:</p>
+<ul>
+<li>Compute Flop: Q: $2BS(ND_h)^2$, K/V: $4BSNGD_h^2$</li>
+</ul>
+<p>The original K/V is of size $[B, S, G, D_h]$, and we will repeat by $N/G$
+times and make it the same as $[B, S, N, D_h]$ for normal MHA.</p>
+<p><strong>Note: GQA saves computation on generating key and value, and memory
+space on caching key and value.</strong></p>
+<h3 id="swish-glu-ffn">Swish-GLU FFN</h3>
+<p>Another commonly used variant of FFN is using Swish-GLU for the
+activation function. The overall formula is:</p>
+<p>$\mathrm{FFN}(x) = \mathrm{Swish\text-GLU}(xW_1+b_1)W_2+b_2$</p>
+<p>$\mathrm{Swish\text-GLU}(x)=(xW_3+b_1)\cdot\sigma(\beta(xW_4+b_4))$</p>
+<p>Usually we have $\beta=1$ and all bias $b_i$ to zero. Then the formula
+can be simplified as:</p>
+<p>$\mathrm{FFN}(x) = ((xW_1W_3)\cdot\sigma(xW_1W_4))W_2$</p>
+<p>Clearly this can be simplified into three weights:</p>
+<ul>
+<li>$W&rsquo;<em>1=W_1W_3=[D, D</em>{up}]$</li>
+<li>$W&rsquo;<em>2=W_1W_4=[D, D</em>{up}]$</li>
+<li>$W&rsquo;<em>3=W_2=[D</em>{up}, D]$</li>
+</ul>
+<h3 id="rotary-position-embedding-rope">Rotary Position Embedding (RoPE)</h3>
+<p>So far all the computation is independent to the position of the token
+in the sequence, since QKV are just linear projection of the embedding.
+However, the relative location between two tokens are important for
+reasoning, e.g. &ldquo;do I&rdquo; is different than &ldquo;I do&rdquo;. Rotary Position Embedding
+(RoPE) is used to add back the position information to the embedding.
+The formula is quite simple:</p>
+<p>$\mathrm{RoPE}(pos, j)=e^{i \frac{pos}{\lambda}},\lambda=\theta^{j/D_h}$</p>
+<p>Quote from the classic <a href="https://arxiv.org/pdf/1706.03762">Attention is all you need</a>:</p>
+<blockquote>
+<p>That is, each dimension of the positional encoding corresponds to a
+sinusoid. The wavelengths form a geometric progression from 2π to 10000 2π.
+We chose this function because we hypothesized it would allow the model
+to easily learn to attend by relative positions, since for any fixed offset
+k, PE(pos+k) can be represented as a linear function of PE(pos).</p></blockquote>
+<p>When transforming, each attention head&rsquo;s key and query is grouped by
+2 to form a complex number, and then rotate by <code>RoPE</code>.</p>
+<p><strong>Note: RoPE does not invole matrix multiplication nor parameters.</strong></p>
+<h2 id="case-study-on-llama3-70b">Case Study on Llama3-70B</h2>
+<p>We have almost everything together to understand the architecture
+of Llama3-70B. Here is a handy simple implmenation
+<a href="https://github.com/meta-llama/llama3/blob/main/llama/model.py">llama3</a>
+and the parameters here:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;architectures&#34;</span>: [
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;LlamaForCausalLM&#34;</span>
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;attention_bias&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;attention_dropout&#34;</span>: <span style="color:#ae81ff">0.0</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;bos_token_id&#34;</span>: <span style="color:#ae81ff">128000</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;eos_token_id&#34;</span>: <span style="color:#ae81ff">128001</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;hidden_act&#34;</span>: <span style="color:#e6db74">&#34;silu&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;hidden_size&#34;</span>: <span style="color:#ae81ff">8192</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;initializer_range&#34;</span>: <span style="color:#ae81ff">0.02</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;intermediate_size&#34;</span>: <span style="color:#ae81ff">28672</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;max_position_embeddings&#34;</span>: <span style="color:#ae81ff">8192</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;model_type&#34;</span>: <span style="color:#e6db74">&#34;llama&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;num_attention_heads&#34;</span>: <span style="color:#ae81ff">64</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;num_hidden_layers&#34;</span>: <span style="color:#ae81ff">80</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;num_key_value_heads&#34;</span>: <span style="color:#ae81ff">8</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;pretraining_tp&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;rms_norm_eps&#34;</span>: <span style="color:#ae81ff">1e-05</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;rope_scaling&#34;</span>: <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;rope_theta&#34;</span>: <span style="color:#ae81ff">500000.0</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;tie_word_embeddings&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;torch_dtype&#34;</span>: <span style="color:#e6db74">&#34;bfloat16&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;transformers_version&#34;</span>: <span style="color:#e6db74">&#34;4.40.0.dev0&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;use_cache&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;vocab_size&#34;</span>: <span style="color:#ae81ff">128256</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>First of all, llama3 uses GQA and Swish-GLU FFN.
+Let&rsquo;s see if we can understand these numbers:</p>
+<ul>
+<li>Hidden dimension $D=8192$</li>
+<li>Head number $N=64$ (which is <code>num_attention_heads</code>)</li>
+<li>Group number $G=8$ (which is <code>num_key_value_heads</code>)</li>
+<li>Head dimension $D_h=D/N=128$</li>
+<li>FFN up dimension $D_{up}=4D=32768$</li>
+<li>Hidden layers $L=80$</li>
+</ul>
+<h4 id="model-size-weights">Model Size (Weights)</h4>
+<table>
+  <thead>
+      <tr>
+          <th>Stage</th>
+          <th>Weight Dim</th>
+          <th>Num Elem</th>
+          <th>Tensor Flop</th>
+          <th>Tensor Flop</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Generate Q</td>
+          <td>$[D, D_hN]$</td>
+          <td>64Mi</td>
+          <td>$2SD^2$</td>
+          <td>1T</td>
+      </tr>
+      <tr>
+          <td>Generate K</td>
+          <td>$[D, D_hG]$</td>
+          <td>8Mi</td>
+          <td>$2SDD_hG$</td>
+          <td>128M</td>
+      </tr>
+      <tr>
+          <td>Generate V</td>
+          <td>$[D, D_hG]$</td>
+          <td>8Mi</td>
+          <td>$2SDD_hG$</td>
+          <td>128M</td>
+      </tr>
+      <tr>
+          <td>Attention Out</td>
+          <td>$[D, D]$</td>
+          <td>64Mi</td>
+          <td>$2SD^2$</td>
+          <td>1T</td>
+      </tr>
+      <tr>
+          <td>Swish-GLU FFN $W_1$</td>
+          <td>$[D, D_{up}]$</td>
+          <td>256Mi</td>
+          <td>$2SDD_{up}$</td>
+          <td>4T</td>
+      </tr>
+      <tr>
+          <td>Swish-GLU FFN $W_2$</td>
+          <td>$[D, D_{up}]$</td>
+          <td>256Mi</td>
+          <td>$2SDD_{up}$</td>
+          <td>4T</td>
+      </tr>
+      <tr>
+          <td>Swish-GLU FFN $W_3$</td>
+          <td>$[D_{up}, D]$</td>
+          <td>256Mi</td>
+          <td>$2SDD_{up}$</td>
+          <td>4T</td>
+      </tr>
+      <tr>
+          <td>One Layer</td>
+          <td></td>
+          <td>912Mi</td>
+          <td></td>
+          <td>14.25T</td>
+      </tr>
+      <tr>
+          <td>All</td>
+          <td></td>
+          <td>72960Mi</td>
+          <td></td>
+          <td>1140T</td>
+      </tr>
+  </tbody>
+</table>
+<p>Since $72960Mi\approx 76\times 10^9=76B$, we now know
+why it is called <code>llama3-70B</code>.</p>
+<ul>
+<li><strong>Takeaway 1</strong>: The FFN is still the most compute-intensive part.</li>
+<li><strong>Takeaway 2</strong>: The model is so large that a single GPU does not come
+with sufficient memory to hold it.</li>
+<li><strong>Takeaway 3</strong>: A RTX 4090 comes with 512 tensor cores, each can
+perform 1024 FP Flop per cycle, and boost frequency 2.52GHz &ndash;
+peak compute throughput is 1.32PFlops &ndash; and it still takes
+about ~0.86s to finish all these computation. LLM is expensive!</li>
+</ul>
+<h4 id="to-summarize">To Summarize:</h4>
+<table>
+  <thead>
+      <tr>
+          <th>Stage</th>
+          <th>Matrix Flop</th>
+          <th>Read</th>
+          <th>Write</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>QKV</td>
+          <td>$6\times BS(ND)^2$</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Multi-Head Atten.</td>
+          <td>$2\times BSND(2S+ND)$</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>FFN</td>
+          <td>$4\times BSN^2DD_{up}$</td>
+          <td></td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<p>For example: when $B=4,S=4096,N=1,D=128, D_{up}=512$, we have:</p>
+<ul>
+<li>QKV: 1.5 GFlop</li>
+<li>Multi-Head Attention: 32.5 GFlop</li>
+<li>FFN: 4 GFlop</li>
+</ul>
+<p>Total we have 38 GFlop, if we have a 1.7 PFlops device, the
+tensor core busy time would be $38/1.7=22.3\mathrm{us}$</p>
+<h2 id="k-v-cache-and-inference">K-V Cache and Inference</h2>
+<p>As we have seen, during inference, we compute each token&rsquo;s
+query with all prior tokens&rsquo; key for a score, and then use that score
+to accumulate all prior tokens&rsquo; value. The inference can be further
+broken into two steps:</p>
+<ul>
+<li>Prefill: This part feeds the entire user prompt to the model.
+This sets up the context for the model, and is why there is some
+waiting time before ehe first word popping on your screen.</li>
+<li>Decode: Once the context is set up, self-regressive decoding
+starts &ndash; each step the model generates one token, and appends
+that token to the context (extending the sequence length by 1).</li>
+</ul>
+<p>As you can imagine, during decode step, the key/value of all prior
+tokens do not change, and if we can save it in a cache (hence the
+name K-V cache), we could save the computation on computing $K$ and $V$.
+Hence, since $S=1$ in decode step, it is GEMV and therefore usually
+memory bounded on streaming the weight and key/values.</p>
+<h2 id="deepseek-v3">DeepSeek-V3</h2>
+<p>DeepSeek-V3 is phenomenal these days, and here are my notes
+trying to understanding these topics:</p>
+<ul>
+<li>Multi-Head Latent Attention (MLA)</li>
+<li>Mixture-of-Experts (MoE)</li>
+</ul>
+<h3 id="multi-head-latent-attention-mla">Multi-Head Latent Attention (MLA)</h3>
+<h4 id="k-v-cache-is-huge">K-V Cache is Huge</h4>
+<p>The K-V cache significantly reduces the computation for attention,
+but at the cost of exploding storage of the context. For every context:</p>
+<p>$\mathrm{KVElem}(L,S,D)=2LSD$</p>
+<p>Obviously, this limits the number of concurrent users the system
+can support, as well as the context length. For example, the above llama3
+would take $2\times80\times8k\times8k\times2B=20\mathrm{GB}$ for one 8k context.
+For reference, a 4090 only has 24GB graphic memory.</p>
+<h4 id="compress-keyvalue">Compress Key/Value</h4>
+<p>To save the space on key-value cache, DeepSeek-V2 introduces multi-head
+latent attention (MLA). The idea is fairly simple &ndash; compress the key-value
+into some latent space with lower dimension and cache it.When computing,
+project it back for normal attention computation.</p>
+<p>Down-project:<br>
+$c^{KV}=W^{DKV}h$</p>
+<p>Up-project:<br>
+$k^C=[k^C_0,&hellip;,k^C_{N_C}]=W^{UK}c^{KV}$<br>
+$v^C=[v^C_0,&hellip;,v^C_{N_C}]=W^{UV}c^{KV}$</p>
+<p><strong>Note: The key and value are jointly compressed.</strong></p>
+<h4 id="compress-query">Compress Query</h4>
+<p>We can also do the same on the query $q$. This does not save us
+anything during inference since $q$ is not cached, but it does help
+save the space during training.</p>
+<p>$$
+c^{Q}=W^{DQ}h
+$$</p>
+<p>$$
+q^C=[q^C_0,&hellip;,q^C_{N_C}]=W^{UQ}c^{Q}
+$$</p>
+<h4 id="decoupled-rope">Decoupled RoPE</h4>
+<p>If you remember, we apply RoPE on $q$ and $k$ to encode the position
+information, and normally we save $k$ after we applied RoPE to the
+K-V cache. However, since we jointly compress $k$ and $v$ into $c^{KV}$,
+and $v$ is independent of the position, we can not encode the position
+information into $c^{KV}$. On the other hand, we definitely don&rsquo;t want
+to apply RoPE on $k^C$, as that&rsquo;s of complexity $BSD^2$ and a waste of
+computation.</p>
+<p>Therefore, the authors introduce decoupled RoPE &ndash; basically two sets
+of heads, one apply RoPE and the other don&rsquo;t (with superscript $R$
+for rotary and the above superscript $C$ for constant),
+then we simply concatenate $q=[q^C,q^R]$ and $k=[k^C,k^R]$ for attention.</p>
+<p>$$
+q^R=[q^R_0,&hellip;,q^R_{N_R}]=\mathrm{RoPE}(W^{QR}c^{Q})
+$$
+$$
+k^R=[k^R_0,&hellip;,k^R_{N_R}]=\mathrm{RoPE}(W^{KR}h)
+$$</p>
+<h4 id="put-everything-together">Put Everything Together</h4>
+<p>Below is the figure showing the overal MLA architecture. Note that only
+$c^{KV}$ and $k^R$ is cached. You can also find the implementation
+<a href="https://github.com/deepseek-ai/DeepSeek-V3/blob/main/inference/model.py">here</a>.</p>
+<div style="text-align: center;">
+  <img src="https://seanzw.github.io/img/transformer/deepseek-mla.png" alt="DeepSeek-V3 MLA Architecture" style="width: 70%;"/>
+</div>
+<p>Let&rsquo;s try to implement this in pytorch style code with detailed comment:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">MLA</span>(hidden_state):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Compute the compressed query c_q, c_kv, k_r together</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># [b, s, d] * [d, q_lora_rank + kv_lora_rank + d_r] -&gt; [b, s, q_lora_rank + kv_lora_rank + d_r]</span>
+</span></span><span style="display:flex;"><span>  x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(hidden_state, W_DQ_DKV_KR)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">############### FA Pre ####################</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Up project. Notice that we can combine q_c and q_r together</span>
+</span></span><span style="display:flex;"><span>  c_q <span style="color:#f92672">=</span> x[<span style="color:#f92672">...</span>, :q_lora_rank]
+</span></span><span style="display:flex;"><span>  c_q <span style="color:#f92672">=</span> rmsnorm(c_q)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># [b, s, q_lora_rank] * [q_lora_rank, n * (d_c + d_r)] -&gt; [b, s, n * (d_c, d_r)]</span>
+</span></span><span style="display:flex;"><span>  q <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(c_q, W_UQ_QR)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Group q by attention heads and split into q_c and q_ra</span>
+</span></span><span style="display:flex;"><span>  q <span style="color:#f92672">=</span> q<span style="color:#f92672">.</span>view(b, s, n, (d_c <span style="color:#f92672">+</span> d_r))<span style="color:#f92672">.</span>transpose(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>) <span style="color:#75715e"># [b, n, s, d_c + d_r]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Apply RoPE to q_r and regroup into q.</span>
+</span></span><span style="display:flex;"><span>  q_r <span style="color:#f92672">=</span> q[<span style="color:#f92672">...</span>, dc:]
+</span></span><span style="display:flex;"><span>  q_r <span style="color:#f92672">=</span> rope(q_r) <span style="color:#75715e"># [b, n, s, d_r]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Apply RMS norm to c_kv.</span>
+</span></span><span style="display:flex;"><span>  c_kv <span style="color:#f92672">=</span> x[<span style="color:#f92672">...</span>, q_lora_rank:q_lora_rank <span style="color:#f92672">+</span> kv_lora_rank]
+</span></span><span style="display:flex;"><span>  c_kv <span style="color:#f92672">=</span> rmsnorm(c_kv) <span style="color:#75715e"># [b, s, kv_lora_rank]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Apply RoPE to k_r</span>
+</span></span><span style="display:flex;"><span>  k_r <span style="color:#f92672">=</span> x[<span style="color:#f92672">...</span>, q_lora_rank <span style="color:#f92672">+</span> kv_lora_rank:]
+</span></span><span style="display:flex;"><span>  k_r <span style="color:#f92672">=</span> rope(k_r) <span style="color:#75715e"># [b, s, d_r]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Update the KV-cache with compressed c_kv and k_r -- a vew of x</span>
+</span></span><span style="display:flex;"><span>  end_pos <span style="color:#f92672">=</span> start_pos <span style="color:#f92672">+</span> s
+</span></span><span style="display:flex;"><span>  kv_cache[:b, start_pos:end_pos, :] <span style="color:#f92672">=</span> x[<span style="color:#f92672">...</span>, q_lora_rank:] 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Compute the nope head score q_c * k_c^T = q_c * (c_kv * W_UK)^T = q_c * W_UK^T * c_kv^T</span>
+</span></span><span style="display:flex;"><span>  q_c <span style="color:#f92672">=</span> q[<span style="color:#f92672">...</span>, :dc] <span style="color:#75715e"># [b, n, s, d_c]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># [b, n, s, d_c] * [n, d_c, kv_lora_rank] -&gt; [b, n, s, kv_lora_rank]</span>
+</span></span><span style="display:flex;"><span>  q_c <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(q_c, W_UK_T)
+</span></span><span style="display:flex;"><span>  q <span style="color:#f92672">=</span> cat(q_c, q_r) <span style="color:#75715e"># [b, n, s, kv_lora_rank + d_r]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">############### FA ########################</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Note this is batch GEMM with one to n query (similar to MQA)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># [b, n, s, kv_lora_rank + d_r] * [b, 1, kv_lora_rank + d_r, end_pos] -&gt; [b, n, s, end_pos]</span>
+</span></span><span style="display:flex;"><span>  score <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(score_c, kv_cache[:b, :end_pos, :]<span style="color:#f92672">.</span>transpose(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)<span style="color:#f92672">.</span>unsqueeze(<span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Compute the softmax.</span>
+</span></span><span style="display:flex;"><span>  score <span style="color:#f92672">=</span> (score <span style="color:#f92672">+</span> softmax_scale)<span style="color:#f92672">.</span>softmax(dim<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>) <span style="color:#75715e"># [b, n, s, end_pos]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Compute the value: score * v = score * (c_kv * W_UV)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># [b, n, s, end_pos] * [b, 1, end_pos, kv_lora_rank] -&gt; [b, n, s, kv_lora_rank]</span>
+</span></span><span style="display:flex;"><span>  output <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(score, kv_cache[:b, :end_pos, :kv_lora_rank]<span style="color:#f92672">.</span>unsqueeze(<span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">############### FA Post ###################</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># [b, n, s, kv_lora_rank] * [n, kv_lora_rank, d_v] -&gt; [b, n, s, d_v]</span>
+</span></span><span style="display:flex;"><span>  output <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(output, W_UV)
+</span></span><span style="display:flex;"><span>  output <span style="color:#f92672">=</span> output<span style="color:#f92672">.</span>transpose(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>) <span style="color:#75715e"># [b, s, n, d_v]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Final output.</span>
+</span></span><span style="display:flex;"><span>  output <span style="color:#f92672">=</span> output<span style="color:#f92672">.</span>flatten(<span style="color:#ae81ff">2</span>) <span style="color:#75715e"># [b, s, n, d_v] -&gt; [b, s, n * d_v]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># [b, s, n * d_v] * [n * d_v, d] -&gt; [b, s, d]</span>
+</span></span><span style="display:flex;"><span>  output <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(output, W_O)
+</span></span></code></pre></div><!-- ![MLA](/img/transformer/deepseek-mla.png) -->
+<!-- <figure><img src="https://seanzw.github.io/img/transformer/deepseek-mla.png"
+    alt="DeepSeek-V3 MLA Architecture" width="70%"><figcaption>
+      <p>DeepSeek-V3 MLA Architecture</p>
+    </figcaption>
+</figure>
+ -->
+
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+    });
+    MathJax.Hub.Queue(function() {
+      
+      
+      
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i = 0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>Enjoy it!</p>
+    
+     © 2025
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

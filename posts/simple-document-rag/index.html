@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Zhengrong Wang">
+    <meta name="description" content="Zhengrong Wang&#39;s personal website">
+    <meta name="keywords" content="Researcher;Blog.">
+
+    
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="From Weeks to $0.01: Automating Analysis with RAG">
+  <meta name="twitter:description" content="Motivation When my friend described her team’s annual ritual of analyzing corporate ESG reports, I understood why she was desperate for change. For years, interns manually scanned hundreds of PDF pages to answer precise questions: Does the company track all emission scopes? Have they set quantifiable 2030 decarbonization targets? The process consumed weeks as they cross-checked interpretations while research associates verified results.">
+
+    <meta property="og:url" content="https://seanzw.github.io/posts/simple-document-rag/">
+  <meta property="og:site_name" content="Zhengrong Wang">
+  <meta property="og:title" content="From Weeks to $0.01: Automating Analysis with RAG">
+  <meta property="og:description" content="Motivation When my friend described her team’s annual ritual of analyzing corporate ESG reports, I understood why she was desperate for change. For years, interns manually scanned hundreds of PDF pages to answer precise questions: Does the company track all emission scopes? Have they set quantifiable 2030 decarbonization targets? The process consumed weeks as they cross-checked interpretations while research associates verified results.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-07-06T22:09:01+08:00">
+    <meta property="article:modified_time" content="2025-07-06T22:09:01+08:00">
+
+
+    
+      <base href="https://seanzw.github.io/posts/simple-document-rag/">
+    
+    <title>
+  From Weeks to $0.01: Automating Analysis with RAG · Zhengrong Wang
+</title>
+
+    
+      <link rel="canonical" href="https://seanzw.github.io/posts/simple-document-rag/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://seanzw.github.io/css/coder.min.1929b0dbd7e1f08e81f4b7e4cecd8b1962df4cefc41c5cf7893d2eaa2b303713.css" integrity="sha256-GSmw29fh8I6B9Lfkzs2LGWLfTO/EHFz3iT0uqiswNxM=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://seanzw.github.io/academicons/css/academicons.css">
+    
+
+    <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.148.0">
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <link rel="stylesheet" href="https://seanzw.github.io/academicons/css/academicons.css">
+
+<nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://seanzw.github.io/">
+      Zhengrong Wang
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/projects/">Projects</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://seanzw.github.io/publications/">Publications</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">From Weeks to $0.01: Automating Analysis with RAG</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2025-07-06T22:09:01&#43;08:00'>
+                July 6, 2025
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              5 minutes read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://seanzw.github.io/categories/experience/">Experience</a></div>
+
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://seanzw.github.io/tags/ai/">AI</a>
+      <span class="separator">•</span>
+    <a href="https://seanzw.github.io/tags/gpu/">GPU</a>
+      <span class="separator">•</span>
+    <a href="https://seanzw.github.io/tags/retrieval-augmented-generation/">Retrieval-Augmented Generation</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        <h2 id="motivation">Motivation</h2>
+<!-- Recently, my friend came across a job to analyze
+many public listed companies' effort to handle ESG
+(environment, sustainability, governance).
+Specifically, based on its released report,
+the company is evaluated on various dimension, e.g.
+whether it tracks and releases its greenhouse gas emission
+in a timely fashion, whether it sets the target to
+tackle climate-related challenges in various time horizon, etc.
+
+In previous years, they simply recruited some interns,
+each handling a subset of the companies and cross-check
+each other's answer. The research associates (my friend
+and the colleagues) performed a final check. Clearly, this
+is time-consuming and error-pruning, as different people may
+have different opinions (hence cross-checking). -->
+<p>When my friend described her team&rsquo;s annual ritual of analyzing corporate ESG reports, I understood why she was desperate for change. For years, interns manually scanned hundreds of PDF pages to answer precise questions: Does the company track all emission scopes? Have they set quantifiable 2030 decarbonization targets? The process consumed weeks as they cross-checked interpretations while research associates verified results.</p>
+<p>As a computer architect, for many years, my main knowledge about AI is that
+&ldquo;It&rsquo;s just matrix multiplication, but it can do anything now.&rdquo;
+And this time I saw an opportunity to test its real-world potential.</p>
+<!-- So the goal is fairly simple: Give AI a pdf report with a list
+of questions and guidance to each question, and collect the
+answer to each question. But there are some challenges we have
+to solve:
+* **Accuracy**: We want to make sure AI gives accurate answers,
+  otherwise, we waste more time on reviewing it.
+* **Explainable** While the AI looks like a magical black box to
+  us muggles, it must provide the reasoning process so
+  that we can review it and revise the guidance if needed.
+* **Automation**: We want to make the whole process as smooth as
+  possible, since we have many companies to process.
+* **Affordability**: While significantly cheaper, AI still costs
+  something. Online AI model such as ChatGPT and Deepseek charges
+  on the amount of tokens (or words) they process ([DeepSeek Price](https://api-docs.deepseek.com/quick_start/pricing)), and a desktop machine with powerful GPUs are not
+  that affordable ([A Nvidia RTX 5090 GPU](https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/) costs $2000). Also, running AI costs a lot of energy,
+  and it would be kind of funny if we use a lot of electricity to
+  analyze ESG reports :) -->
+<p>The core objective is straightforward: Provide an AI system with a PDF report containing a predefined list of questions and corresponding guidance, then collect the AI&rsquo;s answers to each question. However, several key challenges must be addressed:</p>
+<ul>
+<li><strong>Accuracy</strong>: Responses must be highly accurate to avoid excessive review time and ensure reliability.</li>
+<li><strong>Explainability</strong>: While AI operates like a magical black box to us muggles, it must transparently provide its reasoning process to enable effective review and guidance adjustments.</li>
+<li><strong>Automation</strong>: The end-to-end process requires robust automation to efficiently handle numerous company reports.</li>
+<li><strong>Affordability</strong>: While potentially cheaper than manual analysis, costs remain significant:
+<ul>
+<li>Cloud-based models (e.g., ChatGPT, DeepSeek) charge per token processed (<a href="https://api-docs.deepseek.com/quick_start/pricing">DeepSeek Pricing</a>)</li>
+<li>Local hardware requires substantial investment (e.g., ~$2000+ for high-end GPUs like NVIDIA&rsquo;s RTX 5090)</li>
+<li>Energy consumption presents ironic implications when analyzing ESG reports</li>
+</ul>
+</li>
+</ul>
+<h2 id="background-what-is-rag">Background: What is RAG?</h2>
+<p>After preliminary research, I&rsquo;ve determined this task falls under the category of <strong>Retrieval-Augmented Generation (RAG)</strong>. For reference, here&rsquo;s an <a href="https://www.youtube.com/watch?v=T-D1OfcDW1M">excellent introductory video on RAG</a>.</p>
+<p>The core concept is straightforward: An AI model <em>generates</em> answers to queries (the <em>generation</em> component), but faces two inherent limitations:</p>
+<ol>
+<li><strong>Temporal constraints</strong>: Models lack awareness of recent developments without costly retraining</li>
+<li><strong>Context limitations</strong>: Models cannot directly access your specific document content</li>
+</ol>
+<p>Our specific workflow can be visualized through this pipeline (created at <a href="https://excalidraw.com/">https://excalidraw.com/</a>):</p>
+<div style="text-align: center;">
+  <img src="https://seanzw.github.io/img/rag-example.svg" alt="Simple RAG Example" style="width: 90%;"/>
+</div>
+<ul>
+<li><strong>Retrieval</strong>: The retrieval model identifies the most relevant document sections (context) for each question</li>
+<li><strong>Augmentation</strong>: The original question is enhanced with retrieved context to create an optimized prompt</li>
+<li><strong>Generation</strong>: The reasoning model processes the augmented prompt to produce:
+<ul>
+<li>Final answers</li>
+<li>Supporting explanations</li>
+<li>Source quotations from the report</li>
+</ul>
+</li>
+<li><strong>Human Review</strong>: Essential for verifying answers and refining guidance to align the AI&rsquo;s understanding with requirements</li>
+</ul>
+<!-- After a little searching, I realize this type of tasks falls
+in the category of "retrieval-augmented generation", RAG.
+Here is a [great video introducing RAG](https://www.youtube.com/watch?v=T-D1OfcDW1M).
+Simply putting, an AI model *generates* the answer to your query (hence *generation*),
+but the answer may be outdated (since the AI model itself does not know what happened
+today unless we perform a very expensive retraining) or out-of-context (since it
+has no access to your report).
+
+More specially, our task can be summarized in this pipeline (BTW this is generated at
+[https://excalidraw.com/](https://excalidraw.com/)):
+
+<div style="text-align: center;">
+  <img src="https://seanzw.github.io/img/rag-example.svg" alt="Simple RAG Example" style="width: 90%;"/>
+</div>
+
+* **Retrieval** First provide the questions and the report to a retrieval model, which 
+  gives the most related pages as the context for later detailed process.
+* **Augment** the questions with the context, leading to a more clear prompt.
+* **Generation** Feed the augmented prompt to the reasoning model to have the final answers
+  with explanation and quotes from the report.
+* **Human Review** It's very likely you have to review the answer and revise the guidance
+  so that AI model fully understanding your requirement. -->
+<h2 id="a-naive-first-attempt-copilot">A Naive First Attempt: Copilot</h2>
+<p>Even without RAG expertise, we can leverage existing online chat models (which implement server-side RAG pipelines). I initially tested with Copilot—uploading reports, feeding questions, and evaluating outputs. However, after several trials, this approach proved unfeasible:</p>
+<ul>
+<li><strong>Human Laboring</strong> The process lacks <em>any</em> automation. Completing a single report requires approximately <em>30 minutes</em> (excluding final review), creating inefficiency and tedium—I&rsquo;d prefer reading reports manually!</li>
+<li><strong>Inaccuracy and Instability</strong> The model frequently provides incorrect answers. While guidance tuning might improve accuracy, the more critical issue is output inconsistency across attempts. A majority-vote approach could mitigate instability but would necessitate repeating the entire process—an impractical solution.</li>
+</ul>
+<!-- ## A Naive First Attempt: Copilot
+
+Even without understanding anything about RAG, we can start by using existing online chat
+models (which implements the RAG pipeline on the server).
+I first tried copilot -- upload the report, feed in the questions, and check the
+output. However, after a few tries, I realized this is not feasible:
+
+* **Human Laboring** This process is not automated *at all*. It takes about *30min* to finish
+  the whole process, not including the final review. This is so inefficient and also
+  extremely boring -- I would rather read the report by myself!
+* **Inaccurate and Instable** The model gets many answers wrong -- this is probably
+  fine if I spend more time tuning the guidance. However, to make things worse,
+  the model emits different answers in different attempts. Asking multiple times
+  and picking the majority vote could help, but leads to the nightmare of repeating the
+  whole process. -->
+<h2 id="okay-lets-code">Okay let&rsquo;s code</h2>
+<p>Given these constraints, it&rsquo;s time to implement an automated solution - after all, we&rsquo;re programmers! The complete code is available <a href="https://github.com/seanzw/toy-pdf-rag">here</a>. The implementation follows this workflow:</p>
+<ul>
+<li><strong>Retrieval</strong> Uses <a href="https://ollama.com/">Ollama</a> to run a local retrieval model on the GPU. Model selection was guided by the <a href="https://huggingface.co/spaces/mteb/leaderboard">MTEB leaderboard</a> on Hugging Face.</li>
+<li><strong>Augment</strong> Combines the top 5 relevant pages with each question to create the final prompt. Crucially, page numbers are explicitly preserved for accurate source referencing.</li>
+<li><strong>Generation</strong> Leverages the <a href="https://api-docs.deepseek.com/">DeepSeek-R1 API</a> to generate final answers with explanations. Outputs are saved as both JSON and human-readable Markdown.</li>
+</ul>
+<p>I won&rsquo;t detail the code here - it&rsquo;s under 150 lines including comments. Feel free to explore the implementation directly.</p>
+<!-- ## Okay let's code
+
+Given these constraints, it's time to write some code to fully automate the whole process.
+After all, we are still programmers! The code is available [here](). Basically it does:
+
+* **Retrieval** Uses [ollama](https://ollama.com/) to run a local retrieval model on
+  the local GPU. There is a ranking scoreboard on retrieval models on [huggingface](https://huggingface.co/spaces/mteb/leaderboard).
+* **Augment** Combine the top 5 pages and the questions as the final prompt. Notice that
+  explicitly keep the page number in the context so that the reasoning model could give
+  a precise quote.
+* **Generation** I use [DeepSeek-R1 API](https://api-docs.deepseek.com/) to generate the
+  final answers with explanation. It saves the output as both json format and human-readable
+  markdown format.
+
+I won't go through the code here. If you're interested, just read the code
+(it's less than 150 lines including comments :).  -->
+<h2 id="discussion">Discussion</h2>
+<h3 id="size-doesnt-matter-until-it-does">Size doesn&rsquo;t matter&hellip; Until it does.</h3>
+<p>Even as someone whose work does not directly relate to AI, I have heard of the famous <strong>scaling law</strong> - that <em>intelligence emerges as we keep scaling up models</em>. So far, this seems to hold true. For example, DeepSeek-V3 has <strong>671 billion</strong> parameters, and ChatGPT-4 is estimated to have more than <strong>1 trillion</strong> parameters (since it&rsquo;s not open-sourced). <em>And this time, I witnessed the power of scaling law firsthand.</em></p>
+<p>I first used a small version of DeepSeek-V3 running on a desktop GPU - distilled from the full 671-billion parameter model. It worked well when I passed questions one by one. However, since many questions are related, I needed to feed them together so the model could better capture the context. The small model quickly lost itself and started mumbling when it couldn&rsquo;t handle this more complicated case.</p>
+<p>Then I pasted the exact same prompt to the online <a href="https://chat.deepseek.com/">DeepSeek-R1</a>, and it answered most questions correctly! The larger model is indeed better, and it&rsquo;s genuinely exciting to imagine what AI could do with even larger models.</p>
+<h3 id="guidance-precision-determines-performance">Guidance precision determines performance.</h3>
+<p>Our initial implementation achieved only 5/29 correct answers (17%). After refining questions and guidance to 1. Eliminate ambiguity; 2. Specify constraints; 3. Prevent invalid assumptions.
+Accuracy jumped to 26/29 (90%). This <strong>73 percentage-point improvement</strong> underscores that quality prompt engineering is equally important as model selection. A more systematic experiment on the accuracy can be performed later.</p>
+<h3 id="ai-affordability-is-remarkable">AI affordability is remarkable</h3>
+<p>Using the DeepSeek API, processing a 200+ page document costs just $0.01. Better yet, during off-peak hours (12:30am-8:30am UTC+8), you get 75% off! With basic coding skills, you can automate batch processing overnight to maximize these savings. Our strategy of using a local retrieval model to identify relevant pages before engaging the large reasoning model significantly reduces costs, since expenses scale directly with token usage.</p>
+<h3 id="challenges-persist-despite-ais-capabilities">Challenges persist despite AI&rsquo;s capabilities</h3>
+<p>These advancements feel both revolutionary and slightly unnerving - will AI replace us? I remain optimistic because significant challenges endure. Consider this <a href="https://asia.nikkei.com/Business/Technology/Artificial-intelligence/Positive-review-only-Researchers-hide-AI-prompts-in-papers">tactic reported by Nikkei Asia</a>: researchers now hide prompts like &ldquo;focus on this work&rsquo;s novelty&rdquo; in papers using white text or microscopic fonts. When AI summarizes such documents, it produces unrealistically positive evaluations, bypassing human reviewers. This demonstrates how humans remain essential gatekeepers for integrity, even as AI&rsquo;s capabilities grow.</p>
+<p>This first RAG implementation revealed AI&rsquo;s astonishing potential - it&rsquo;s genuinely exciting how much these tools can accomplish today. <em>Everyone should start learning to harness them!</em></p>
+<p>You can find the code <a href="https://github.com/seanzw/toy-pdf-rag">here</a>. And of course, this post is revised
+by AI :)</p>
+<!-- ### AI is so affordable.
+I use DeepSeek API, and it costs about $0.01 to process one document with more than 200 pages.
+And if you use it during the off-peak time (12:30am-8:30am UTC+8), it's another 75% off! This is easy to
+do if you know some coding to automatically process all the jobs in batch during night.
+And our strategy of using a local retrieval model to find out the most related pages
+instead of directly using the large reasoning model on the entire document is also
+very helpful, since the cost is proportional to the amount of tokens you use.
+
+### Are we losing to AI? Challenges still exists.
+It seems both too good to be true and a little scary at the same time. Are we going to
+be replaced by AI? Well, I am not that pessimistic, since there are still some challenges.
+For example, one [interesting news](https://asia.nikkei.com/Business/Technology/Artificial-intelligence/Positive-review-only-Researchers-hide-AI-prompts-in-papers) reported that
+some people already insert misleading prompt in their paper such as
+"focus on the novelty of this work", so that if any reviewer uses AI to help summarize
+the submitted draft, they would get a very positive review. They use white font color or tiny font size
+to escape human examination. This raises the question about whether AI is trustworthy.
+Human, while less efficient, can still be the goalkeeper to maintain the integrity.
+
+Overall, this summarizes my first experience building a simple RAG. It's fun and amazing how
+much AI can do these days. *Everyone* should start to learn how to use it! -->
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p>Enjoy it!</p>
+    
+     © 2025
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

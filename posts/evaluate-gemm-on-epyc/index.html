@@ -13,13 +13,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Benchmarking GEMM on Modern CPU">
   <meta name="twitter:description" content="Recently I got interested to understand what’s the actual performance of GEMM on modern CPUs. We all understand that GEMM is the backbone for many critical applications and can never emphasize enough how important to optimize it. That being said, I never had a good first-hand experience on benchmarking GEMM on modern CPUs, and here I am.
-We know that Intel has the famous MKL library that is mainly optimized for Intel’s CPU (of course), and there are open-sourced third party library such as OpenBLAS (come with numpy if you install using pip).">
+We know that Intel has the famous MKL library that is mainly optimized for Intel’s CPU (of course), and there are open-sourced third party library such as OpenBLAS (come with numpy if you install using pip). However, what’s our choice for AMD architectures? It turns out they also have their own optimized library – AOCL (AMD Optmized CPU Library). And even better, AOCL is open-sourced (unlike MKL). Let’s start our journey now.">
 
     <meta property="og:url" content="https://seanzw.github.io/posts/evaluate-gemm-on-epyc/">
   <meta property="og:site_name" content="Zhengrong Wang">
   <meta property="og:title" content="Benchmarking GEMM on Modern CPU">
   <meta property="og:description" content="Recently I got interested to understand what’s the actual performance of GEMM on modern CPUs. We all understand that GEMM is the backbone for many critical applications and can never emphasize enough how important to optimize it. That being said, I never had a good first-hand experience on benchmarking GEMM on modern CPUs, and here I am.
-We know that Intel has the famous MKL library that is mainly optimized for Intel’s CPU (of course), and there are open-sourced third party library such as OpenBLAS (come with numpy if you install using pip).">
+We know that Intel has the famous MKL library that is mainly optimized for Intel’s CPU (of course), and there are open-sourced third party library such as OpenBLAS (come with numpy if you install using pip). However, what’s our choice for AMD architectures? It turns out they also have their own optimized library – AOCL (AMD Optmized CPU Library). And even better, AOCL is open-sourced (unlike MKL). Let’s start our journey now.">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -45,7 +45,7 @@ We know that Intel has the famous MKL library that is mainly optimized for Intel
     
       
       
-      <link rel="stylesheet" href="https://seanzw.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://seanzw.github.io/css/coder.min.1929b0dbd7e1f08e81f4b7e4cecd8b1962df4cefc41c5cf7893d2eaa2b303713.css" integrity="sha256-GSmw29fh8I6B9Lfkzs2LGWLfTO/EHFz3iT0uqiswNxM=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -59,7 +59,7 @@ We know that Intel has the famous MKL library that is mainly optimized for Intel
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.126.1">
+    <meta name="generator" content="Hugo 0.148.0">
   </head>
 
   <body class=" ">
@@ -192,7 +192,7 @@ kernel and link it with BLIS.</p>
     
       <p>Enjoy it!</p>
     
-     © 2024
+     © 2025
     
   </section>
 </footer>
@@ -200,13 +200,6 @@ kernel and link it with BLIS.</p>
     </main>
 
     
-  
-    
-      
-    
-  
-
-
 
   </body>
 
