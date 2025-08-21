@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://seanzw.github.io/posts/simple-document-rag/</loc>
-    <lastmod>2025-07-06T22:09:01+08:00</lastmod>
-  </url><url>
     <loc>https://seanzw.github.io/posts/</loc>
-    <lastmod>2025-07-06T22:09:01+08:00</lastmod>
+    <lastmod>2025-07-29T19:34:01+08:00</lastmod>
   </url><url>
     <loc>https://seanzw.github.io/</loc>
+    <lastmod>2025-07-29T19:34:01+08:00</lastmod>
+  </url><url>
+    <loc>https://seanzw.github.io/posts/simple-document-rag/</loc>
     <lastmod>2025-07-06T22:09:01+08:00</lastmod>
   </url><url>
     <loc>https://seanzw.github.io/posts/note-on-transformer-flops/</loc>
@@ -40,6 +40,8 @@
     <loc>https://seanzw.github.io/projects/</loc>
   </url><url>
     <loc>https://seanzw.github.io/publications/</loc>
+  </url><url>
+    <loc>https://seanzw.github.io/random/</loc>
   </url><url>
     <loc>https://seanzw.github.io/series/</loc>
   </url>
