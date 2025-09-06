@@ -5,7 +5,7 @@
     <link>https://seanzw.github.io/posts/</link>
     <description>Recent content in Posts on Zhengrong Wang</description>
     <generator>Hugo</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Sun, 06 Jul 2025 22:09:01 +0800</lastBuildDate>
     <atom:link href="https://seanzw.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
@@ -55,7 +55,7 @@
       <link>https://seanzw.github.io/posts/swap-ctrl-cap/</link>
       <pubDate>Fri, 13 Sep 2019 10:30:04 -0700</pubDate>
       <guid>https://seanzw.github.io/posts/swap-ctrl-cap/</guid>
-      <description>&lt;p&gt;I find it very convenient to swap the control and cap lock key. And here is how I achieve this in the OS I am using.&lt;/p&gt;&#xA;&lt;h3 id=&#34;ubuntu-1604&#34;&gt;Ubuntu 16.04&lt;/h3&gt;&#xA;&lt;p&gt;Somehow the &lt;code&gt;gnome-tweak-tool&lt;/code&gt; is not working in my case. I am using the following command line and it works like magic.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;/usr/bin/setxkbmap -option &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ctrl:swapcaps&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      <description>&lt;p&gt;I find it very convenient to swap the control and cap lock key. And here is how I achieve this in the OS I am using.&lt;/p&gt;&#xA;&lt;h3 id=&#34;ubuntu-1604&#34;&gt;Ubuntu 16.04&lt;/h3&gt;&#xA;&lt;p&gt;Somehow the &lt;code&gt;gnome-tweak-tool&lt;/code&gt; is not working in my case. I am using the following command line and it works like magic.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;/usr/bin/setxkbmap -option &amp;quot;ctrl:swapcaps&amp;quot;&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     <item>
       <title>Extend RISC-V ISA with Matrix Multiply</title>

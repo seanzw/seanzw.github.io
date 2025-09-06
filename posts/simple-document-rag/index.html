@@ -1,144 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en-us">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="author" content="Zhengrong Wang">
-    <meta name="description" content="Zhengrong Wang&#39;s personal website">
-    <meta name="keywords" content="Researcher;Blog.">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>From Weeks to $0.01: Automating Analysis with RAG | Zhengrong Wang</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
     
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="From Weeks to $0.01: Automating Analysis with RAG">
-  <meta name="twitter:description" content="Motivation When my friend described her team’s annual ritual of analyzing corporate ESG reports, I understood why she was desperate for change. For years, interns manually scanned hundreds of PDF pages to answer precise questions: Does the company track all emission scopes? Have they set quantifiable 2030 decarbonization targets? The process consumed weeks as they cross-checked interpretations while research associates verified results.">
-
-    <meta property="og:url" content="https://seanzw.github.io/posts/simple-document-rag/">
-  <meta property="og:site_name" content="Zhengrong Wang">
-  <meta property="og:title" content="From Weeks to $0.01: Automating Analysis with RAG">
-  <meta property="og:description" content="Motivation When my friend described her team’s annual ritual of analyzing corporate ESG reports, I understood why she was desperate for change. For years, interns manually scanned hundreds of PDF pages to answer precise questions: Does the company track all emission scopes? Have they set quantifiable 2030 decarbonization targets? The process consumed weeks as they cross-checked interpretations while research associates verified results.">
-  <meta property="og:locale" content="en">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2025-07-06T22:09:01+08:00">
-    <meta property="article:modified_time" content="2025-07-06T22:09:01+08:00">
-
-
-    
-      <base href="https://seanzw.github.io/posts/simple-document-rag/">
-    
-    <title>
-  From Weeks to $0.01: Automating Analysis with RAG · Zhengrong Wang
-</title>
-
-    
-      <link rel="canonical" href="https://seanzw.github.io/posts/simple-document-rag/">
-    
-
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous" />
-
-    
-      
-      
-      <link rel="stylesheet" href="https://seanzw.github.io/css/coder.min.1929b0dbd7e1f08e81f4b7e4cecd8b1962df4cefc41c5cf7893d2eaa2b303713.css" integrity="sha256-GSmw29fh8I6B9Lfkzs2LGWLfTO/EHFz3iT0uqiswNxM=" crossorigin="anonymous" media="screen" />
-    
-
-    
-
-    
-
-    
-      <link rel="stylesheet" href="https://seanzw.github.io/academicons/css/academicons.css">
-    
-
-    <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="https://seanzw.github.io/img/favicon-16.png" sizes="16x16">
-
-    <meta name="generator" content="Hugo 0.148.2">
   </head>
 
-  <body class=" ">
-    <main class="wrapper">
-      <link rel="stylesheet" href="https://seanzw.github.io/academicons/css/academicons.css">
-
-<nav class="navigation">
-  <section class="container">
-    <a class="navigation-title" href="https://seanzw.github.io/">
-      Zhengrong Wang
-    </a>
-    <input type="checkbox" id="menu-toggle" />
-    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
-    <ul class="navigation-list">
+  <body>
+    <nav>
+    <ul class="menu">
       
-        
-          <li class="navigation-item">
-            <a class="navigation-link" href="https://seanzw.github.io/about/">About</a>
-          </li>
-        
-          <li class="navigation-item">
-            <a class="navigation-link" href="https://seanzw.github.io/posts/">Blog</a>
-          </li>
-        
-          <li class="navigation-item">
-            <a class="navigation-link" href="https://seanzw.github.io/projects/">Projects</a>
-          </li>
-        
-          <li class="navigation-item">
-            <a class="navigation-link" href="https://seanzw.github.io/publications/">Publications</a>
-          </li>
-        
-          <li class="navigation-item">
-            <a class="navigation-link" href="https://seanzw.github.io/random/">Random</a>
-          </li>
-        
+      <li><a href="/about/">Home</a></li>
       
+      <li><a href="/posts/">Blog</a></li>
+      
+      <li><a href="/projects/">Projects</a></li>
+      
+      <li><a href="/publications/">Publications</a></li>
+      
+      <li><a href="/random/">Random</a></li>
       
     </ul>
-  </section>
-</nav>
+    <hr/>
+    </nav>
 
+<div class="article-meta">
+<h1><span class="title">From Weeks to $0.01: Automating Analysis with RAG</span></h1>
 
-      <div class="content">
-        
-  <section class="container post">
-    <article>
-      <header>
-        <div class="post-title">
-          <h1 class="title">From Weeks to $0.01: Automating Analysis with RAG</h1>
-        </div>
-        <div class="post-meta">
-          <div class="date">
-            <span class="posted-on">
-              <i class="fas fa-calendar"></i>
-              <time datetime='2025-07-06T22:09:01&#43;08:00'>
-                July 6, 2025
-              </time>
-            </span>
-            <span class="reading-time">
-              <i class="fas fa-clock"></i>
-              5 minutes read
-            </span>
-          </div>
-          <div class="categories">
-  <i class="fas fa-folder"></i>
-    <a href="https://seanzw.github.io/categories/experience/">Experience</a></div>
+<h2 class="date">2025/07/06</h2>
+</div>
 
-          <div class="tags">
-  <i class="fas fa-tag"></i>
-    <a href="https://seanzw.github.io/tags/ai/">AI</a>
-      <span class="separator">•</span>
-    <a href="https://seanzw.github.io/tags/gpu/">GPU</a>
-      <span class="separator">•</span>
-    <a href="https://seanzw.github.io/tags/retrieval-augmented-generation/">Retrieval-Augmented Generation</a></div>
-
-        </div>
-      </header>
-
-      <div>
-        <h2 id="motivation">Motivation</h2>
+<main>
+<h2 id="motivation">Motivation</h2>
 <!-- Recently, my friend came across a job to analyze
 many public listed companies' effort to handle ESG
 (environment, sustainability, governance).
@@ -197,7 +93,7 @@ to solve:
 </ol>
 <p>Our specific workflow can be visualized through this pipeline (created at <a href="https://excalidraw.com/">https://excalidraw.com/</a>):</p>
 <div style="text-align: center;">
-  <img src="https://seanzw.github.io/img/rag-example.svg" alt="Simple RAG Example" style="width: 90%;"/>
+  <img src="/img/rag-example.svg" alt="Simple RAG Example" style="width: 90%;"/>
 </div>
 <ul>
 <li><strong>Retrieval</strong>: The retrieval model identifies the most relevant document sections (context) for each question</li>
@@ -223,7 +119,7 @@ More specially, our task can be summarized in this pipeline (BTW this is generat
 [https://excalidraw.com/](https://excalidraw.com/)):
 
 <div style="text-align: center;">
-  <img src="https://seanzw.github.io/img/rag-example.svg" alt="Simple RAG Example" style="width: 90%;"/>
+  <img src="/img/rag-example.svg" alt="Simple RAG Example" style="width: 90%;"/>
 </div>
 
 * **Retrieval** First provide the questions and the report to a retrieval model, which 
@@ -313,49 +209,26 @@ Human, while less efficient, can still be the goalkeeper to maintain the integri
 
 Overall, this summarizes my first experience building a simple RAG. It's fun and amazing how
 much AI can do these days. *Everyone* should start to learn how to use it! -->
-      </div>
+</main>
 
-      <footer>
-        
+  <footer>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<script src="//cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/auto-render.min.js,npm/@xiee/utils/js/render-katex.js" defer></script>
+
+<script src="//cdn.jsdelivr.net/npm/@xiee/utils/js/center-img.min.js" defer></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
 
 
-        
-      </footer>
-    </article>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
 
-    
-  </section>
-
-      </div>
-
-      <footer class="footer">
-  <section class="container">
-    
-      <p>Enjoy it!</p>
-    
-     © 2025
-    
-  </section>
-</footer>
-
-    </main>
-
-    
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-CTVHZGKZQ0"></script>
-      <script>
-        var doNotTrack = false;
-        if ( false ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-CTVHZGKZQ0');
-        }
-      </script>
-
+<script>hljs.highlightAll();</script>
+  
+  <hr/>
+  © <a href="https://seanzw.github.io">Zhengrong Wang</a> 2025 | <a href="https://github.com/seanzw">Github</a> | Enjoy it!
+  
+  </footer>
   </body>
-
 </html>
+

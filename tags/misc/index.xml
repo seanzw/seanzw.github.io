@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Misc on Zhengrong Wang</title>
+    <link>https://seanzw.github.io/tags/misc/</link>
+    <description>Recent content in Misc on Zhengrong Wang</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 13 Sep 2019 10:30:04 -0700</lastBuildDate>
+    <atom:link href="https://seanzw.github.io/tags/misc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Swap Ctrl and Cap</title>
+      <link>https://seanzw.github.io/posts/swap-ctrl-cap/</link>
+      <pubDate>Fri, 13 Sep 2019 10:30:04 -0700</pubDate>
+      <guid>https://seanzw.github.io/posts/swap-ctrl-cap/</guid>
+      <description>&lt;p&gt;I find it very convenient to swap the control and cap lock key. And here is how I achieve this in the OS I am using.&lt;/p&gt;&#xA;&lt;h3 id=&#34;ubuntu-1604&#34;&gt;Ubuntu 16.04&lt;/h3&gt;&#xA;&lt;p&gt;Somehow the &lt;code&gt;gnome-tweak-tool&lt;/code&gt; is not working in my case. I am using the following command line and it works like magic.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;/usr/bin/setxkbmap -option &amp;quot;ctrl:swapcaps&amp;quot;&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+  </channel>
+</rss>
