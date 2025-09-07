@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Zhengrong Wang</title>
+    <title>Home on Zhengrong Wang</title>
     <link>https://seanzw.github.io/</link>
-    <description>Recent content on Zhengrong Wang</description>
+    <description>Recent content in Home on Zhengrong Wang</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 06 Jul 2025 22:09:01 +0800</lastBuildDate>
@@ -98,6 +98,20 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://seanzw.github.io/random/</guid>
       <description>&lt;h1 id=&#34;interesting-stuff-on-random-topic&#34;&gt;Interesting Stuff on Random Topic&lt;/h1&gt;&#xA;&lt;h4 id=&#34;memory-layout-swizzling&#34;&gt;Memory Layout Swizzling&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/NVIDIA/cutlass/blob/main/media/docs/cpp/cute/01_layout.md&#34;&gt;Cute documentation&lt;/a&gt; on layout algebra.&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/1941306442683515068&#34;&gt;A Chinese post&lt;/a&gt; from &lt;code&gt;melonedo&lt;/code&gt; helpful to understanding swizzling&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title></title>
+      <link>https://seanzw.github.io/recruiting/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seanzw.github.io/recruiting/</guid>
+      <description>&lt;!-- ---&#xA;title: &#34;Recruiting&#34;&#xA;date: 2025-09-07T12:54:42+08:00&#xA;draft: false&#xA;--- --&gt;&#xA;&lt;h2 id=&#34;recruiting&#34;&gt;Recruiting&lt;/h2&gt;&#xA;&lt;p&gt;I am looking for Ph.D. students, MPhil students, Interns and RAs (from Summer/Fall 2026) to join my lab.&#xA;If you are interested in computer architecture research at CUHK, see the guidelines below.&lt;/p&gt;&#xA;&lt;p&gt;I am broadly interested in architecture, uarch, compilers and programming languages to support&#xA;demanding applications on next-gen hardware.&#xA;Slowing technology scaling and increasing pressure on complex applications (especially&#xA;large language models) are push architects to rely more on specialized and heterogeneous systems for&#xA;different scenarios. As computer architects, our job is not only designing new hardware,&#xA;but also creating expressive abstractions that enable rich semantics efficiently conveyed&#xA;through the entire stack to unlock many co-optimization opportunities.&#xA;This is exciting for architects because our task is critical and extremely challenging.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Recruiting</title>
+      <link>https://seanzw.github.io/recruiting2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://seanzw.github.io/recruiting2/</guid>
+      <description>&lt;h2 id=&#34;recruiting&#34;&gt;Recruiting&lt;/h2&gt;&#xA;&lt;p&gt;I am looking for Ph.D. students, MPhil students, Interns and RAs (from Summer/Fall 2026) to join my lab.&#xA;If you are interested in computer architecture research at CUHK, see the guidelines below.&lt;/p&gt;&#xA;&lt;p&gt;I am broadly interested in architecture, microarchitecture, compilers and programming languages to support&#xA;demanding applications on next generation hardware.&#xA;Constraints on technology are pushing architects to develop customized hardware for different application scenarios, and there is growing consensus that significant degrees of heterogeneity are necessary. Much of the burden of improving computer systems will be on computer architects, not only in designing new hardware, but also in figuring out how to rapidly codesign the many components of systems (eg. compilers and architecture). This is exciting for architects because our task is critical and extremely challenging.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
