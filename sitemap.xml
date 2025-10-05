@@ -2,31 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://seanzw.github.io/</loc>
-    <lastmod>2025-07-29T19:34:01+08:00</lastmod>
-  </url><url>
-    <loc>https://seanzw.github.io/posts/</loc>
-    <lastmod>2025-07-29T19:34:01+08:00</lastmod>
-  </url><url>
-    <loc>https://seanzw.github.io/tags/ai/</loc>
-    <lastmod>2025-07-06T22:09:01+08:00</lastmod>
-  </url><url>
     <loc>https://seanzw.github.io/categories/</loc>
-    <lastmod>2025-07-06T22:09:01+08:00</lastmod>
+    <lastmod>2025-10-04T15:40:28+08:00</lastmod>
   </url><url>
     <loc>https://seanzw.github.io/categories/experience/</loc>
+    <lastmod>2025-10-04T15:40:28+08:00</lastmod>
+  </url><url>
+    <loc>https://seanzw.github.io/tags/gpu/</loc>
+    <lastmod>2025-10-04T15:40:28+08:00</lastmod>
+  </url><url>
+    <loc>https://seanzw.github.io/</loc>
+    <lastmod>2025-10-04T15:40:28+08:00</lastmod>
+  </url><url>
+    <loc>https://seanzw.github.io/posts/gpu_load_bandwidth/</loc>
+    <lastmod>2025-10-04T15:40:28+08:00</lastmod>
+  </url><url>
+    <loc>https://seanzw.github.io/posts/</loc>
+    <lastmod>2025-10-04T15:40:28+08:00</lastmod>
+  </url><url>
+    <loc>https://seanzw.github.io/tags/</loc>
+    <lastmod>2025-10-04T15:40:28+08:00</lastmod>
+  </url><url>
+    <loc>https://seanzw.github.io/tags/ai/</loc>
     <lastmod>2025-07-06T22:09:01+08:00</lastmod>
   </url><url>
     <loc>https://seanzw.github.io/posts/simple-document-rag/</loc>
     <lastmod>2025-07-06T22:09:01+08:00</lastmod>
   </url><url>
-    <loc>https://seanzw.github.io/tags/gpu/</loc>
-    <lastmod>2025-07-06T22:09:01+08:00</lastmod>
-  </url><url>
     <loc>https://seanzw.github.io/tags/retrieval-augmented-generation/</loc>
-    <lastmod>2025-07-06T22:09:01+08:00</lastmod>
-  </url><url>
-    <loc>https://seanzw.github.io/tags/</loc>
     <lastmod>2025-07-06T22:09:01+08:00</lastmod>
   </url><url>
     <loc>https://seanzw.github.io/posts/note-on-transformer-flops/</loc>

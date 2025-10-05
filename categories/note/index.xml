@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Note on Zhengrong Wang</title>
+    <link>http://localhost:1313/categories/note/</link>
+    <description>Recent content in Note on Zhengrong Wang</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 29 Jul 2025 19:34:01 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fusing Entire Llama-1B into a Megakernel on GPU</title>
+      <link>http://localhost:1313/posts/mega-kernel/</link>
+      <pubDate>Tue, 29 Jul 2025 19:34:01 +0800</pubDate>
+      <guid>http://localhost:1313/posts/mega-kernel/</guid>
+      <description>&lt;h2 id=&#34;fusing-everything&#34;&gt;Fusing Everything&lt;/h2&gt;&#xA;&lt;p&gt;Kernel launching has become increasingly expensive as the LLM models become&#xA;more and more complex with many small kernels. A widely-adopted approach to&#xA;tackle this is fusing kernels into a single one, as well as&#xA;&lt;a href=&#34;https://developer.nvidia.com/blog/cuda-graphs/&#34;&gt;Cuda Graph&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://hazyresearch.stanford.edu/blog/2025-05-27-no-bubbles&#34;&gt;Megakenel&lt;/a&gt; from Hazy Lab&#xA;is an aggressive attempt to fusing the entire LLM layer into a&#xA;single kernel to maximize the performance.&#xA;And here are some notes and findings during playing with this project.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

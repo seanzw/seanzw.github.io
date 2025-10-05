@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Zhengrong Wang</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Jul 2025 22:09:01 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 04 Oct 2025 15:40:28 +0800</lastBuildDate>
     <atom:link href="https://seanzw.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How well does GPU saturate bandwidth?</title>
+      <link>https://seanzw.github.io/posts/gpu_load_bandwidth/</link>
+      <pubDate>Sat, 04 Oct 2025 15:40:28 +0800</pubDate>
+      <guid>https://seanzw.github.io/posts/gpu_load_bandwidth/</guid>
+      <description>&lt;p&gt;As a computer architect, bandwidth and compute throughput are key metrics for understanding hardware capability and finding system bottlenecks. While implementing a fused GNN kernel, I started wondering: &lt;strong&gt;How well can GPUs saturate available memory bandwidth?&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;More specifically: Given a fixed access granularity (determined by the workload), can we saturate the available data bandwidth? From computer organization fundamentals, the number of in-flight requests &lt;em&gt;N&lt;/em&gt; needed to saturate bandwidth &lt;em&gt;B&lt;/em&gt; with latency &lt;em&gt;L&lt;/em&gt; and request size &lt;em&gt;S&lt;/em&gt; is:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>From Weeks to $0.01: Automating Analysis with RAG</title>
       <link>https://seanzw.github.io/posts/simple-document-rag/</link>

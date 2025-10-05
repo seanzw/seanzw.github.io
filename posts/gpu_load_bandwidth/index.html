@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How well does GPU saturate bandwidth? | Zhengrong Wang</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/publications/">Publications</a></li>
+      
+      <li><a href="/posts/">Blog</a></li>
+      
+      <li><a href="/random/">Random</a></li>
+      
+      <li><a href="/recruiting/">Recruiting</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">How well does GPU saturate bandwidth?</span></h1>
+
+<h2 class="date">2025/10/04</h2>
+</div>
+
+<main>
+<p>As a computer architect, bandwidth and compute throughput are key metrics for understanding hardware capability and finding system bottlenecks. While implementing a fused GNN kernel, I started wondering: <strong>How well can GPUs saturate available memory bandwidth?</strong></p>
+<p>More specifically: Given a fixed access granularity (determined by the workload), can we saturate the available data bandwidth? From computer organization fundamentals, the number of in-flight requests <em>N</em> needed to saturate bandwidth <em>B</em> with latency <em>L</em> and request size <em>S</em> is:</p>
+\[
+N=\frac{B\times L}{S}
+\]<p>This <em>N</em> translates directly to core resource requirements (registers, threads, scratchpad buffers). Understanding GPU bandwidth saturation helps answer:</p>
+<ul>
+<li>What is the expected bandwidth for this workload on this GPU?</li>
+<li>How can I write programs to better saturate bandwidth?</li>
+<li>Can algorithm co-optimization improve bandwidth utilization?</li>
+</ul>
+<h2 id="experimental-setup">Experimental Setup</h2>
+<p>To answer these questions, I ran simple tests using different memory loading patterns (<a href="https://github.com/seanzw/random/tree/main/tma_bw">code here</a>). Each SM uses producer warps to load data into L1 scratchpad, with one consumer warp performing minimal computation to ensure we&rsquo;re memory-bound. The L1 scratchpad is divided into multiple stages, each holding a chunk, using <code>mbarrier</code> for synchronization.</p>
+<p><strong>Test Configuration:</strong></p>
+<ul>
+<li>GPU: RTX 5090</li>
+<li>Core frequency: 2GHz (fixed)</li>
+<li>Max L2 bandwidth: 5.6TB/s</li>
+<li>Data cached in L2 (testing L2 bandwidth saturation)</li>
+</ul>
+<p>The results at the end show both raw bandwidth and utilization percentage for different implementations described below:</p>
+<h2 id="results">Results</h2>
+<h3 id="normal-load-instructions">Normal Load Instructions</h3>
+<p>The most traditional approach uses load instructions that store data into the register file. The thread blocks until data is ready before issuing the next instruction.</p>
+<p><strong>Key findings:</strong></p>
+<ul>
+<li><strong>Parallelism scales with threads</strong>: The number of in-flight requests largely depends on the number of threads, with each using registers to hold loaded values. Doubling producer warps roughly doubles bandwidth - for 512B chunks, one producer achieves ~206 GB/s while two reach ~400 GB/s.</li>
+<li><strong>Dramatic chunk size effect</strong>: There&rsquo;s a significant jump from 2kB to 4kB chunks. Even with a single producer, 4kB nearly triples bandwidth compared to 2kB (1728 GB/s vs. 598 GB/s). My wild guess is some aggressive hardware coalescing once chunk size exceeds a threshold.</li>
+<li><strong>High resource requirements</strong>: To achieve 80%+ utilization, you need 16 producers each loading 4kB chunks - a substantial thread count.</li>
+</ul>
+<h3 id="asynchronous-load-cpasync">Asynchronous Load (<code>cp.async</code>)</h3>
+<p>A clear disadvantage of normal loads is the massive thread count needed for parallelism. When data consumption isn&rsquo;t fine-grained, we can leverage asynchronous loads. NVIDIA GPUs provide <code>cp.async</code> instructions that don&rsquo;t block threads on load completion. Instead, threads issue <code>cp.async.commit_group</code> to commit previous instructions and <code>cp.async.wait_group</code> to wait for data. Importantly, it loads data directly into shared memory, eliminating register buffering and reducing register pressure. The maximum <code>cp.async</code> request size is 16B, so a single warp with 32 threads can fetch 512B.</p>
+<p><strong>Key findings:</strong></p>
+<ul>
+<li><strong>Superior efficiency</strong>: Easily outperforms normal loads, even with a single producer, as expected given the reduced register pressure.</li>
+<li><strong>Stage insensitivity</strong>: Performance isn&rsquo;t sensitive to stage count beyond 2, which makes sense since we&rsquo;re memory-bound and additional stages don&rsquo;t help hide latency.</li>
+<li><strong>Scaling with threshold</strong>: More producer warps help due to increased parallel in-flight requests, but there&rsquo;s a chunk size threshold. Once chunks reach 4kB, even a single producer can saturate bandwidth.</li>
+</ul>
+<h3 id="tensor-memory-accelerator-tma">Tensor Memory Accelerator (TMA)</h3>
+<p>Since Hopper, GPUs extend <code>cp.async</code> with bulk movements (<code>cp.async.bulk</code>). The Tensor Memory Accelerator (TMA) is a DMA engine that can load a 5D tensor with a single instruction, eliminating the need for multiple producer warps.</p>
+<p><strong>Key findings:</strong></p>
+<ul>
+<li><strong>Similar patterns</strong>: Generally follows <code>cp.async</code> behavior but with lower absolute performance.</li>
+<li><strong>Limited small-chunk performance</strong>: For 512B chunks, peak utilization is only 9.1%.</li>
+<li><strong>Stage limitation mystery</strong>: Having more than 2 stages doesn&rsquo;t help much, even when clearly under-utilizing bandwidth. This suggests the TMA unit has an implicit internal window for processing requests, so issuing more than 2 TMA requests doesn&rsquo;t improve bandwidth.</li>
+</ul>
+<h2 id="theoretical-analysis">Theoretical Analysis</h2>
+<p>Let&rsquo;s do some back-of-envelope calculations to check our results. With 2GHz frequency, 5.6TB/s L2 bandwidth, and 170 cores:</p>
+<ul>
+<li>Bandwidth per core per cycle: 5.6TB/s ÷ 2GHz ÷ 170 = 16.47B</li>
+<li>Assuming typical 300-cycle latency: We need 4.8kB in-flight requests to saturate bandwidth</li>
+</ul>
+<p>There&rsquo;s still some gap between theory and measurement, but this provides a reasonable first-order approximation.</p>
+<h2 id="key-takeaway-coarse-grained-access-is-more-efficient">Key Takeaway: Coarse-Grained Access is More Efficient</h2>
+<p>Beyond using these numbers as a reference for understanding program performance or estimating achievable bandwidth before writing kernels, the biggest takeaway is clear: <strong>while GPUs provide fine-grained abstractions (threads, byte loads), it&rsquo;s far more efficient to orchestrate data movement in coarse-grained chunks (2-4kB)</strong>.</p>
+<p>We already see this principle in action across modern GPU kernels:</p>
+<ul>
+<li>Tile-based GEMM implementations</li>
+<li>Flash-attention algorithms</li>
+<li>Many large language model kernels</li>
+</ul>
+<p>Keep this in mind when adapting new algorithms for GPU - prioritize larger access granularities over fine-grained operations.</p>
+<hr>
+<p><em>Full code available on <a href="https://github.com/seanzw/random/tree/main/tma_bw">GitHub</a>. Feel free to test your own GPU and submit results via pull request!</em></p>
+<div style="text-align: center;">
+  <img src="/img/gpu_bw/5090_gpu_bw_result.png" alt="GPU Bandwidth" style="width: 100%;"/>
+</div>
+
+</main>
+
+  <footer>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<script src="//cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/auto-render.min.js,npm/@xiee/utils/js/render-katex.js" defer></script>
+
+<script src="//cdn.jsdelivr.net/npm/@xiee/utils/js/center-img.min.js" defer></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-CTVHZGKZQ0"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-CTVHZGKZQ0');
+        }
+      </script>
+  
+  <hr/>
+  © <a href="https://seanzw.github.io">Zhengrong Wang</a> 2025 | <a href="https://github.com/seanzw">Github</a> | Enjoy it!
+  
+  </footer>
+  </body>
+</html>
+

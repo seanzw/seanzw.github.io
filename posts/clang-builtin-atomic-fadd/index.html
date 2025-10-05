@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create New Clang Builtin: Atomic FAdd | Zhengrong Wang</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/publications/">Publications</a></li>
+      
+      <li><a href="/posts/">Blog</a></li>
+      
+      <li><a href="/random/">Random</a></li>
+      
+      <li><a href="/recruiting/">Recruiting</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Create New Clang Builtin: Atomic FAdd</span></h1>
+
+<h2 class="date">2020/05/29</h2>
+</div>
+
+<main>
+<h2 id="builtin-function-in-clang">Builtin Function in Clang</h2>
+<p>Similar to gcc, clang provides many useful builtin functions, e.g. __atomic_fetch_add() series to specify atomic operation and memory order
+requirement, but programmers (you) always want something more :) Recently, I have this problem of write code for floating point atomic
+operations, e.g. addition. I found these information:</p>
+<ul>
+<li><code>std::atomic&lt;&gt;</code> provides a <code>fetch_add()</code> for integer and pointer types, but floating point versions are defined in <code>C++20</code>, and my clang 10 has
+not supported it yet. Therefore, I can not specify an atomic floating point addtion in native C++ (yet).</li>
+<li>Compilers (gcc and clang) provide a bunch of <code>__atomic_xx</code> builtin functions, which are used to implement <code>std::atomic&lt;&gt;</code>. Of course, these builtins have no floating point versions.</li>
+<li>On the other hand, LLVM has <code>atomicrmw</code> instruction, which allows the operation to be floating point addition (<code>fadd</code>). On my x86 machine, an
+<code>atomicrmw fadd</code> is compiled into a small compare-exchange loop in assembly code.</li>
+</ul>
+<p>One may wonder what is the point to express in <code>atomicrmw fadd</code> when the hardware has no support for it. You can write your own
+compare-exchange loop in C++ or with inline assembly. Well, a single <code>atomicrmw</code> instruction makes it much simpler to compiler analysis in LLVM
+IR than a loop. However, clang does not support inline &ldquo;LLVM IR&rdquo;. To compile into a single <code>atomicrmw</code> instruction, I had to add a new clang builtin <code>__atomic_fetch_fadd()</code>, which is self-explainatory.</p>
+<p>Before diving into the details, notice that I use clang 10 and have not tested for other versions.</p>
+<h2 id="declare-our-new-builtin">Declare our New Builtin</h2>
+<p>Thanks to tablegen, it is straightforward to declare a new builtin function. Add this to <code>clang/include/clang/Basic/Builtins.def</code>:</p>
+<pre><code>ATOMIC_BUILTIN(__atomic_fetch_fadd, &quot;v.&quot;, &quot;t&quot;)
+</code></pre>
+<p>Here <code>v.</code> specifies the function signature to <code>void(...)</code>, and <code>t</code> means using special type-check rules. Details can be found in the comment.</p>
+<h2 id="pass-the-semantic-check">Pass the Semantic Check</h2>
+<p>Clang checks that atomic builtins have correct integer types, which is not true for our <code>__atomic_fetch_fadd</code>. You can find this in
+<code>clang/lib/Sema/SemaChecking.cpp</code>:</p>
+<pre><code class="language-cpp">if (IsAddSub &amp;&amp; !ValType-&gt;isIntegerType() &amp;&amp; !ValType-&gt;isPointerType()) {
+    Diag(ExprRange.getBegin(), diag::err_atomic_op_needs_atomic_int_or_ptr)
+        &lt;&lt; IsC11 &lt;&lt; Ptr-&gt;getType() &lt;&lt; Ptr-&gt;getSourceRange();
+    return ExprError();
+}
+</code></pre>
+<p>It is actually easy to extend this for <code>__atomic_fetch_fadd</code>. I will not bother you with the details here.</p>
+<h2 id="code-generation">Code Generation</h2>
+<p>Next we come to code generation. But before that, clang assumes integer type for atomic builtins, and casts all operands and return values to
+integer type. We have to fix that first, and then specify the operation to <code>fadd</code>. Again you can check the patch for source code.</p>
+<h2 id="try-it">Try It!</h2>
+<p>Finally, let&rsquo;s try some code! Here is a sample c code:</p>
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+float v = 0.0f, u = 0.0f;
+
+int main() {
+#pragma omp parallel for
+  for (int i = 0; i &lt; 10000; i++) {
+    __atomic_fetch_fadd(&amp;v, 1.0f, __ATOMIC_RELAXED);
+    u += 1.0f;
+  }
+  printf(&quot;Final value v = %f, u = %f.\n&quot;, v, u);
+  return 0;
+}
+</code></pre>
+<p>Compile and check the LLVM IR:</p>
+<pre><code class="language-bash">&gt; clang test.c -fopenmp -O3 -emit-llvm -S -o test.ll
+&gt; cat test.ll | grep &quot;atomicrmw&quot;
+  %22 = atomicrmw fadd float* @v, float 1.000000e+00 monotonic
+</code></pre>
+<p>Finally, compile into binary and run.</p>
+<pre><code class="language-bash">&gt; clang test.ll -fopenmp -O3 -o test
+&gt; ./test
+Final value v = 10000.000000, u = 2500.000000.
+</code></pre>
+<p>The result is correct. You can check the assembly code to see how <code>atomicrmw fadd</code> is compiled on your machine.</p>
+<h2 id="patch">Patch</h2>
+<p>Here is the <a href="atomic_fadd.patch">patch</a>.</p>
+
+</main>
+
+  <footer>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<script src="//cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/auto-render.min.js,npm/@xiee/utils/js/render-katex.js" defer></script>
+
+<script src="//cdn.jsdelivr.net/npm/@xiee/utils/js/center-img.min.js" defer></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-CTVHZGKZQ0"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-CTVHZGKZQ0');
+        }
+      </script>
+  
+  <hr/>
+  © <a href="https://seanzw.github.io">Zhengrong Wang</a> 2025 | <a href="https://github.com/seanzw">Github</a> | Enjoy it!
+  
+  </footer>
+  </body>
+</html>
+
