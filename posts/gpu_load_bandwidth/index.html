@@ -17,6 +17,8 @@
       
       <li><a href="/publications/">Publications</a></li>
       
+      <li><a href="/teaching/">Teaching</a></li>
+      
       <li><a href="/posts/">Blog</a></li>
       
       <li><a href="/random/">Random</a></li>
@@ -60,7 +62,7 @@ N=\frac{B\times L}{S}
 <p><strong>Key findings:</strong></p>
 <ul>
 <li><strong>Parallelism scales with threads</strong>: The number of in-flight requests largely depends on the number of threads, with each using registers to hold loaded values. Doubling producer warps roughly doubles bandwidth - for 512B chunks, one producer achieves ~206 GB/s while two reach ~400 GB/s.</li>
-<li><strong>Dramatic chunk size effect</strong>: There&rsquo;s a significant jump from 2kB to 4kB chunks. Even with a single producer, 4kB nearly triples bandwidth compared to 2kB (1728 GB/s vs. 598 GB/s). My wild guess is some aggressive hardware coalescing once chunk size exceeds a threshold.</li>
+<li><strong>Dramatic chunk size effect</strong>: There&rsquo;s a significant jump from 2kB to 4kB chunks. With producers producer, 4kB nearly triples bandwidth compared to 2kB (2033 GB/s vs. 653 GB/s). My wild guess is some aggressive hardware coalescing once chunk size exceeds a threshold.</li>
 <li><strong>High resource requirements</strong>: To achieve 80%+ utilization, you need 16 producers each loading 4kB chunks - a substantial thread count.</li>
 </ul>
 <h3 id="asynchronous-load-cpasync">Asynchronous Load (<code>cp.async</code>)</h3>

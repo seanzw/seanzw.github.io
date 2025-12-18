@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Teachings on Zhengrong Wang</title>
+    <link>http://localhost:1313/teaching/</link>
+    <description>Recent content in Teachings on Zhengrong Wang</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 05 Oct 2025 16:32:45 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/teaching/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Teaching</title>
+      <link>http://localhost:1313/teaching/teaching/</link>
+      <pubDate>Sun, 05 Oct 2025 16:32:45 +0800</pubDate>
+      <guid>http://localhost:1313/teaching/teaching/</guid>
+      <description>&lt;ul&gt;&#xA;&lt;li&gt;CENG 3420 Computer Organization &amp;amp; Design: &lt;a href=&#34;../CENG-3420/CENG-3420-2026-spring&#34;&gt;2026 Spring&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>CENG 3420 Computer Organization &amp; Design, 2026 Spring</title>
+      <link>http://localhost:1313/teaching/ceng-3420/ceng-3420-2026-spring/</link>
+      <pubDate>Sun, 05 Oct 2025 16:30:22 +0800</pubDate>
+      <guid>http://localhost:1313/teaching/ceng-3420/ceng-3420-2026-spring/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
