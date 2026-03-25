@@ -70,6 +70,7 @@ H17:30–18:15      Venue: SC L1</p>
 <li>Introduction to Computing Systems: From bits &amp; gates to C &amp; beyond, 3rd Edition (<a href="https://a.co/d/5eeeBqd">amazon.com</a>, <a href="https://item.jd.com/12745173.html">JD.com</a>)</li>
 <li>Computer Architecture: A Quantitative Approach, 5th Edition (<a href="https://www.amazon.com/Computer-Architecture-Fifth-Edition-Quantitative/dp/012383872X">amazon.com</a>, <a href="https://item.jd.com/12553439.html">JD.com</a>)</li>
 <li><a href="../../../asset/riscv/riscv-card.pdf">RV32 Reference</a> and <a href="../../../asset/riscv/riscv-unprivileged.pdf">RV32I Base Integer Instruction Set Manual</a> (See Chapter 2).</li>
+<li><strong>Erratum</strong>: the above RV32 Reference lists <code>ra</code> as callee saved register. By RISC-V standard, <code>ra</code> is classified as caller saved register. But in practice, the callee have to save <code>ra</code> before it uses it, e.g., calling another function. So <code>ra</code> behaves like a callee saved register.</li>
 <li><a href="../../../asset/ceng-3420/windows2server-v2.pdf">How to access Linux server from Windows</a></li>
 <li><a href="../../../asset/ceng-3420/lab1-report-template.pdf">Lab 1 report template</a></li>
 </ul>
