@@ -231,80 +231,80 @@ Let&rsquo;s see if we can understand these numbers:</p>
 </ul>
 <h4 id="model-size-weights">Model Size (Weights)</h4>
 <table>
-  <thead>
-      <tr>
-          <th>Stage</th>
-          <th>Weight Dim</th>
-          <th>Num Elem</th>
-          <th>Tensor Flop</th>
-          <th>Tensor Flop</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>Generate Q</td>
-          <td>\([D, D_hN]\)</td>
-          <td>64Mi</td>
-          <td>\(2SD^2\)</td>
-          <td>1T</td>
-      </tr>
-      <tr>
-          <td>Generate K</td>
-          <td>\([D, D_hG]\)</td>
-          <td>8Mi</td>
-          <td>\(2SDD_hG\)</td>
-          <td>128M</td>
-      </tr>
-      <tr>
-          <td>Generate V</td>
-          <td>\([D, D_hG]\)</td>
-          <td>8Mi</td>
-          <td>\(2SDD_hG\)</td>
-          <td>128M</td>
-      </tr>
-      <tr>
-          <td>Attention Out</td>
-          <td>\([D, D]\)</td>
-          <td>64Mi</td>
-          <td>\(2SD^2\)</td>
-          <td>1T</td>
-      </tr>
-      <tr>
-          <td>Swish-GLU FFN \(W_1\)</td>
-          <td>\([D, D_{up}]\)</td>
-          <td>256Mi</td>
-          <td>\(2SDD_{up}\)</td>
-          <td>4T</td>
-      </tr>
-      <tr>
-          <td>Swish-GLU FFN \(W_2\)</td>
-          <td>\([D, D_{up}]\)</td>
-          <td>256Mi</td>
-          <td>\(2SDD_{up}\)</td>
-          <td>4T</td>
-      </tr>
-      <tr>
-          <td>Swish-GLU FFN \(W_3\)</td>
-          <td>\([D_{up}, D]\)</td>
-          <td>256Mi</td>
-          <td>\(2SDD_{up}\)</td>
-          <td>4T</td>
-      </tr>
-      <tr>
-          <td>One Layer</td>
-          <td></td>
-          <td>912Mi</td>
-          <td></td>
-          <td>14.25T</td>
-      </tr>
-      <tr>
-          <td>All</td>
-          <td></td>
-          <td>72960Mi</td>
-          <td></td>
-          <td>1140T</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>Stage</th>
+					<th>Weight Dim</th>
+					<th>Num Elem</th>
+					<th>Tensor Flop</th>
+					<th>Tensor Flop</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Generate Q</td>
+					<td>\([D, D_hN]\)</td>
+					<td>64Mi</td>
+					<td>\(2SD^2\)</td>
+					<td>1T</td>
+			</tr>
+			<tr>
+					<td>Generate K</td>
+					<td>\([D, D_hG]\)</td>
+					<td>8Mi</td>
+					<td>\(2SDD_hG\)</td>
+					<td>128M</td>
+			</tr>
+			<tr>
+					<td>Generate V</td>
+					<td>\([D, D_hG]\)</td>
+					<td>8Mi</td>
+					<td>\(2SDD_hG\)</td>
+					<td>128M</td>
+			</tr>
+			<tr>
+					<td>Attention Out</td>
+					<td>\([D, D]\)</td>
+					<td>64Mi</td>
+					<td>\(2SD^2\)</td>
+					<td>1T</td>
+			</tr>
+			<tr>
+					<td>Swish-GLU FFN \(W_1\)</td>
+					<td>\([D, D_{up}]\)</td>
+					<td>256Mi</td>
+					<td>\(2SDD_{up}\)</td>
+					<td>4T</td>
+			</tr>
+			<tr>
+					<td>Swish-GLU FFN \(W_2\)</td>
+					<td>\([D, D_{up}]\)</td>
+					<td>256Mi</td>
+					<td>\(2SDD_{up}\)</td>
+					<td>4T</td>
+			</tr>
+			<tr>
+					<td>Swish-GLU FFN \(W_3\)</td>
+					<td>\([D_{up}, D]\)</td>
+					<td>256Mi</td>
+					<td>\(2SDD_{up}\)</td>
+					<td>4T</td>
+			</tr>
+			<tr>
+					<td>One Layer</td>
+					<td></td>
+					<td>912Mi</td>
+					<td></td>
+					<td>14.25T</td>
+			</tr>
+			<tr>
+					<td>All</td>
+					<td></td>
+					<td>72960Mi</td>
+					<td></td>
+					<td>1140T</td>
+			</tr>
+	</tbody>
 </table>
 <p>Since \(72960Mi\approx 76\times 10^9=76B\), we now know
 why it is called <code>llama3-70B</code>.</p>
@@ -319,34 +319,34 @@ about ~0.86s to finish all these computation. LLM is expensive!</li>
 </ul>
 <h4 id="to-summarize">To Summarize:</h4>
 <table>
-  <thead>
-      <tr>
-          <th>Stage</th>
-          <th>Matrix Flop</th>
-          <th>Read</th>
-          <th>Write</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>QKV</td>
-          <td>\(6\times BS(ND)^2\)</td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td>Multi-Head Atten.</td>
-          <td>\(2\times BSND(2S+ND)\)</td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td>FFN</td>
-          <td>\(4\times BSN^2DD_{up}\)</td>
-          <td></td>
-          <td></td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>Stage</th>
+					<th>Matrix Flop</th>
+					<th>Read</th>
+					<th>Write</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>QKV</td>
+					<td>\(6\times BS(ND)^2\)</td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>Multi-Head Atten.</td>
+					<td>\(2\times BSND(2S+ND)\)</td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>FFN</td>
+					<td>\(4\times BSN^2DD_{up}\)</td>
+					<td></td>
+					<td></td>
+			</tr>
+	</tbody>
 </table>
 <p>For example: when \(B=4,S=4096,N=1,D=128, D_{up}=512\), we have:</p>
 <ul>
@@ -497,9 +497,9 @@ k^R=[k^R_0,...,k^R_{N_R}]=\mathrm{RoPE}(W^{KR}h)
 </code></pre>
 <!-- ![MLA](/img/transformer/deepseek-mla.png) -->
 <!-- <figure><img src="/img/transformer/deepseek-mla.png"
-    alt="DeepSeek-V3 MLA Architecture" width="70%"><figcaption>
-      <p>DeepSeek-V3 MLA Architecture</p>
-    </figcaption>
+			alt="DeepSeek-V3 MLA Architecture" width="70%"><figcaption>
+			<p>DeepSeek-V3 MLA Architecture</p>
+		</figcaption>
 </figure>
  -->
 

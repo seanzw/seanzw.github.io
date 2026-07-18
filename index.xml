@@ -1,138 +1,143 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Home on Zhengrong Wang</title>
-    <link>https://seanzw.github.io/</link>
-    <description>Recent content in Home on Zhengrong Wang</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 04 Oct 2025 15:40:28 +0800</lastBuildDate>
-    <atom:link href="https://seanzw.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>How well does GPU saturate bandwidth?</title>
-      <link>https://seanzw.github.io/posts/gpu_load_bandwidth/</link>
-      <pubDate>Sat, 04 Oct 2025 15:40:28 +0800</pubDate>
-      <guid>https://seanzw.github.io/posts/gpu_load_bandwidth/</guid>
-      <description>&lt;p&gt;As a computer architect, bandwidth and compute throughput are key metrics for understanding hardware capability and finding system bottlenecks. While implementing a fused GNN kernel, I started wondering: &lt;strong&gt;How well can GPUs saturate available memory bandwidth?&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;More specifically: Given a fixed access granularity (determined by the workload), can we saturate the available data bandwidth? From computer organization fundamentals, the number of in-flight requests &lt;em&gt;N&lt;/em&gt; needed to saturate bandwidth &lt;em&gt;B&lt;/em&gt; with latency &lt;em&gt;L&lt;/em&gt; and request size &lt;em&gt;S&lt;/em&gt; is:&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>From Weeks to $0.01: Automating Analysis with RAG</title>
-      <link>https://seanzw.github.io/posts/simple-document-rag/</link>
-      <pubDate>Sun, 06 Jul 2025 22:09:01 +0800</pubDate>
-      <guid>https://seanzw.github.io/posts/simple-document-rag/</guid>
-      <description>&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;&#xA;&lt;!-- Recently, my friend came across a job to analyze&#xA;many public listed companies&#39; effort to handle ESG&#xA;(environment, sustainability, governance).&#xA;Specifically, based on its released report,&#xA;the company is evaluated on various dimension, e.g.&#xA;whether it tracks and releases its greenhouse gas emission&#xA;in a timely fashion, whether it sets the target to&#xA;tackle climate-related challenges in various time horizon, etc.&#xA;&#xA;In previous years, they simply recruited some interns,&#xA;each handling a subset of the companies and cross-check&#xA;each other&#39;s answer. The research associates (my friend&#xA;and the colleagues) performed a final check. Clearly, this&#xA;is time-consuming and error-pruning, as different people may&#xA;have different opinions (hence cross-checking). --&gt;&#xA;&lt;p&gt;When my friend described her team&amp;rsquo;s annual ritual of analyzing corporate ESG reports, I understood why she was desperate for change. For years, interns manually scanned hundreds of PDF pages to answer precise questions: Does the company track all emission scopes? Have they set quantifiable 2030 decarbonization targets? The process consumed weeks as they cross-checked interpretations while research associates verified results.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Understanding Transformer as A Computer Architect</title>
-      <link>https://seanzw.github.io/posts/note-on-transformer-flops/</link>
-      <pubDate>Sun, 02 Mar 2025 22:42:20 +0800</pubDate>
-      <guid>https://seanzw.github.io/posts/note-on-transformer-flops/</guid>
-      <description>&lt;h1 id=&#34;understanding-transformer-decoder&#34;&gt;Understanding Transformer Decoder&lt;/h1&gt;&#xA;&lt;p&gt;I have been extremly late to the party of transformer,&#xA;and here is my note on understanding the flops, data&#xA;movements, compute intensity, etc.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Note: For simplicity, I omit the data type for now.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;decoder-only-transformer&#34;&gt;Decoder-Only Transformer&lt;/h2&gt;&#xA;&lt;p&gt;Let&amp;rsquo;s start with something simple: a decoder-only transformer.&#xA;Also, we skip the initial step to map token into the dictionary&#xA;space with positionary encoding. If we look at a single layer&#xA;of the decoder architecture, it contains three parameters:&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Benchmarking GEMM on Modern CPU</title>
-      <link>https://seanzw.github.io/posts/evaluate-gemm-on-epyc/</link>
-      <pubDate>Wed, 30 Aug 2023 19:32:14 -0700</pubDate>
-      <guid>https://seanzw.github.io/posts/evaluate-gemm-on-epyc/</guid>
-      <description>&lt;p&gt;Recently I got interested to understand what&amp;rsquo;s&#xA;the actual performance of GEMM on modern CPUs.&#xA;We all understand that GEMM is the backbone for&#xA;many critical applications and can never emphasize&#xA;enough how important to optimize it. That being&#xA;said, I never had a good first-hand experience&#xA;on benchmarking GEMM on modern CPUs, and here I am.&lt;/p&gt;&#xA;&lt;p&gt;We know that Intel has the famous MKL library that&#xA;is mainly optimized for Intel&amp;rsquo;s CPU (of course), and&#xA;there are open-sourced third party library such as&#xA;OpenBLAS (come with &lt;code&gt;numpy&lt;/code&gt; if you install using&#xA;&lt;code&gt;pip&lt;/code&gt;). However, what&amp;rsquo;s our choice for AMD architectures?&#xA;It turns out they also have their own optimized&#xA;library &amp;ndash; AOCL (AMD Optmized CPU Library). And&#xA;even better, AOCL is open-sourced (unlike MKL).&#xA;Let&amp;rsquo;s start our journey now.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Bring AVX Support to Gem5</title>
-      <link>https://seanzw.github.io/posts/gem5-avx/</link>
-      <pubDate>Sun, 20 Dec 2020 20:16:06 -0800</pubDate>
-      <guid>https://seanzw.github.io/posts/gem5-avx/</guid>
-      <description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/seanzw/gem5-avx&#34;&gt;gem5-avx&lt;/a&gt; brings partial&#xA;AVX2 and AVX-512 support to gem5. Feel free to use it for your&#xA;research at your own risk. There is a short guide on how to add&#xA;new instructions at the end of this post. Issues and pull requests&#xA;are welcome!&lt;/p&gt;&#xA;&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;&#xA;&lt;p&gt;During my research this year, I had to implement AVX2 and AVX-512 in&#xA;gem5, as I could not find a good online. Eventually I had a partial&#xA;implementation which works for the workloads I looked into. Luckily,&#xA;the paper gets published in this year&amp;rsquo;s HPCA, and I have already&#xA;released the code for that project: &lt;a href=&#34;https://github.com/PolyArch/gem-forge-framework/&#34;&gt;gem-forge&lt;/a&gt;.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>GEM5 O3 CPU Backend</title>
-      <link>https://seanzw.github.io/posts/gem5-o3-backend/</link>
-      <pubDate>Fri, 03 Jul 2020 12:14:04 -0700</pubDate>
-      <guid>https://seanzw.github.io/posts/gem5-o3-backend/</guid>
-      <description>&lt;p&gt;This is my note on reading GEM5&amp;rsquo;s O3 cpu backend. I could not find a&#xA;good document online, and the code is a little bit entangled and tricky&#xA;to understand. So here I would extract the key function chain to show&#xA;how an instruction is handled by the backend.&lt;/p&gt;&#xA;&lt;p&gt;Hopefully this could help more people. I assume you are already familiar&#xA;with GEM5.&lt;/p&gt;&#xA;&lt;h2 id=&#34;compute-instructions&#34;&gt;Compute Instructions&lt;/h2&gt;&#xA;&lt;p&gt;Compute instructions are simpler as they do not access memory and&#xA;not interact with the LSQ. It is actually pretty straightforward and&#xA;here is a high-level description.&#xA;I first show the calling chain (only important&#xA;functions), and then describe its functionality.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Simulating SPEC2017 on GEM5</title>
-      <link>https://seanzw.github.io/posts/gem5-spec2017/</link>
-      <pubDate>Wed, 11 Mar 2020 14:19:34 -0700</pubDate>
-      <guid>https://seanzw.github.io/posts/gem5-spec2017/</guid>
-      <description>&lt;h1 id=&#34;brief-note-on-simulating-spec2017-on-gem5&#34;&gt;Brief Note on Simulating SPEC2017 on GEM5&lt;/h1&gt;&#xA;&lt;p&gt;This is a brief note on how to simulate SPEC2017 on gem5. SPEC2017 has complicated compile scripts. The basic workflow is to compile it, do a fake run to get the&#xA;arguments for the binary, and finally simulate it in gem5. This is by no means the official instructions or guaranteed to work on your machine.&#xA;You can also follow the instructions on the official website of SPEC2017.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Swap Ctrl and Cap</title>
-      <link>https://seanzw.github.io/posts/swap-ctrl-cap/</link>
-      <pubDate>Fri, 13 Sep 2019 10:30:04 -0700</pubDate>
-      <guid>https://seanzw.github.io/posts/swap-ctrl-cap/</guid>
-      <description>&lt;p&gt;I find it very convenient to swap the control and cap lock key. And here is how I achieve this in the OS I am using.&lt;/p&gt;&#xA;&lt;h3 id=&#34;ubuntu-1604&#34;&gt;Ubuntu 16.04&lt;/h3&gt;&#xA;&lt;p&gt;Somehow the &lt;code&gt;gnome-tweak-tool&lt;/code&gt; is not working in my case. I am using the following command line and it works like magic.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;/usr/bin/setxkbmap -option &amp;quot;ctrl:swapcaps&amp;quot;&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
-    </item>
-    <item>
-      <title>Extend RISC-V ISA with Matrix Multiply</title>
-      <link>https://seanzw.github.io/posts/risc-v-isa-extension/</link>
-      <pubDate>Fri, 28 Jun 2019 14:55:52 -0700</pubDate>
-      <guid>https://seanzw.github.io/posts/risc-v-isa-extension/</guid>
-      <description>&lt;p&gt;Many computer architecture students will eventually add some new (useless)&#xA;instructions to a ISA, and there are many great tutorial on how to do this. This is&#xA;yet another notes on my struggling to extend RISC-V with a new matrix multiply&#xA;instruction. The overall goal is to add a new functional unit in a general purpose&#xA;processor to do a 4x4 matrix multiply accumulate with single-precision&#xA;floating-point.&lt;/p&gt;&#xA;&lt;p&gt;The &lt;a href=&#34;https://content.riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf&#34;&gt;Manual&lt;/a&gt; has a very detailed explanation on what ISA encoding is reserved for such non-standard extension (see ch.21). Basially any instruction with a prefix (starting from LSB) &lt;code&gt;00 010 11&lt;/code&gt; or &lt;code&gt;01 010 11&lt;/code&gt; is reserved.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Setup This Website with Hugo</title>
-      <link>https://seanzw.github.io/posts/setting-up-this/</link>
-      <pubDate>Fri, 29 Mar 2019 15:41:55 -0700</pubDate>
-      <guid>https://seanzw.github.io/posts/setting-up-this/</guid>
-      <description>&lt;p&gt;After 2 years with my previous dummy personal website, I was urged to create a better one. After some googling, I made this tiny website using &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;. Here are some notes for a n00b in front-end like me.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Make sure you download the &lt;strong&gt;extended&lt;/strong&gt; version of Hugo. Otherwise you won&amp;rsquo;t have support for SASS and SCSS (I have no idea what these are). Just scroll down in the &lt;a href=&#34;https://github.com/gohugoio/hugo/releases&#34;&gt;release page&lt;/a&gt; and you will find it.&lt;/li&gt;&#xA;&lt;li&gt;Create a new post with &lt;code&gt;hugo new posts/awesome-post.md&lt;/code&gt;.&lt;/li&gt;&#xA;&lt;li&gt;After you created some post, make sure to modify the &lt;strong&gt;draft&lt;/strong&gt; field to &lt;strong&gt;false&lt;/strong&gt;. Otherwise you will get a 404 in blog and spend half an hour wondering why.&lt;/li&gt;&#xA;&lt;li&gt;You can use icon from &lt;a href=&#34;https://fontawesome.com/&#34;&gt;Font Awesome&lt;/a&gt; by &lt;code&gt;&amp;lt;i class=&amp;quot;fab fa-github&amp;quot;&amp;gt;&amp;lt;/i&amp;gt;&lt;/code&gt;. And always remember that you can embed HTML directly in the markdown. This is a nice workaround if you can not get what you want from markdown.&lt;/li&gt;&#xA;&lt;li&gt;Use &lt;code&gt;hugo server&lt;/code&gt; to start the server. It will automatically detect any changes in the folder and rerender the website.&lt;/li&gt;&#xA;&lt;li&gt;This &lt;a href=&#34;https://gohugo.io/hosting-and-deployment/hosting-on-github/&#34;&gt;tutorial&lt;/a&gt; shows how to user Hugo with GitHub pages. Basically they are using git submodule.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;I hope this is useful someday.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>https://seanzw.github.io/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://seanzw.github.io/about/</guid>
-      <description>&lt;h1 id=&#34;about-zhengrong-wang&#34;&gt;About Zhengrong Wang&lt;/h1&gt;&#xA;&lt;p&gt;I am currently an assistant professor at CSE Department, The Chinese University of Hong Kong.&#xA;I am generally interested in developing high performance computer architecture for both general and domain specific computing with compiler support. I am also looking into how to accurately and efficiently model and simulate current architectures.&lt;/p&gt;&#xA;&lt;p&gt;I obtained my Ph.D. from UCLA, working with &lt;a href=&#34;http://web.cs.ucla.edu/~tjn/&#34;&gt;Prof. Tony Nowatzki&lt;/a&gt;.&#xA;Prior joining UCLA, I received Bachelor of Engineering from Department of Electronic Enginerring, Tsinghua University. I also studied at ETH Zürich for half a year as a exhange student.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>https://seanzw.github.io/courses/ceng-3420/2026-spring/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://seanzw.github.io/courses/ceng-3420/2026-spring/</guid>
-      <description>&lt;h1 id=&#34;ceng-3420-computer-organization--design-2026-spring&#34;&gt;CENG 3420 Computer Organization &amp;amp; Design, 2026 Spring&lt;/h1&gt;&#xA;&lt;p&gt;&lt;strong&gt;Lecture 01:&lt;/strong&gt;    &#xA;M09:30–11:15      Venue: LSB LT1&lt;br&gt;&#xA;&lt;strong&gt;Lecture 02:&lt;/strong&gt;    &#xA;W11:30–12:15      Venue: ERB LT&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Tutorial 01:&lt;/strong&gt;     &#xA;H16:30–17:15      Venue: SC L1&lt;br&gt;&#xA;&lt;strong&gt;Tutorial 02:&lt;/strong&gt;     &#xA;H17:30–18:15      Venue: SC L1&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Instructor:&lt;/strong&gt;      Prof. Zhengrong Wang      &lt;a href=&#34;mailto:zhengrongwang@cuhk.edu.hk&#34;&gt;zhengrongwang@cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Tutors:&lt;/strong&gt;&lt;br&gt;&#xA;    Fangzhou Liu      &lt;a href=&#34;mailto:fzliu23@cse.cuhk.edu.hk&#34;&gt;fzliu23@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Jiahao Xu      &lt;a href=&#34;mailto:jhxu24@cse.cuhk.edu.hk&#34;&gt;jhxu24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Yifan Shi      &lt;a href=&#34;mailto:yfshi24@cse.cuhk.edu.hk&#34;&gt;yfshi24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Libo Shen      &lt;a href=&#34;mailto:lbshen24@cse.cuhk.edu.hk&#34;&gt;lbshen24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Xiaoman Yang      &lt;a href=&#34;mailto:xmyang25@cse.cuhk.edu.hk&#34;&gt;xmyang25@cse.cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;&#xA;&lt;p&gt;This course provides an introduction to computer organization. The objective is to introduce the major components of a computer system, how they function together in executing a program, and the organizational paradigms that determine the capabilities, performance and power of computer systems.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>https://seanzw.github.io/projects/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://seanzw.github.io/projects/</guid>
-      <description>&lt;h1 id=&#34;projects---no-research-just-for-fun&#34;&gt;Projects - No Research Just for Fun&lt;/h1&gt;&#xA;&lt;h3 id=&#34;yart-yet-another-ray-tracer&#34;&gt;Yart-Yet Another Ray Tracer &lt;a href=https://github.com/seanzw/yart-cpp&gt;&lt;i class=&#34;fab fa-github&#34;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;Yart is a simple but powerful ray tracer engine. It reads in a scene description file and parses it. Then it renders the scene and prints the output image. For objects, it supports sphere and triangle mesh. For material, Lambertian, Specular, Refraction and Cook-Torrance BSDF are implemented. To solve the light equation, it can use either direct lighting or bidirectional path tracing. To accelerate the computation, multiple threads and OC-Tree are used.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>https://seanzw.github.io/publications/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://seanzw.github.io/publications/</guid>
-      <description>&lt;h1 id=&#34;publications&#34;&gt;Publications&lt;/h1&gt;&#xA;&lt;p&gt;Siyuan Ma, Kaustubh Mhatre, Jian Weng, Bagus Hanindhito, &lt;strong&gt;Zhengrong Wang&lt;/strong&gt;, Tony Nowatzki, Lizy John, Aman Arora&lt;br&gt;&#xA;&lt;a href=&#34;https://dl.acm.org/doi/full/10.1145/3690824&#34;&gt;PIMSAB: A Processing-In-Memory System with Spatially-Aware Communication and Bit-Serial-Aware Computation&lt;/a&gt;&lt;br&gt;&#xA;2024 ACM Transactions on Architecture and Code Optimization (TACO).&lt;/p&gt;&#xA;&lt;p&gt;Shizhuo Zhu, Illia Shkirko, Jacob Levinson, &lt;strong&gt;Zhengrong Wang&lt;/strong&gt;, Tony Nowatzki&lt;br&gt;&#xA;&lt;a href=&#34;https://dl.acm.org/doi/10.1109/LCA.2024.3499339&#34;&gt;SPGPU: Spatially Programmed GPU&lt;/a&gt;&lt;br&gt;&#xA;2024 IEEE Computer Architecture Letters (CAL).&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Zhengrong Wang&lt;/strong&gt;, Christopher Liu, Nathan Beckmann, Tony Nowatzki&lt;br&gt;&#xA;&lt;a href=&#34;&#34;&gt;Affinity Alloc: Taming &lt;del&gt;Not-So&lt;/del&gt; Near-Data Computing&lt;/a&gt;&#xA;[&lt;a href=&#34;https://seanzw.github.io/pub/micro2023-affinity-alloc.pdf&#34;&gt;pdf&lt;/a&gt;]&#xA;[&lt;a href=&#34;https://seanzw.github.io/pub/micro2023-affinity-alloc-slides.pdf&#34;&gt;slides&lt;/a&gt;]&#xA;[&lt;a href=&#34;https://seanzw.github.io/pub/micro2023-affinity-alloc-slides.pptx&#34;&gt;pptx&lt;/a&gt;]&lt;br&gt;&#xA;2023 ACM/IEEE 56th International Symposium on Microarchitecture (MICRO).&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>https://seanzw.github.io/random/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://seanzw.github.io/random/</guid>
-      <description>&lt;h1 id=&#34;interesting-stuff-on-random-topic&#34;&gt;Interesting Stuff on Random Topic&lt;/h1&gt;&#xA;&lt;h4 id=&#34;gpu-related&#34;&gt;GPU related&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/NVIDIA/cutlass/blob/main/media/docs/cpp/cute/01_layout.md&#34;&gt;Cute documentation&lt;/a&gt; on layout algebra.&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/1941306442683515068&#34;&gt;A Chinese post&lt;/a&gt; from &lt;code&gt;melonedo&lt;/code&gt; helpful to understanding swizzling&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/seanzw/random/tree/main/tma_bw&#34;&gt;Scripts&lt;/a&gt; I used to measure GPU L2 bandwidth.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;other&#34;&gt;Other&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Some &lt;a href=&#34;https://seanzw.github.io/projects&#34;&gt;random projects&lt;/a&gt; I did for fun during my undergraduate.&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>https://seanzw.github.io/recruiting-cn/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://seanzw.github.io/recruiting-cn/</guid>
-      <description>&lt;!-- ---&#xA;title: &#34;招生信息&#34;&#xA;date: 2025-09-07T12:54:42+08:00&#xA;draft: false&#xA;--- --&gt;&#xA;&lt;h2 id=&#34;招生信息&#34;&gt;招生信息&lt;/h2&gt;&#xA;&lt;p&gt;我正在积极寻找有志于加入我实验室的博士生、硕士生、研究实习生和研究助理，开始时间为2026年夏季/秋季。如果您对计算机体系结构研究感兴趣，并有兴趣在香港中文大学进行前沿研究，请阅读以下指南。&lt;/p&gt;&#xA;&lt;h3 id=&#34;关于我&#34;&gt;关于我&lt;/h3&gt;&#xA;&lt;p&gt;我本科毕业于清华大学电子工程系，在加州大学洛杉矶分校(UCLA)计算机科学系获得博士学位，师从Tony Nowatzki教授。&lt;/p&gt;&#xA;&lt;h3 id=&#34;关于我的研究&#34;&gt;关于我的研究&lt;/h3&gt;&#xA;&lt;p&gt;我的研究兴趣广泛涵盖体系结构、微体系结构、编译器以及支持下一代硬件上高需求应用的编程语言，研究成果主要发表在体系结构的顶级会议ISCA，MICRO，HPCA，ASPLOS上。随着技术缩放放缓，复杂应用（特别是大型语言模型）对计算系统提出了越来越高的要求，体系结构正转向针对不同场景定制的专用和异构系统。&lt;/p&gt;&#xA;&lt;p&gt;作为计算机架构研究者，我们的作用不仅仅是设计新硬件——我们必须创建富有表现力的抽象，使丰富的语义能够在整个计算栈中高效传递，从而释放众多协同优化机会。这使我们的领域既关键又极具挑战性，也很有趣。&lt;/p&gt;&#xA;&lt;h3 id=&#34;关于你&#34;&gt;关于你&lt;/h3&gt;&#xA;&lt;p&gt;我的研究涵盖了多样化的技能和专业知识。理想情况下，你应该在以下一个或多个领域有经验：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;强大的编程技能&lt;/strong&gt;：精通C、C++、Python等相关语言&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;硬件仿真和建模&lt;/strong&gt;：具有gem5、GPGPU-Sim或类似工具的经验&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;编译器实现&lt;/strong&gt;：熟悉LLVM、MLIR、clang、GCC或相关框架&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;应用开发&lt;/strong&gt;：在图处理、大型语言模型、计算机视觉或其他高需求应用方面有经验&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;硬件设计和原型&lt;/strong&gt;：了解Verilog、综合工具、FPGA开发或相关硬件设计经验&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;最重要的是，您应该对计算机体系结构研究有真正的热情。当我们深入研究我们的领域时，我们常常发现还有多少东西需要学习，但兴趣是最好的老师。同时，韧性和决心也很重要，因为研究道路很少平坦，需要在挑战中坚持不懈。&lt;/p&gt;&#xA;&lt;h3 id=&#34;关于香港中文大学&#34;&gt;关于香港中文大学&lt;/h3&gt;&#xA;&lt;p&gt;香港中文大学(CUHK)是亚洲顶尖的研究型大学之一，享有全球声誉。学校坐落在山坡上，俯瞰吐露港，为研究和学习提供了鼓舞人心的环境。计算机科学与工程学系在国际上享有盛誉，拥有优秀的研究设施和计算基础设施。香港中文大学提供负担得起的校内住宿（单人间约每月4,000港币，需要抽签但中签概率不低）。香港的战略位置为整个亚洲的合作提供了绝佳机会，旁边就是香港科技园，方便去工业界实习获取一手经验。&lt;/p&gt;&#xA;&lt;h3 id=&#34;申请指南&#34;&gt;申请指南&lt;/h3&gt;&#xA;&lt;p&gt;如需申请，请发送邮件至 &lt;a href=&#34;mailto:zhengrongwang@cuhk.edu.hk&#34;&gt;zhengrongwang@cuhk.edu.hk&lt;/a&gt;，邮件主题为&amp;quot;Apply-{PhD|MPhil|RA|Intern}-{Name}&amp;quot;（例如，&amp;ldquo;Apply-PhD-Zhengrong&amp;rdquo;）。在邮件中，请：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;简要介绍自己和研究兴趣&lt;/li&gt;&#xA;&lt;li&gt;附上简历和学术成绩单&lt;/li&gt;&#xA;&lt;li&gt;解释为什么对计算机体系结构研究和我们实验室感兴趣&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;如果你在CUHK，欢迎在Office Hour（周三下午3-5点）来我办公室进行非正式讨论。&lt;/p&gt;&#xA;&lt;h3 id=&#34;入学流程&#34;&gt;入学流程&lt;/h3&gt;&#xA;&lt;p&gt;关于硕士/博士申请流程的详细信息可在&lt;a href=&#34;https://www.cse.cuhk.edu.hk/admission/mphil-phd/&#34;&gt;此处&lt;/a&gt;找到。2026年入学有三个申请截止日期：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;第一轮&lt;/strong&gt;：2025年10月9日&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;第二轮&lt;/strong&gt;：2026年1月15日&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;第三轮&lt;/strong&gt;：2026年3月31日&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;我鼓励早期申请以确保最佳的录取和奖学金考虑机会。&lt;/p&gt;&#xA;&lt;h3 id=&#34;奖学金和经济支持&#34;&gt;奖学金和经济支持&lt;/h3&gt;&#xA;&lt;p&gt;我实验室的所有博士生都将通过研究奖学金获得全额经济支持（约每月18,000港币）。优秀候选人将被提名申请著名奖项，包括：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;香港博士研究生奖学金计划(HKPFS)&lt;/strong&gt;：约每月28,000港币&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;校长博士奖学金&lt;/strong&gt;：全校范围的竞争性奖项&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;额外的奖学金详情和申请信息可在&lt;a href=&#34;https://www.gs.cuhk.edu.hk/admissions/scholarships-fees/scholarships&#34;&gt;此处&lt;/a&gt;找到。&lt;/p&gt;&#xA;&lt;h3 id=&#34;自我评估问题&#34;&gt;自我评估问题&lt;/h3&gt;&#xA;&lt;p&gt;为了帮助评估自己对计算机体系结构研究的准备程度和兴趣，我整理了一些我在面试中通常会探讨的基本问题。如果你能自信地回答大约70%的这些问题，我相信你对计算机体系结构有真正的热情。如果你发现自己在超过70%的问题上有困难，我可能不是非常合适。但也无所谓，就把这当作一次学习机会：）&lt;/p&gt;&#xA;&lt;h4 id=&#34;编译器和编程系统&#34;&gt;编译器和编程系统&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;程序是如何从源代码转换为二进制可执行文件的？这个过程中的关键阶段是什么？&lt;/li&gt;&#xA;&lt;li&gt;您能描述一些编译器优化技术并解释它们如何提高程序性能吗？&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;计算机体系结构&#34;&gt;计算机体系结构&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;什么是指令集架构(ISA)，为什么它很重要？&lt;/li&gt;&#xA;&lt;li&gt;解释经典的五级流水线及其在处理器设计中的目的。&lt;/li&gt;&#xA;&lt;li&gt;流水线处理器中可能发生哪些类型的冒险，通常如何解决？&lt;/li&gt;&#xA;&lt;li&gt;什么是内存一致性模型，为什么它们在多处理器系统中很重要？&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;性能建模和分析&#34;&gt;性能建模和分析&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;什么是屋顶线模型 (Roofline Model)，如何用它来分析应用程序性能？&lt;/li&gt;&#xA;&lt;li&gt;如何估计工作负载在给定系统上的性能？&lt;/li&gt;&#xA;&lt;li&gt;基于事件和基于周期的仿真有什么区别，什么时候使用哪种？&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;实践知识&#34;&gt;实践知识&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;你的笔记本电脑、台式机或智能手机中的CPU/GPU型号是什么？它们的关键特性是什么？&lt;/li&gt;&#xA;&lt;li&gt;你经历过重大的硬件升级吗？您注意到了什么性能改进？&lt;/li&gt;&#xA;&lt;li&gt;你目前在日常生活或工作中如何使用AI？幕后发生了什么计算过程？&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;当代ai和计算&#34;&gt;当代AI和计算&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;大型语言模型推理中的预填充和解码阶段有什么区别？&lt;/li&gt;&#xA;&lt;li&gt;为什么DeepSeek被认为是AI领域的突破？从系统角度来看，是什么让它如此特别？&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>https://seanzw.github.io/recruiting/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://seanzw.github.io/recruiting/</guid>
-      <description>&lt;!-- ---&#xA;title: &#34;Recruiting&#34;&#xA;date: 2025-0### Application Guidelines&#xA;To apply, please send me an email at zhengrongwang@cuhk.edu.hk with the subject line &#34;Apply-{PhD|MPhil|RA|Intern}-{Your Name}&#34; (for example, &#34;Apply-PhD-Trump&#34;). In your email, please:&#xA;&#xA;- Provide a brief introduction about yourself and your research interests&#xA;- Include your CV and academic transcripts&#xA;- Explain why you are interested in computer architecture research and our lab specifically&#xA;&#xA;If you are already on campus, I welcome you to visit my office during student consultation hours (Wednesdays, 3-5 PM) for an informal discussion about research opportunities.12:54:42+08:00&#xA;draft: false&#xA;--- --&gt;&#xA;&lt;h2 id=&#34;recruiting-中文版&#34;&gt;Recruiting (&lt;a href=&#34;../recruiting-cn&#34;&gt;中文版&lt;/a&gt;)&lt;/h2&gt;&#xA;&lt;p&gt;I am actively seeking motivated Ph.D. students, MPhil students, research interns, and research assistants to join my lab starting Summer/Fall 2026. If you are passionate about computer architecture research and interested in pursuing cutting-edge research at CUHK, please read the guidelines below.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>https://seanzw.github.io/teaching/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://seanzw.github.io/teaching/</guid>
-      <description>&lt;!-- ---&#xA;title: &#34;Teaching&#34;&#xA;date: 2025-10-05T16:32:45+08:00&#xA;draft: false&#xA;--- --&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;CENG 3420 Computer Organization &amp;amp; Design: &lt;a href=&#34;../courses/ceng-3420/2026-spring&#34;&gt;2026 Spring&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>Home on Zhengrong Wang</title>
+		<link>https://seanzw.github.io/</link>
+		<description>Recent content in Home on Zhengrong Wang</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Sat, 04 Oct 2025 15:40:28 +0800</lastBuildDate>
+		
+			<atom:link href="https://seanzw.github.io/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>How well does GPU saturate bandwidth?</title>
+				<link>https://seanzw.github.io/posts/gpu_load_bandwidth/</link>
+				<pubDate>Sat, 04 Oct 2025 15:40:28 +0800</pubDate>
+				<guid>https://seanzw.github.io/posts/gpu_load_bandwidth/</guid>
+				<description>&lt;p&gt;As a computer architect, bandwidth and compute throughput are key metrics for understanding hardware capability and finding system bottlenecks. While implementing a fused GNN kernel, I started wondering: &lt;strong&gt;How well can GPUs saturate available memory bandwidth?&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;More specifically: Given a fixed access granularity (determined by the workload), can we saturate the available data bandwidth? From computer organization fundamentals, the number of in-flight requests &lt;em&gt;N&lt;/em&gt; needed to saturate bandwidth &lt;em&gt;B&lt;/em&gt; with latency &lt;em&gt;L&lt;/em&gt; and request size &lt;em&gt;S&lt;/em&gt; is:&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>From Weeks to $0.01: Automating Analysis with RAG</title>
+				<link>https://seanzw.github.io/posts/simple-document-rag/</link>
+				<pubDate>Sun, 06 Jul 2025 22:09:01 +0800</pubDate>
+				<guid>https://seanzw.github.io/posts/simple-document-rag/</guid>
+				<description>&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;&#xA;&lt;!-- Recently, my friend came across a job to analyze&#xA;many public listed companies&#39; effort to handle ESG&#xA;(environment, sustainability, governance).&#xA;Specifically, based on its released report,&#xA;the company is evaluated on various dimension, e.g.&#xA;whether it tracks and releases its greenhouse gas emission&#xA;in a timely fashion, whether it sets the target to&#xA;tackle climate-related challenges in various time horizon, etc.&#xA;&#xA;In previous years, they simply recruited some interns,&#xA;each handling a subset of the companies and cross-check&#xA;each other&#39;s answer. The research associates (my friend&#xA;and the colleagues) performed a final check. Clearly, this&#xA;is time-consuming and error-pruning, as different people may&#xA;have different opinions (hence cross-checking). --&gt;&#xA;&lt;p&gt;When my friend described her team&amp;rsquo;s annual ritual of analyzing corporate ESG reports, I understood why she was desperate for change. For years, interns manually scanned hundreds of PDF pages to answer precise questions: Does the company track all emission scopes? Have they set quantifiable 2030 decarbonization targets? The process consumed weeks as they cross-checked interpretations while research associates verified results.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Understanding Transformer as A Computer Architect</title>
+				<link>https://seanzw.github.io/posts/note-on-transformer-flops/</link>
+				<pubDate>Sun, 02 Mar 2025 22:42:20 +0800</pubDate>
+				<guid>https://seanzw.github.io/posts/note-on-transformer-flops/</guid>
+				<description>&lt;h1 id=&#34;understanding-transformer-decoder&#34;&gt;Understanding Transformer Decoder&lt;/h1&gt;&#xA;&lt;p&gt;I have been extremly late to the party of transformer,&#xA;and here is my note on understanding the flops, data&#xA;movements, compute intensity, etc.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Note: For simplicity, I omit the data type for now.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;decoder-only-transformer&#34;&gt;Decoder-Only Transformer&lt;/h2&gt;&#xA;&lt;p&gt;Let&amp;rsquo;s start with something simple: a decoder-only transformer.&#xA;Also, we skip the initial step to map token into the dictionary&#xA;space with positionary encoding. If we look at a single layer&#xA;of the decoder architecture, it contains three parameters:&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Benchmarking GEMM on Modern CPU</title>
+				<link>https://seanzw.github.io/posts/evaluate-gemm-on-epyc/</link>
+				<pubDate>Wed, 30 Aug 2023 19:32:14 -0700</pubDate>
+				<guid>https://seanzw.github.io/posts/evaluate-gemm-on-epyc/</guid>
+				<description>&lt;p&gt;Recently I got interested to understand what&amp;rsquo;s&#xA;the actual performance of GEMM on modern CPUs.&#xA;We all understand that GEMM is the backbone for&#xA;many critical applications and can never emphasize&#xA;enough how important to optimize it. That being&#xA;said, I never had a good first-hand experience&#xA;on benchmarking GEMM on modern CPUs, and here I am.&lt;/p&gt;&#xA;&lt;p&gt;We know that Intel has the famous MKL library that&#xA;is mainly optimized for Intel&amp;rsquo;s CPU (of course), and&#xA;there are open-sourced third party library such as&#xA;OpenBLAS (come with &lt;code&gt;numpy&lt;/code&gt; if you install using&#xA;&lt;code&gt;pip&lt;/code&gt;). However, what&amp;rsquo;s our choice for AMD architectures?&#xA;It turns out they also have their own optimized&#xA;library &amp;ndash; AOCL (AMD Optmized CPU Library). And&#xA;even better, AOCL is open-sourced (unlike MKL).&#xA;Let&amp;rsquo;s start our journey now.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Bring AVX Support to Gem5</title>
+				<link>https://seanzw.github.io/posts/gem5-avx/</link>
+				<pubDate>Sun, 20 Dec 2020 20:16:06 -0800</pubDate>
+				<guid>https://seanzw.github.io/posts/gem5-avx/</guid>
+				<description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/seanzw/gem5-avx&#34;&gt;gem5-avx&lt;/a&gt; brings partial&#xA;AVX2 and AVX-512 support to gem5. Feel free to use it for your&#xA;research at your own risk. There is a short guide on how to add&#xA;new instructions at the end of this post. Issues and pull requests&#xA;are welcome!&lt;/p&gt;&#xA;&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;&#xA;&lt;p&gt;During my research this year, I had to implement AVX2 and AVX-512 in&#xA;gem5, as I could not find a good online. Eventually I had a partial&#xA;implementation which works for the workloads I looked into. Luckily,&#xA;the paper gets published in this year&amp;rsquo;s HPCA, and I have already&#xA;released the code for that project: &lt;a href=&#34;https://github.com/PolyArch/gem-forge-framework/&#34;&gt;gem-forge&lt;/a&gt;.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>GEM5 O3 CPU Backend</title>
+				<link>https://seanzw.github.io/posts/gem5-o3-backend/</link>
+				<pubDate>Fri, 03 Jul 2020 12:14:04 -0700</pubDate>
+				<guid>https://seanzw.github.io/posts/gem5-o3-backend/</guid>
+				<description>&lt;p&gt;This is my note on reading GEM5&amp;rsquo;s O3 cpu backend. I could not find a&#xA;good document online, and the code is a little bit entangled and tricky&#xA;to understand. So here I would extract the key function chain to show&#xA;how an instruction is handled by the backend.&lt;/p&gt;&#xA;&lt;p&gt;Hopefully this could help more people. I assume you are already familiar&#xA;with GEM5.&lt;/p&gt;&#xA;&lt;h2 id=&#34;compute-instructions&#34;&gt;Compute Instructions&lt;/h2&gt;&#xA;&lt;p&gt;Compute instructions are simpler as they do not access memory and&#xA;not interact with the LSQ. It is actually pretty straightforward and&#xA;here is a high-level description.&#xA;I first show the calling chain (only important&#xA;functions), and then describe its functionality.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Simulating SPEC2017 on GEM5</title>
+				<link>https://seanzw.github.io/posts/gem5-spec2017/</link>
+				<pubDate>Wed, 11 Mar 2020 14:19:34 -0700</pubDate>
+				<guid>https://seanzw.github.io/posts/gem5-spec2017/</guid>
+				<description>&lt;h1 id=&#34;brief-note-on-simulating-spec2017-on-gem5&#34;&gt;Brief Note on Simulating SPEC2017 on GEM5&lt;/h1&gt;&#xA;&lt;p&gt;This is a brief note on how to simulate SPEC2017 on gem5. SPEC2017 has complicated compile scripts. The basic workflow is to compile it, do a fake run to get the&#xA;arguments for the binary, and finally simulate it in gem5. This is by no means the official instructions or guaranteed to work on your machine.&#xA;You can also follow the instructions on the official website of SPEC2017.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Swap Ctrl and Cap</title>
+				<link>https://seanzw.github.io/posts/swap-ctrl-cap/</link>
+				<pubDate>Fri, 13 Sep 2019 10:30:04 -0700</pubDate>
+				<guid>https://seanzw.github.io/posts/swap-ctrl-cap/</guid>
+				<description>&lt;p&gt;I find it very convenient to swap the control and cap lock key. And here is how I achieve this in the OS I am using.&lt;/p&gt;&#xA;&lt;h3 id=&#34;ubuntu-1604&#34;&gt;Ubuntu 16.04&lt;/h3&gt;&#xA;&lt;p&gt;Somehow the &lt;code&gt;gnome-tweak-tool&lt;/code&gt; is not working in my case. I am using the following command line and it works like magic.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;/usr/bin/setxkbmap -option &amp;quot;ctrl:swapcaps&amp;quot;&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
+			</item>
+			<item>
+				<title>Extend RISC-V ISA with Matrix Multiply</title>
+				<link>https://seanzw.github.io/posts/risc-v-isa-extension/</link>
+				<pubDate>Fri, 28 Jun 2019 14:55:52 -0700</pubDate>
+				<guid>https://seanzw.github.io/posts/risc-v-isa-extension/</guid>
+				<description>&lt;p&gt;Many computer architecture students will eventually add some new (useless)&#xA;instructions to a ISA, and there are many great tutorial on how to do this. This is&#xA;yet another notes on my struggling to extend RISC-V with a new matrix multiply&#xA;instruction. The overall goal is to add a new functional unit in a general purpose&#xA;processor to do a 4x4 matrix multiply accumulate with single-precision&#xA;floating-point.&lt;/p&gt;&#xA;&lt;p&gt;The &lt;a href=&#34;https://content.riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf&#34;&gt;Manual&lt;/a&gt; has a very detailed explanation on what ISA encoding is reserved for such non-standard extension (see ch.21). Basially any instruction with a prefix (starting from LSB) &lt;code&gt;00 010 11&lt;/code&gt; or &lt;code&gt;01 010 11&lt;/code&gt; is reserved.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Setup This Website with Hugo</title>
+				<link>https://seanzw.github.io/posts/setting-up-this/</link>
+				<pubDate>Fri, 29 Mar 2019 15:41:55 -0700</pubDate>
+				<guid>https://seanzw.github.io/posts/setting-up-this/</guid>
+				<description>&lt;p&gt;After 2 years with my previous dummy personal website, I was urged to create a better one. After some googling, I made this tiny website using &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;. Here are some notes for a n00b in front-end like me.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Make sure you download the &lt;strong&gt;extended&lt;/strong&gt; version of Hugo. Otherwise you won&amp;rsquo;t have support for SASS and SCSS (I have no idea what these are). Just scroll down in the &lt;a href=&#34;https://github.com/gohugoio/hugo/releases&#34;&gt;release page&lt;/a&gt; and you will find it.&lt;/li&gt;&#xA;&lt;li&gt;Create a new post with &lt;code&gt;hugo new posts/awesome-post.md&lt;/code&gt;.&lt;/li&gt;&#xA;&lt;li&gt;After you created some post, make sure to modify the &lt;strong&gt;draft&lt;/strong&gt; field to &lt;strong&gt;false&lt;/strong&gt;. Otherwise you will get a 404 in blog and spend half an hour wondering why.&lt;/li&gt;&#xA;&lt;li&gt;You can use icon from &lt;a href=&#34;https://fontawesome.com/&#34;&gt;Font Awesome&lt;/a&gt; by &lt;code&gt;&amp;lt;i class=&amp;quot;fab fa-github&amp;quot;&amp;gt;&amp;lt;/i&amp;gt;&lt;/code&gt;. And always remember that you can embed HTML directly in the markdown. This is a nice workaround if you can not get what you want from markdown.&lt;/li&gt;&#xA;&lt;li&gt;Use &lt;code&gt;hugo server&lt;/code&gt; to start the server. It will automatically detect any changes in the folder and rerender the website.&lt;/li&gt;&#xA;&lt;li&gt;This &lt;a href=&#34;https://gohugo.io/hosting-and-deployment/hosting-on-github/&#34;&gt;tutorial&lt;/a&gt; shows how to user Hugo with GitHub pages. Basically they are using git submodule.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;I hope this is useful someday.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title></title>
+				<link>https://seanzw.github.io/about/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/about/</guid>
+				<description>&lt;h1 id=&#34;about-zhengrong-wang&#34;&gt;About Zhengrong Wang&lt;/h1&gt;&#xA;&lt;p&gt;I am currently an assistant professor at CSE Department, The Chinese University of Hong Kong.&#xA;I am generally interested in developing high performance computer architecture for both general and domain specific computing with compiler support. I am also looking into how to accurately and efficiently model and simulate current architectures.&lt;/p&gt;&#xA;&lt;p&gt;I obtained my Ph.D. from UCLA, working with &lt;a href=&#34;http://web.cs.ucla.edu/~tjn/&#34;&gt;Prof. Tony Nowatzki&lt;/a&gt;.&#xA;Prior joining UCLA, I received Bachelor of Engineering from Department of Electronic Enginerring, Tsinghua University. I also studied at ETH Zürich for half a year as a exhange student.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title></title>
+				<link>https://seanzw.github.io/courses/ceng-3420/2026-spring/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/courses/ceng-3420/2026-spring/</guid>
+				<description>&lt;h1 id=&#34;ceng-3420-computer-organization--design-2026-spring&#34;&gt;CENG 3420 Computer Organization &amp;amp; Design, 2026 Spring&lt;/h1&gt;&#xA;&lt;p&gt;&lt;strong&gt;Lecture 01:&lt;/strong&gt;    &#xA;M09:30–11:15      Venue: LSB LT1&lt;br&gt;&#xA;&lt;strong&gt;Lecture 02:&lt;/strong&gt;    &#xA;W11:30–12:15      Venue: ERB LT&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Tutorial 01:&lt;/strong&gt;     &#xA;H16:30–17:15      Venue: SC L1&lt;br&gt;&#xA;&lt;strong&gt;Tutorial 02:&lt;/strong&gt;     &#xA;H17:30–18:15      Venue: SC L1&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Instructor:&lt;/strong&gt;      Prof. Zhengrong Wang      &lt;a href=&#34;mailto:zhengrongwang@cuhk.edu.hk&#34;&gt;zhengrongwang@cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Tutors:&lt;/strong&gt;&lt;br&gt;&#xA;    Fangzhou Liu      &lt;a href=&#34;mailto:fzliu23@cse.cuhk.edu.hk&#34;&gt;fzliu23@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Jiahao Xu      &lt;a href=&#34;mailto:jhxu24@cse.cuhk.edu.hk&#34;&gt;jhxu24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Yifan Shi      &lt;a href=&#34;mailto:yfshi24@cse.cuhk.edu.hk&#34;&gt;yfshi24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Libo Shen      &lt;a href=&#34;mailto:lbshen24@cse.cuhk.edu.hk&#34;&gt;lbshen24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Xiaoman Yang      &lt;a href=&#34;mailto:xmyang25@cse.cuhk.edu.hk&#34;&gt;xmyang25@cse.cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;&#xA;&lt;p&gt;This course provides an introduction to computer organization. The objective is to introduce the major components of a computer system, how they function together in executing a program, and the organizational paradigms that determine the capabilities, performance and power of computer systems.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title></title>
+				<link>https://seanzw.github.io/projects/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/projects/</guid>
+				<description>&lt;h1 id=&#34;projects---no-research-just-for-fun&#34;&gt;Projects - No Research Just for Fun&lt;/h1&gt;&#xA;&lt;h3 id=&#34;yart-yet-another-ray-tracer&#34;&gt;Yart-Yet Another Ray Tracer &lt;a href=https://github.com/seanzw/yart-cpp&gt;&lt;i class=&#34;fab fa-github&#34;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;Yart is a simple but powerful ray tracer engine. It reads in a scene description file and parses it. Then it renders the scene and prints the output image. For objects, it supports sphere and triangle mesh. For material, Lambertian, Specular, Refraction and Cook-Torrance BSDF are implemented. To solve the light equation, it can use either direct lighting or bidirectional path tracing. To accelerate the computation, multiple threads and OC-Tree are used.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title></title>
+				<link>https://seanzw.github.io/publications/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/publications/</guid>
+				<description>&lt;h1 id=&#34;publications&#34;&gt;Publications&lt;/h1&gt;&#xA;&lt;p&gt;&lt;strong&gt;Name in bold&lt;/strong&gt;: First author or coresponding author. Sorted by year.&lt;/p&gt;&#xA;&lt;p&gt;Siying Yu, Yixun Hong, Guozhi Qiu, Feng Gu, Chenbo Geng, &lt;strong&gt;Zhengrong Wang&lt;/strong&gt;, Chen Zhang, Bei Yu&lt;br&gt;&#xA;&lt;a href=&#34;&#34;&gt;FlashGPU-sim: Enabling GPU Modeling for Modern Architectures and AI Workloads&lt;/a&gt;&lt;br&gt;&#xA;&lt;em&gt;To Appear in&lt;/em&gt; 2026 ACM/IEEE 59th International Symposium on Microarchitecture (MICRO).&lt;/p&gt;&#xA;&lt;p&gt;Siyuan Ma, Kaustubh Mhatre, Jian Weng, Bagus Hanindhito, &lt;em&gt;Zhengrong Wang&lt;/em&gt;, Tony Nowatzki, Lizy John, Aman Arora&lt;br&gt;&#xA;&lt;a href=&#34;https://dl.acm.org/doi/full/10.1145/3690824&#34;&gt;PIMSAB: A Processing-In-Memory System with Spatially-Aware Communication and Bit-Serial-Aware Computation&lt;/a&gt;&lt;br&gt;&#xA;2024 ACM Transactions on Architecture and Code Optimization (TACO).&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title></title>
+				<link>https://seanzw.github.io/random/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/random/</guid>
+				<description>&lt;h1 id=&#34;interesting-stuff-on-random-topic&#34;&gt;Interesting Stuff on Random Topic&lt;/h1&gt;&#xA;&lt;h4 id=&#34;gpu-related&#34;&gt;GPU related&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/NVIDIA/cutlass/blob/main/media/docs/cpp/cute/01_layout.md&#34;&gt;Cute documentation&lt;/a&gt; on layout algebra.&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/1941306442683515068&#34;&gt;A Chinese post&lt;/a&gt; from &lt;code&gt;melonedo&lt;/code&gt; helpful to understanding swizzling&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/seanzw/random/tree/main/tma_bw&#34;&gt;Scripts&lt;/a&gt; I used to measure GPU L2 bandwidth.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;other&#34;&gt;Other&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Some &lt;a href=&#34;https://seanzw.github.io/projects&#34;&gt;random projects&lt;/a&gt; I did for fun during my undergraduate.&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+			</item>
+			<item>
+				<title></title>
+				<link>https://seanzw.github.io/recruiting-cn/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/recruiting-cn/</guid>
+				<description>&lt;!-- ---&#xA;title: &#34;招生信息&#34;&#xA;date: 2025-09-07T12:54:42+08:00&#xA;draft: false&#xA;--- --&gt;&#xA;&lt;h2 id=&#34;招生信息&#34;&gt;招生信息&lt;/h2&gt;&#xA;&lt;p&gt;我正在积极寻找有志于加入我实验室的博士生、硕士生、研究实习生和研究助理，开始时间为2026年夏季/秋季。如果您对计算机体系结构研究感兴趣，并有兴趣在香港中文大学进行前沿研究，请阅读以下指南。&lt;/p&gt;&#xA;&lt;h3 id=&#34;关于我&#34;&gt;关于我&lt;/h3&gt;&#xA;&lt;p&gt;我本科毕业于清华大学电子工程系，在加州大学洛杉矶分校(UCLA)计算机科学系获得博士学位，师从Tony Nowatzki教授。&lt;/p&gt;&#xA;&lt;h3 id=&#34;关于我的研究&#34;&gt;关于我的研究&lt;/h3&gt;&#xA;&lt;p&gt;我的研究兴趣广泛涵盖体系结构、微体系结构、编译器以及支持下一代硬件上高需求应用的编程语言，研究成果主要发表在体系结构的顶级会议ISCA，MICRO，HPCA，ASPLOS上。随着技术缩放放缓，复杂应用（特别是大型语言模型）对计算系统提出了越来越高的要求，体系结构正转向针对不同场景定制的专用和异构系统。&lt;/p&gt;&#xA;&lt;p&gt;作为计算机架构研究者，我们的作用不仅仅是设计新硬件——我们必须创建富有表现力的抽象，使丰富的语义能够在整个计算栈中高效传递，从而释放众多协同优化机会。这使我们的领域既关键又极具挑战性，也很有趣。&lt;/p&gt;&#xA;&lt;h3 id=&#34;关于你&#34;&gt;关于你&lt;/h3&gt;&#xA;&lt;p&gt;我的研究涵盖了多样化的技能和专业知识。理想情况下，你应该在以下一个或多个领域有经验：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;强大的编程技能&lt;/strong&gt;：精通C、C++、Python等相关语言&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;硬件仿真和建模&lt;/strong&gt;：具有gem5、GPGPU-Sim或类似工具的经验&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;编译器实现&lt;/strong&gt;：熟悉LLVM、MLIR、clang、GCC或相关框架&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;应用开发&lt;/strong&gt;：在图处理、大型语言模型、计算机视觉或其他高需求应用方面有经验&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;硬件设计和原型&lt;/strong&gt;：了解Verilog、综合工具、FPGA开发或相关硬件设计经验&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;最重要的是，您应该对计算机体系结构研究有真正的热情。当我们深入研究我们的领域时，我们常常发现还有多少东西需要学习，但兴趣是最好的老师。同时，韧性和决心也很重要，因为研究道路很少平坦，需要在挑战中坚持不懈。&lt;/p&gt;&#xA;&lt;h3 id=&#34;关于香港中文大学&#34;&gt;关于香港中文大学&lt;/h3&gt;&#xA;&lt;p&gt;香港中文大学(CUHK)是亚洲顶尖的研究型大学之一，享有全球声誉。学校坐落在山坡上，俯瞰吐露港，为研究和学习提供了鼓舞人心的环境。计算机科学与工程学系在国际上享有盛誉，拥有优秀的研究设施和计算基础设施。香港中文大学提供负担得起的校内住宿（单人间约每月4,000港币，需要抽签但中签概率不低）。香港的战略位置为整个亚洲的合作提供了绝佳机会，旁边就是香港科技园，方便去工业界实习获取一手经验。&lt;/p&gt;&#xA;&lt;h3 id=&#34;申请指南&#34;&gt;申请指南&lt;/h3&gt;&#xA;&lt;p&gt;如需申请，请发送邮件至 &lt;a href=&#34;mailto:zhengrongwang@cuhk.edu.hk&#34;&gt;zhengrongwang@cuhk.edu.hk&lt;/a&gt;，邮件主题为&amp;quot;Apply-{PhD|MPhil|RA|Intern}-{Name}&amp;quot;（例如，&amp;ldquo;Apply-PhD-Zhengrong&amp;rdquo;）。在邮件中，请：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;简要介绍自己和研究兴趣&lt;/li&gt;&#xA;&lt;li&gt;附上简历和学术成绩单&lt;/li&gt;&#xA;&lt;li&gt;解释为什么对计算机体系结构研究和我们实验室感兴趣&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;如果你在CUHK，欢迎在Office Hour（周三下午3-5点）来我办公室进行非正式讨论。&lt;/p&gt;&#xA;&lt;h3 id=&#34;入学流程&#34;&gt;入学流程&lt;/h3&gt;&#xA;&lt;p&gt;关于硕士/博士申请流程的详细信息可在&lt;a href=&#34;https://www.cse.cuhk.edu.hk/admission/mphil-phd/&#34;&gt;此处&lt;/a&gt;找到。2026年入学有三个申请截止日期：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;第一轮&lt;/strong&gt;：2025年10月9日&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;第二轮&lt;/strong&gt;：2026年1月15日&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;第三轮&lt;/strong&gt;：2026年3月31日&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;我鼓励早期申请以确保最佳的录取和奖学金考虑机会。&lt;/p&gt;&#xA;&lt;h3 id=&#34;奖学金和经济支持&#34;&gt;奖学金和经济支持&lt;/h3&gt;&#xA;&lt;p&gt;我实验室的所有博士生都将通过研究奖学金获得全额经济支持（约每月18,000港币）。优秀候选人将被提名申请著名奖项，包括：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;香港博士研究生奖学金计划(HKPFS)&lt;/strong&gt;：约每月28,000港币&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;校长博士奖学金&lt;/strong&gt;：全校范围的竞争性奖项&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;额外的奖学金详情和申请信息可在&lt;a href=&#34;https://www.gs.cuhk.edu.hk/admissions/scholarships-fees/scholarships&#34;&gt;此处&lt;/a&gt;找到。&lt;/p&gt;&#xA;&lt;h3 id=&#34;自我评估问题&#34;&gt;自我评估问题&lt;/h3&gt;&#xA;&lt;p&gt;为了帮助评估自己对计算机体系结构研究的准备程度和兴趣，我整理了一些我在面试中通常会探讨的基本问题。如果你能自信地回答大约70%的这些问题，我相信你对计算机体系结构有真正的热情。如果你发现自己在超过70%的问题上有困难，我可能不是非常合适。但也无所谓，就把这当作一次学习机会：）&lt;/p&gt;&#xA;&lt;h4 id=&#34;编译器和编程系统&#34;&gt;编译器和编程系统&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;程序是如何从源代码转换为二进制可执行文件的？这个过程中的关键阶段是什么？&lt;/li&gt;&#xA;&lt;li&gt;您能描述一些编译器优化技术并解释它们如何提高程序性能吗？&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;计算机体系结构&#34;&gt;计算机体系结构&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;什么是指令集架构(ISA)，为什么它很重要？&lt;/li&gt;&#xA;&lt;li&gt;解释经典的五级流水线及其在处理器设计中的目的。&lt;/li&gt;&#xA;&lt;li&gt;流水线处理器中可能发生哪些类型的冒险，通常如何解决？&lt;/li&gt;&#xA;&lt;li&gt;什么是内存一致性模型，为什么它们在多处理器系统中很重要？&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;性能建模和分析&#34;&gt;性能建模和分析&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;什么是屋顶线模型 (Roofline Model)，如何用它来分析应用程序性能？&lt;/li&gt;&#xA;&lt;li&gt;如何估计工作负载在给定系统上的性能？&lt;/li&gt;&#xA;&lt;li&gt;基于事件和基于周期的仿真有什么区别，什么时候使用哪种？&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;实践知识&#34;&gt;实践知识&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;你的笔记本电脑、台式机或智能手机中的CPU/GPU型号是什么？它们的关键特性是什么？&lt;/li&gt;&#xA;&lt;li&gt;你经历过重大的硬件升级吗？您注意到了什么性能改进？&lt;/li&gt;&#xA;&lt;li&gt;你目前在日常生活或工作中如何使用AI？幕后发生了什么计算过程？&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;当代ai和计算&#34;&gt;当代AI和计算&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;大型语言模型推理中的预填充和解码阶段有什么区别？&lt;/li&gt;&#xA;&lt;li&gt;为什么DeepSeek被认为是AI领域的突破？从系统角度来看，是什么让它如此特别？&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+			</item>
+			<item>
+				<title></title>
+				<link>https://seanzw.github.io/recruiting/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/recruiting/</guid>
+				<description>&lt;!-- ---&#xA;title: &#34;Recruiting&#34;&#xA;date: 2025-0### Application Guidelines&#xA;To apply, please send me an email at zhengrongwang@cuhk.edu.hk with the subject line &#34;Apply-{PhD|MPhil|RA|Intern}-{Your Name}&#34; (for example, &#34;Apply-PhD-Trump&#34;). In your email, please:&#xA;&#xA;- Provide a brief introduction about yourself and your research interests&#xA;- Include your CV and academic transcripts&#xA;- Explain why you are interested in computer architecture research and our lab specifically&#xA;&#xA;If you are already on campus, I welcome you to visit my office during student consultation hours (Wednesdays, 3-5 PM) for an informal discussion about research opportunities.12:54:42+08:00&#xA;draft: false&#xA;--- --&gt;&#xA;&lt;h2 id=&#34;recruiting-中文版&#34;&gt;Recruiting (&lt;a href=&#34;../recruiting-cn&#34;&gt;中文版&lt;/a&gt;)&lt;/h2&gt;&#xA;&lt;p&gt;I am actively seeking motivated Ph.D. students, MPhil students, research interns, and research assistants to join my lab starting Summer/Fall 2026. If you are passionate about computer architecture research and interested in pursuing cutting-edge research at CUHK, please read the guidelines below.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title></title>
+				<link>https://seanzw.github.io/teaching/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/teaching/</guid>
+				<description>&lt;!-- ---&#xA;title: &#34;Teaching&#34;&#xA;date: 2025-10-05T16:32:45+08:00&#xA;draft: false&#xA;--- --&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;CENG 3420 Computer Organization &amp;amp; Design: &lt;a href=&#34;../courses/ceng-3420/2026-spring&#34;&gt;2026 Spring&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+			</item>
+	</channel>
 </rss>

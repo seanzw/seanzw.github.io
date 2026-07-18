@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Retrieval-Augmented Generation on Zhengrong Wang</title>
-    <link>https://seanzw.github.io/tags/retrieval-augmented-generation/</link>
-    <description>Recent content in Retrieval-Augmented Generation on Zhengrong Wang</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 06 Jul 2025 22:09:01 +0800</lastBuildDate>
-    <atom:link href="https://seanzw.github.io/tags/retrieval-augmented-generation/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>From Weeks to $0.01: Automating Analysis with RAG</title>
-      <link>https://seanzw.github.io/posts/simple-document-rag/</link>
-      <pubDate>Sun, 06 Jul 2025 22:09:01 +0800</pubDate>
-      <guid>https://seanzw.github.io/posts/simple-document-rag/</guid>
-      <description>&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;&#xA;&lt;!-- Recently, my friend came across a job to analyze&#xA;many public listed companies&#39; effort to handle ESG&#xA;(environment, sustainability, governance).&#xA;Specifically, based on its released report,&#xA;the company is evaluated on various dimension, e.g.&#xA;whether it tracks and releases its greenhouse gas emission&#xA;in a timely fashion, whether it sets the target to&#xA;tackle climate-related challenges in various time horizon, etc.&#xA;&#xA;In previous years, they simply recruited some interns,&#xA;each handling a subset of the companies and cross-check&#xA;each other&#39;s answer. The research associates (my friend&#xA;and the colleagues) performed a final check. Clearly, this&#xA;is time-consuming and error-pruning, as different people may&#xA;have different opinions (hence cross-checking). --&gt;&#xA;&lt;p&gt;When my friend described her team&amp;rsquo;s annual ritual of analyzing corporate ESG reports, I understood why she was desperate for change. For years, interns manually scanned hundreds of PDF pages to answer precise questions: Does the company track all emission scopes? Have they set quantifiable 2030 decarbonization targets? The process consumed weeks as they cross-checked interpretations while research associates verified results.&lt;/p&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>Retrieval-Augmented Generation on Zhengrong Wang</title>
+		<link>https://seanzw.github.io/tags/retrieval-augmented-generation/</link>
+		<description>Recent content in Retrieval-Augmented Generation on Zhengrong Wang</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 06 Jul 2025 22:09:01 +0800</lastBuildDate>
+		
+			<atom:link href="https://seanzw.github.io/tags/retrieval-augmented-generation/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>From Weeks to $0.01: Automating Analysis with RAG</title>
+				<link>https://seanzw.github.io/posts/simple-document-rag/</link>
+				<pubDate>Sun, 06 Jul 2025 22:09:01 +0800</pubDate>
+				<guid>https://seanzw.github.io/posts/simple-document-rag/</guid>
+				<description>&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;&#xA;&lt;!-- Recently, my friend came across a job to analyze&#xA;many public listed companies&#39; effort to handle ESG&#xA;(environment, sustainability, governance).&#xA;Specifically, based on its released report,&#xA;the company is evaluated on various dimension, e.g.&#xA;whether it tracks and releases its greenhouse gas emission&#xA;in a timely fashion, whether it sets the target to&#xA;tackle climate-related challenges in various time horizon, etc.&#xA;&#xA;In previous years, they simply recruited some interns,&#xA;each handling a subset of the companies and cross-check&#xA;each other&#39;s answer. The research associates (my friend&#xA;and the colleagues) performed a final check. Clearly, this&#xA;is time-consuming and error-pruning, as different people may&#xA;have different opinions (hence cross-checking). --&gt;&#xA;&lt;p&gt;When my friend described her team&amp;rsquo;s annual ritual of analyzing corporate ESG reports, I understood why she was desperate for change. For years, interns manually scanned hundreds of PDF pages to answer precise questions: Does the company track all emission scopes? Have they set quantifiable 2030 decarbonization targets? The process consumed weeks as they cross-checked interpretations while research associates verified results.&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>
