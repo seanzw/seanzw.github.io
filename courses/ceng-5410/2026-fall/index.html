@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CENG 5410 Advanced Computer Architecture | Zhengrong Wang</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/publications/">Publications</a></li>
+      
+      <li><a href="/teaching/">Teaching</a></li>
+      
+      <li><a href="/posts/">Blog</a></li>
+      
+      <li><a href="/random/">Random</a></li>
+      
+      <li><a href="/recruiting/">Recruiting</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">CENG 5410 Advanced Computer Architecture</span></h1>
+
+
+</div>
+
+<main>
+<p><strong>Version:</strong>     2026 Fall<br>
+<strong>Lecture:</strong>    
+M14:30-17:15      Venue: TBD</p>
+<p><strong>Course Instructor:</strong>      Prof. Zhengrong Wang      <a href="mailto:zhengrongwang@cuhk.edu.hk">zhengrongwang@cuhk.edu.hk</a></p>
+<p><strong>Course Tutors:</strong><br>
+    TBD      TBD</p>
+<h3 id="description">Description</h3>
+<p>Computer architecture is the glue that binds the worlds of hardware and software. Developing new architectures is the art and science of understanding the intrinsic properties of applications, developing and interconnecting hardware components to meet cost and performance goals, and creating abstractions that enable efficient use of hardware without sacrificing generality.</p>
+<p>Several important specific goals are:</p>
+<ul>
+<li>Be able to reason about the relationship between application properties and how they are exploited by architecture/microarchitecture mechanisms.</li>
+<li>Gain intuition and reasoning skills regarding fundamental architecture tradeoffs of hardware design choices (performance/area/power/complexity/generality).</li>
+<li>Understand microarchitecture techniques behind extracting instruction level parallelism and mechanisms for exploiting locality.</li>
+<li>Gain appreciation for state-of-the-art microprocessors.</li>
+<li>Learn about evaluation methods, including simulation, analytical modeling, and mechanistic models. Specific focus on <a href="https://www.gem5.org/">gem5</a>/<a href="https://github.com/FlashGPU-Sim/FlashGPU-Sim">flashgpu-sim</a>.</li>
+</ul>
+<p>We use <a href="https://piazza.com/cuhk.edu.hk/fall2026/ceng5410">piazza</a> for questions.</p>
+<h3 id="course-requirements">Course Requirements</h3>
+<ul>
+<li>Reading Reviews (30%), Midterm (30%), Final Project (40%).</li>
+<li>A student must gain at least 50% of the full marks in order to pass the course.</li>
+</ul>
+<h3 id="references">References</h3>
+<p>There is no required textbook. You could refer to <a href="https://link.springer.com/series/16916?srsltid=AfmBOopA0uxImZWMz25RraUETFIS2oQqL2eyQT7UsEHXAwaHOZAF8CfV">Synthesis Lectures</a> and a lot of papers we are going to review in this course.</p>
+<h3 id="lectures">Lectures</h3>
+<p><em>Subjected to changes.</em></p>
+<style>
+.left-align-table table { margin-left: 0; margin-right: auto; table-layout: fixed; width: 100%; }
+.left-align-table th, .left-align-table td { text-align: left; vertical-align: top; }
+.left-align-table th:nth-child(4), .left-align-table td:nth-child(4) { width: 32%; }
+.left-align-table td a { overflow-wrap: anywhere; }
+</style>
+<div class="left-align-table">
+<table>
+	<thead>
+			<tr>
+					<th>Week</th>
+					<th>Date</th>
+					<th>Topic</th>
+					<th>Reading</th>
+					<th>Review</th>
+					<th>Reference Material</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>1</td>
+					<td>Sep. 07</td>
+					<td>L01 <a href="">Intro</a></td>
+					<td><a href="https://www.cs.utexas.edu/~fussell/courses/cs352h/papers/moore.pdf">Cramming More Components onto Integrated Circuits &ndash; Moore &lsquo;65</a></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>2</td>
+					<td>Sep. 14</td>
+					<td>L02</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>3</td>
+					<td>Sep. 21</td>
+					<td>L03</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>4</td>
+					<td>Sep. 28</td>
+					<td>L04</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>5</td>
+					<td>Oct. 05</td>
+					<td>L05</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>6</td>
+					<td>Oct. 12</td>
+					<td>L06</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>7</td>
+					<td>Oct. 19</td>
+					<td>Chung Yeung Festival</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>8</td>
+					<td>Oct. 26</td>
+					<td>L08</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>9</td>
+					<td>Nov. 02</td>
+					<td>Midterm</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>10</td>
+					<td>Nov. 09</td>
+					<td>L10</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>11</td>
+					<td>Nov. 16</td>
+					<td>L11</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>12</td>
+					<td>Nov. 23</td>
+					<td>L12</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>13</td>
+					<td>Nov. 30</td>
+					<td>L13</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>14</td>
+					<td>Dec. 07</td>
+					<td>Final Project</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>15</td>
+					<td>Dec. 14</td>
+					<td>Final Project</td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+	</tbody>
+</table>
+</div>
+<h3 id="review--project-report">Review / Project Report</h3>
+<p><strong>Please submit your final project through <a href="https://blackboard.cuhk.edu.hk/">blackboard</a>. If the submission is late but within 5 calendar days after the deadline, there will be a deduction of 10% per day from the marks awarded for the submitted piece of work.</strong></p>
+<h3 id="important-dates">Important Dates</h3>
+<ul>
+<li>Nov. 2: In-class midterm exam.</li>
+<li>Dec. 13: Final project due on 11:59 pm.</li>
+</ul>
+
+</main>
+
+  <footer>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<script src="//cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/auto-render.min.js,npm/@xiee/utils/js/render-katex.js" defer></script>
+
+<script src="//cdn.jsdelivr.net/npm/@xiee/utils/js/center-img.min.js" defer></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-CTVHZGKZQ0"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-CTVHZGKZQ0');
+        }
+      </script>
+  
+  <hr/>
+  © <a href="https://seanzw.github.io">Zhengrong Wang</a> 2026 | <a href="https://github.com/seanzw">Github</a> | Enjoy it!
+  
+  </footer>
+  </body>
+</html>
+

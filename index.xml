@@ -92,13 +92,6 @@
 			</item>
 			<item>
 				<title></title>
-				<link>https://seanzw.github.io/courses/ceng-3420/2026-spring/</link>
-				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-				<guid>https://seanzw.github.io/courses/ceng-3420/2026-spring/</guid>
-				<description>&lt;h1 id=&#34;ceng-3420-computer-organization--design-2026-spring&#34;&gt;CENG 3420 Computer Organization &amp;amp; Design, 2026 Spring&lt;/h1&gt;&#xA;&lt;p&gt;&lt;strong&gt;Lecture 01:&lt;/strong&gt;    &#xA;M09:30–11:15      Venue: LSB LT1&lt;br&gt;&#xA;&lt;strong&gt;Lecture 02:&lt;/strong&gt;    &#xA;W11:30–12:15      Venue: ERB LT&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Tutorial 01:&lt;/strong&gt;     &#xA;H16:30–17:15      Venue: SC L1&lt;br&gt;&#xA;&lt;strong&gt;Tutorial 02:&lt;/strong&gt;     &#xA;H17:30–18:15      Venue: SC L1&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Instructor:&lt;/strong&gt;      Prof. Zhengrong Wang      &lt;a href=&#34;mailto:zhengrongwang@cuhk.edu.hk&#34;&gt;zhengrongwang@cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Tutors:&lt;/strong&gt;&lt;br&gt;&#xA;    Fangzhou Liu      &lt;a href=&#34;mailto:fzliu23@cse.cuhk.edu.hk&#34;&gt;fzliu23@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Jiahao Xu      &lt;a href=&#34;mailto:jhxu24@cse.cuhk.edu.hk&#34;&gt;jhxu24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Yifan Shi      &lt;a href=&#34;mailto:yfshi24@cse.cuhk.edu.hk&#34;&gt;yfshi24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Libo Shen      &lt;a href=&#34;mailto:lbshen24@cse.cuhk.edu.hk&#34;&gt;lbshen24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Xiaoman Yang      &lt;a href=&#34;mailto:xmyang25@cse.cuhk.edu.hk&#34;&gt;xmyang25@cse.cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;&#xA;&lt;p&gt;This course provides an introduction to computer organization. The objective is to introduce the major components of a computer system, how they function together in executing a program, and the organizational paradigms that determine the capabilities, performance and power of computer systems.&lt;/p&gt;</description>
-			</item>
-			<item>
-				<title></title>
 				<link>https://seanzw.github.io/projects/</link>
 				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
 				<guid>https://seanzw.github.io/projects/</guid>
@@ -137,7 +130,21 @@
 				<link>https://seanzw.github.io/teaching/</link>
 				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
 				<guid>https://seanzw.github.io/teaching/</guid>
-				<description>&lt;!-- ---&#xA;title: &#34;Teaching&#34;&#xA;date: 2025-10-05T16:32:45+08:00&#xA;draft: false&#xA;--- --&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;CENG 3420 Computer Organization &amp;amp; Design: &lt;a href=&#34;../courses/ceng-3420/2026-spring&#34;&gt;2026 Spring&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+				<description>&lt;!-- ---&#xA;title: &#34;Teaching&#34;&#xA;date: 2025-10-05T16:32:45+08:00&#xA;draft: false&#xA;--- --&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;CENG 3420 Computer Organization &amp;amp; Design: &lt;a href=&#34;../courses/ceng-3420/2026-spring&#34;&gt;2026 Spring&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;CENG 5410 Advanced Computer Architecture: &lt;a href=&#34;../courses/ceng-5410/2026-fall&#34;&gt;2026 Fall&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+			</item>
+			<item>
+				<title>CENG 3420 Computer Organization &amp; Design</title>
+				<link>https://seanzw.github.io/courses/ceng-3420/2026-spring/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/courses/ceng-3420/2026-spring/</guid>
+				<description>&lt;p&gt;&lt;strong&gt;Version:&lt;/strong&gt;     2026 Spring&lt;br&gt;&#xA;&lt;strong&gt;Lecture 01:&lt;/strong&gt;    &#xA;M09:30–11:15      Venue: LSB LT1&lt;br&gt;&#xA;&lt;strong&gt;Lecture 02:&lt;/strong&gt;    &#xA;W11:30–12:15      Venue: ERB LT&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Tutorial 01:&lt;/strong&gt;     &#xA;H16:30–17:15      Venue: SC L1&lt;br&gt;&#xA;&lt;strong&gt;Tutorial 02:&lt;/strong&gt;     &#xA;H17:30–18:15      Venue: SC L1&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Instructor:&lt;/strong&gt;      Prof. Zhengrong Wang      &lt;a href=&#34;mailto:zhengrongwang@cuhk.edu.hk&#34;&gt;zhengrongwang@cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Tutors:&lt;/strong&gt;&lt;br&gt;&#xA;    Fangzhou Liu      &lt;a href=&#34;mailto:fzliu23@cse.cuhk.edu.hk&#34;&gt;fzliu23@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Jiahao Xu      &lt;a href=&#34;mailto:jhxu24@cse.cuhk.edu.hk&#34;&gt;jhxu24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Yifan Shi      &lt;a href=&#34;mailto:yfshi24@cse.cuhk.edu.hk&#34;&gt;yfshi24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Libo Shen      &lt;a href=&#34;mailto:lbshen24@cse.cuhk.edu.hk&#34;&gt;lbshen24@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Xiaoman Yang      &lt;a href=&#34;mailto:xmyang25@cse.cuhk.edu.hk&#34;&gt;xmyang25@cse.cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;&#xA;&lt;p&gt;This course provides an introduction to computer organization. The objective is to introduce the major components of a computer system, how they function together in executing a program, and the organizational paradigms that determine the capabilities, performance and power of computer systems.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>CENG 5410 Advanced Computer Architecture</title>
+				<link>https://seanzw.github.io/courses/ceng-5410/2026-fall/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/courses/ceng-5410/2026-fall/</guid>
+				<description>&lt;p&gt;&lt;strong&gt;Version:&lt;/strong&gt;     2026 Fall&lt;br&gt;&#xA;&lt;strong&gt;Lecture:&lt;/strong&gt;    &#xA;M14:30-17:15      Venue: TBD&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Instructor:&lt;/strong&gt;      Prof. Zhengrong Wang      &lt;a href=&#34;mailto:zhengrongwang@cuhk.edu.hk&#34;&gt;zhengrongwang@cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Tutors:&lt;/strong&gt;&lt;br&gt;&#xA;    TBD      TBD&lt;/p&gt;&#xA;&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;&#xA;&lt;p&gt;Computer architecture is the glue that binds the worlds of hardware and software. Developing new architectures is the art and science of understanding the intrinsic properties of applications, developing and interconnecting hardware components to meet cost and performance goals, and creating abstractions that enable efficient use of hardware without sacrificing generality.&lt;/p&gt;&#xA;&lt;p&gt;Several important specific goals are:&lt;/p&gt;</description>
 			</item>
 	</channel>
 </rss>
