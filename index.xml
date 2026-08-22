@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Sat, 04 Oct 2025 15:40:28 +0800</lastBuildDate>
+			<lastBuildDate>Sat, 22 Aug 2026 19:40:13 +0800</lastBuildDate>
 		
 			<atom:link href="https://seanzw.github.io/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>How does Hopper distributed shared memory actually move data?</title>
+				<link>https://seanzw.github.io/posts/gpu_dsm_bw/</link>
+				<pubDate>Sat, 22 Aug 2026 19:40:13 +0800</pubDate>
+				<guid>https://seanzw.github.io/posts/gpu_dsm_bw/</guid>
+				<description>&lt;p&gt;NOTE: The benchmark and analysis code are available&#xA;&lt;a href=&#34;https://github.com/seanzw/random/tree/main/dsm_bw&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;As a computer architect, I always find an unexplained bandwidth number a bit&#xA;annoying. While experimenting with the Tensor Memory Accelerator (TMA) on&#xA;Hopper, I started wondering: how much bandwidth can one SM actually get when&#xA;accessing another SM&amp;rsquo;s shared memory?&lt;/p&gt;&#xA;&lt;p&gt;Hopper allows thread blocks in the same&#xA;&lt;a href=&#34;https://docs.nvidia.com/cuda/parallel-thread-execution/#cluster-of-cooperative-thread-arrays&#34;&gt;cluster&lt;/a&gt;&#xA;to communicate through distributed shared memory (DSM). From the programming&#xA;model, this looks almost like ordinary shared memory with an extra CTA rank in&#xA;the address. Underneath that abstraction, however, the access has to leave one&#xA;SM, cross some on-chip network, reach another SM&amp;rsquo;s SRAM, and possibly return&#xA;data or an acknowledgment. NVIDIA documents the programming model, but it does&#xA;not publish a performance model for this path.&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>How well does GPU saturate bandwidth?</title>
 				<link>https://seanzw.github.io/posts/gpu_load_bandwidth/</link>
@@ -109,7 +116,7 @@
 				<link>https://seanzw.github.io/random/</link>
 				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
 				<guid>https://seanzw.github.io/random/</guid>
-				<description>&lt;h1 id=&#34;interesting-stuff-on-random-topic&#34;&gt;Interesting Stuff on Random Topic&lt;/h1&gt;&#xA;&lt;h4 id=&#34;gpu-related&#34;&gt;GPU related&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/NVIDIA/cutlass/blob/main/media/docs/cpp/cute/01_layout.md&#34;&gt;Cute documentation&lt;/a&gt; on layout algebra.&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/1941306442683515068&#34;&gt;A Chinese post&lt;/a&gt; from &lt;code&gt;melonedo&lt;/code&gt; helpful to understanding swizzling&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/seanzw/random/tree/main/tma_bw&#34;&gt;Scripts&lt;/a&gt; I used to measure GPU L2 bandwidth.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;other&#34;&gt;Other&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Some &lt;a href=&#34;https://seanzw.github.io/projects&#34;&gt;random projects&lt;/a&gt; I did for fun during my undergraduate.&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+				<description>&lt;h1 id=&#34;interesting-stuff-on-random-topic&#34;&gt;Interesting Stuff on Random Topic&lt;/h1&gt;&#xA;&lt;h4 id=&#34;gpu-related&#34;&gt;GPU related&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;2026.8.4 &lt;a href=&#34;https://www.broune.com/blog/designing-ai-chip-hardware-and-software&#34;&gt;Designing AI Chip Hardware and Software&lt;/a&gt; by Bjarke Hammersholt Roune, a detailed writeup from someone who worked on TPU and GPU design.&lt;/li&gt;&#xA;&lt;li&gt;2025.9.4 &lt;a href=&#34;https://zhuanlan.zhihu.com/p/1941306442683515068&#34;&gt;A Chinese post&lt;/a&gt; from &lt;code&gt;melonedo&lt;/code&gt; helpful to understanding swizzling&lt;/li&gt;&#xA;&lt;li&gt;2025.9.3 &lt;a href=&#34;https://github.com/seanzw/random/tree/main/tma_bw&#34;&gt;Scripts&lt;/a&gt; I used to measure GPU L2 bandwidth.&lt;/li&gt;&#xA;&lt;li&gt;2025.7.3 &lt;a href=&#34;https://github.com/NVIDIA/cutlass/blob/main/media/docs/cpp/cute/01_layout.md&#34;&gt;Cute documentation&lt;/a&gt; on layout algebra.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;other&#34;&gt;Other&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Some &lt;a href=&#34;https://seanzw.github.io/projects&#34;&gt;random projects&lt;/a&gt; I did for fun during my undergraduate.&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
 			</item>
 			<item>
 				<title></title>

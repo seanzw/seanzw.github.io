@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Sat, 04 Oct 2025 15:40:28 +0800</lastBuildDate>
+			<lastBuildDate>Sat, 22 Aug 2026 19:40:13 +0800</lastBuildDate>
 		
 			<atom:link href="https://seanzw.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>How does Hopper distributed shared memory actually move data?</title>
+				<link>https://seanzw.github.io/posts/gpu_dsm_bw/</link>
+				<pubDate>Sat, 22 Aug 2026 19:40:13 +0800</pubDate>
+				<guid>https://seanzw.github.io/posts/gpu_dsm_bw/</guid>
+				<description>&lt;p&gt;NOTE: The benchmark and analysis code are available&#xA;&lt;a href=&#34;https://github.com/seanzw/random/tree/main/dsm_bw&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;As a computer architect, I always find an unexplained bandwidth number a bit&#xA;annoying. While experimenting with the Tensor Memory Accelerator (TMA) on&#xA;Hopper, I started wondering: how much bandwidth can one SM actually get when&#xA;accessing another SM&amp;rsquo;s shared memory?&lt;/p&gt;&#xA;&lt;p&gt;Hopper allows thread blocks in the same&#xA;&lt;a href=&#34;https://docs.nvidia.com/cuda/parallel-thread-execution/#cluster-of-cooperative-thread-arrays&#34;&gt;cluster&lt;/a&gt;&#xA;to communicate through distributed shared memory (DSM). From the programming&#xA;model, this looks almost like ordinary shared memory with an extra CTA rank in&#xA;the address. Underneath that abstraction, however, the access has to leave one&#xA;SM, cross some on-chip network, reach another SM&amp;rsquo;s SRAM, and possibly return&#xA;data or an acknowledgment. NVIDIA documents the programming model, but it does&#xA;not publish a performance model for this path.&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>How well does GPU saturate bandwidth?</title>
 				<link>https://seanzw.github.io/posts/gpu_load_bandwidth/</link>

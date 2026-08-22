@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How does Hopper distributed shared memory actually move data? | Zhengrong Wang</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/publications/">Publications</a></li>
+      
+      <li><a href="/teaching/">Teaching</a></li>
+      
+      <li><a href="/posts/">Blog</a></li>
+      
+      <li><a href="/random/">Random</a></li>
+      
+      <li><a href="/recruiting/">Recruiting</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">How does Hopper distributed shared memory actually move data?</span></h1>
+
+<h2 class="date">2026/08/22</h2>
+</div>
+
+<main>
+<p>NOTE: The benchmark and analysis code are available
+<a href="https://github.com/seanzw/random/tree/main/dsm_bw">here</a>.</p>
+<p>As a computer architect, I always find an unexplained bandwidth number a bit
+annoying. While experimenting with the Tensor Memory Accelerator (TMA) on
+Hopper, I started wondering: how much bandwidth can one SM actually get when
+accessing another SM&rsquo;s shared memory?</p>
+<p>Hopper allows thread blocks in the same
+<a href="https://docs.nvidia.com/cuda/parallel-thread-execution/#cluster-of-cooperative-thread-arrays">cluster</a>
+to communicate through distributed shared memory (DSM). From the programming
+model, this looks almost like ordinary shared memory with an extra CTA rank in
+the address. Underneath that abstraction, however, the access has to leave one
+SM, cross some on-chip network, reach another SM&rsquo;s SRAM, and possibly return
+data or an acknowledgment. NVIDIA documents the programming model, but it does
+not publish a performance model for this path.</p>
+<p>More specifically, I wanted to answer:</p>
+<ul>
+<li>What is the sustainable DSM bandwidth of one SM?</li>
+<li>Are the links full duplex when two SMs access each other simultaneously?</li>
+<li>Do normal loads, normal stores, and TMA use the same physical network?</li>
+<li>How does bandwidth scale across 2, 4, 8, and 16 SMs in one GPC?</li>
+<li>Can we infer anything about the topology and packet protocol?</li>
+</ul>
+<p>The final answer is surprisingly simple: the measurements are consistent with
+a hard per-SM limiter set to <code>2/3</code> of a 32-byte lane. Six per-SM paths remain
+distinct through GPCMMU, then physically converge onto four 32-byte lanes at
+the GPCARB-ingress-to-GXBAR <code>SM2SM4</code> interface. Read commands consume visible
+reverse bandwidth, while write acknowledgments can be coalesced. This explains
+why bidirectional reads lose about 23% per direction, but bidirectional stores
+and TMA puts lose only about 5%.</p>
+<p>The rest of this post describes how I got there.</p>
+<h2 id="experimental-setup">Experimental Setup</h2>
+<p>All tests run on one NVIDIA H200 and launch exactly one CUDA thread-block
+cluster. CUDA guarantees that the CTAs in a cluster run concurrently and can
+communicate through shared memory; the cluster is scheduled within one GPC
+domain. I deliberately do not launch many independent clusters, because I want
+to measure the network inside one GPC rather than aggregate bandwidth across
+the chip.</p>
+<p>Each CTA allocates 200 KiB of dynamic shared memory. This is large enough that
+two CTAs cannot occupy the same SM, so every cluster rank must land on a
+different physical SM. The benchmark also reads <code>%smid</code> and rejects a sample
+if any two ranks report the same SM.</p>
+<p>I test four types of traffic:</p>
+<ul>
+<li>remote <code>ld.shared::cluster</code> loads;</li>
+<li>ordinary stores to a mapped remote shared-memory address;</li>
+<li>TMA shared-to-shared remote puts;</li>
+<li>a remote load combined with a store or TMA put in a controlled direction.</li>
+</ul>
+<p>The data path is timed with both <code>%clock64</code> and <code>%globaltimer</code>. The first gives
+SM cycles, while the second gives a global nanosecond timestamp. Checksums are
+computed after the end timestamp, so validation traffic is not counted as DSM
+bandwidth.</p>
+<h3 id="a-64-mib-transfer-does-not-mean-a-64-mib-shared-memory-tile">A 64 MiB Transfer Does Not Mean a 64 MiB Shared-Memory Tile</h3>
+<p>An earlier version of this experiment described each SM as moving tens of MiB.
+Obviously, shared memory is not that large. Such a number can only mean that a
+small tile is transferred repeatedly.</p>
+<p>That creates two problems. Reusing the same address may interact with request
+merging or outstanding-request tracking, and synchronizing after every small
+transaction can turn the test into a barrier benchmark.</p>
+<p>The final bandwidth suite therefore sweeps a single unique-address tile from
+16 to 96 KiB per active SM:</p>
+<pre><code class="language-text">16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96 KiB
+</code></pre>
+<p>Every address is touched once per sample. TMA divides a tile into commands of
+at most 16 KiB, but all commands contribute to one completion barrier for the
+complete tile; there is no synchronization between commands. Ordinary stores
+similarly use one cluster completion rendezvous after the complete tile.</p>
+<h2 id="what-exactly-do-i-mean-by-bandwidth">What Exactly Do I Mean by Bandwidth?</h2>
+<p>A single-point calculation such as</p>
+$$
+BW=\frac{64\ \mathrm{KiB}}{T(64\ \mathrm{KiB})}
+$$<p>is misleading. The timed interval contains pipeline fill and drain,
+arbitration startup, TMA command setup, cluster rendezvous, completion polling,
+and timer quantization. Some of these costs are almost independent of payload
+size. They are particularly visible when the cluster contains many SMs.</p>
+<p>Instead, I measure the marginal cost of moving more data. Each payload size is
+run 30 times. I first take the median elapsed cycles and nanoseconds at each
+size, then independently fit</p>
+$$
+T(B)=\alpha+\beta B,
+$$<p>where <code>B</code> is payload bytes per active SM. The intercept <code>alpha</code> absorbs the
+approximately payload-independent fill, drain, synchronization, and completion
+cost. The slope <code>beta</code> is the steady incremental cost in cycles/byte or
+ns/byte. The per-SM or per-direction bandwidth is therefore</p>
+$$
+BW_{SM}=\frac{1}{\beta}.
+$$<p>With <code>N</code> equally active SMs, aggregate bandwidth is</p>
+$$
+BW_{aggregate}=\frac{N}{\beta}.
+$$<p>For a symmetric two-SM test, <code>1/beta</code> is bandwidth per direction and
+<code>2/beta</code> is aggregate bandwidth.</p>
+<p>This fit does <strong>not</strong> magically remove every nonlinear cost. If the real time
+is</p>
+$$
+T(B)=\alpha+\beta B+g(B),
+$$<p>then a size-dependent <code>g(B)</code> can still bias the slope. I therefore check all 11
+points, fit <code>clock64</code> and <code>globaltimer</code> independently, and inspect the residual
+error. Across the core pair experiments, the cycle-fit RMSE is only 0.4&ndash;1.4%
+of the fitted time increase from 16 to 96 KiB:</p>
+<table>
+	<thead>
+			<tr>
+					<th>operation</th>
+					<th style="text-align: right">cycle-fit RMSE</th>
+					<th style="text-align: right">fitted 16&ndash;96 KiB increase</th>
+					<th style="text-align: right">relative RMSE</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>load, one way</td>
+					<td style="text-align: right">57 cycles</td>
+					<td style="text-align: right">4,122 cycles</td>
+					<td style="text-align: right">1.4%</td>
+			</tr>
+			<tr>
+					<td>load, two way</td>
+					<td style="text-align: right">61 cycles</td>
+					<td style="text-align: right">5,329 cycles</td>
+					<td style="text-align: right">1.2%</td>
+			</tr>
+			<tr>
+					<td>store, one way</td>
+					<td style="text-align: right">19 cycles</td>
+					<td style="text-align: right">4,342 cycles</td>
+					<td style="text-align: right">0.4%</td>
+			</tr>
+			<tr>
+					<td>store, two way</td>
+					<td style="text-align: right">23 cycles</td>
+					<td style="text-align: right">4,521 cycles</td>
+					<td style="text-align: right">0.5%</td>
+			</tr>
+			<tr>
+					<td>TMA put, one way</td>
+					<td style="text-align: right">20 cycles</td>
+					<td style="text-align: right">3,855 cycles</td>
+					<td style="text-align: right">0.5%</td>
+			</tr>
+			<tr>
+					<td>TMA put, two way</td>
+					<td style="text-align: right">25 cycles</td>
+					<td style="text-align: right">4,036 cycles</td>
+					<td style="text-align: right">0.6%</td>
+			</tr>
+	</tbody>
+</table>
+<p>The slope is still end-to-end sustainable bandwidth. For example, a fixed
+16-KiB TMA command size means command-issue work also grows roughly linearly
+with payload. The fit does not claim to measure a bare physical wire in
+isolation. Later experiments are needed to identify where the shared limit is.</p>
+<div style="text-align: center;">
+  <img src="/img/gpu_dsm_bw/fig1_slope_fit.png" alt="Extracting bandwidth from a size slope" style="width: 70%;"/>
+</div>
+<p><em>Remote load, one way, used here as the worked example. The top panel plots
+median elapsed SM cycles against payload per active SM, with the affine fit
+overlaid; <code>alpha</code> is a combined fill/drain and completion term, not a
+separately measured hardware latency, while <code>1/beta</code> is the sustained
+bandwidth. The bottom panel plots the residual cycles around zero.</em></p>
+<h2 id="baseline-dsm-bandwidth">Baseline DSM Bandwidth</h2>
+<p>The first result is that all three data-movement mechanisms converge near 20
+bytes per SM cycle:</p>
+<table>
+	<thead>
+			<tr>
+					<th>operation</th>
+					<th style="text-align: right">one-way B/cycle</th>
+					<th style="text-align: right">one-way GB/s</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>remote load</td>
+					<td style="text-align: right">19.87</td>
+					<td style="text-align: right">35.83</td>
+			</tr>
+			<tr>
+					<td>ordinary remote store</td>
+					<td style="text-align: right">18.87</td>
+					<td style="text-align: right">33.68</td>
+			</tr>
+			<tr>
+					<td>TMA remote put</td>
+					<td style="text-align: right">21.25</td>
+					<td style="text-align: right">37.90</td>
+			</tr>
+	</tbody>
+</table>
+<p>This number looked strange. I expected something related to a 32-B/cycle SM
+interface, but 20&ndash;21 B/cycle is neither 32 B/cycle nor an obvious half-width
+16 B/cycle interface.</p>
+<p>One possible explanation was that the DSM fabric runs in a separate clock
+domain around 1 GHz. The two timers make that unnecessary. The ratio between
+the fitted cycle slope and nanosecond slope stays near 1.77&ndash;1.80 cycles/ns,
+consistent with the approximately 1.785-GHz maximum SM clock reported during
+the run. There may still be a clock-domain crossing inside the implementation,
+but the observed bandwidth does not require one to explain the number.</p>
+<h2 id="bidirectional-reads-lose-bandwidth-but-writes-almost-do-not">Bidirectional Reads Lose Bandwidth, but Writes Almost Do Not</h2>
+<p>The more interesting result appears when SM0 and SM1 access each other at the
+same time. A symmetric read drops from 19.87 to 15.37 B/cycle per direction,
+losing 22.6% of its bandwidth. In contrast, normal stores drop only from 18.87
+to 18.12 B/cycle, and TMA puts from 21.25 to 20.29 B/cycle. Both retain
+94&ndash;96% of their one-way rate.</p>
+<p>Honestly, the write result was more surprising than the read result. A single
+universal half-duplex port would penalize all three operations. A TMA-only
+shortcut also cannot explain the result, because an ordinary store can write
+remote shared memory and shows the same duplex behavior.</p>
+<div style="text-align: center;">
+  <img src="/img/gpu_dsm_bw/fig2_duplex_loss.png" alt="One-way versus bidirectional bandwidth" style="width: 70%;"/>
+</div>
+<p><em>Fitted bandwidth per direction for load, store, and TMA put, one-way versus
+bidirectional. Symmetric reads lose 22.7% per direction, while symmetric
+stores and TMA puts lose only 4.0% and 4.5%. Aggregate two-way bandwidth is
+not shown, since it would hide the per-direction loss discussed here.</em></p>
+<h2 id="mixed-traffic-finds-the-shared-directional-resource">Mixed Traffic Finds the Shared Directional Resource</h2>
+<p>To determine whether read responses and write data use the same resource, I
+run two payloads at once. Rank 0 always reads rank 1, so read-response data
+travels from rank 1 to rank 0. A normal store or TMA put carries a second
+payload either in the same physical data direction or in the opposite
+direction.</p>
+<p>When both payloads travel in the same direction, their aggregate rate
+collapses to the same approximately 21-B/cycle ceiling: 21.38 B/cycle for
+load plus store and 21.45 B/cycle for load plus TMA put. Reversing the write
+payload raises them to 29.70 and 29.26 B/cycle, respectively, an increase of
+37&ndash;39%.</p>
+<p>This experiment is useful because it separates instruction front ends from
+the network direction. Normal store and TMA agree within about 1%, so their
+shared limit is downstream of the issuing instruction. Read-response data and
+write payload data share a directional physical resource, even if the protocol
+places them in different logical queues or virtual channels.</p>
+<div style="text-align: center;">
+  <img src="/img/gpu_dsm_bw/fig3_mixed_traffic.png" alt="Mixed traffic directions" style="width: 70%;"/>
+</div>
+<p><em>Aggregate B/SM-cycle when rank 0&rsquo;s read response and the second payload
+(store or TMA put) share the same physical direction versus opposite
+directions. Reversing the write payload increases aggregate throughput by
+39% and 36%, showing that read-response data and write payload data share a
+directional physical resource.</em></p>
+<h2 id="what-nvidias-patent-tells-us">What NVIDIA&rsquo;s Patent Tells Us</h2>
+<p>At this point the measurements constrain directionality, but not the physical
+structure. The most useful public description I found is NVIDIA&rsquo;s
+<a href="https://patents.google.com/patent/US12248788B2/en">US12248788B2, <em>Distributed shared memory</em></a>,
+especially Figures 21A&ndash;21D.</p>
+<p><code>TPCARB</code> first arbitrates traffic from SMs in the same TPC. For DSM routing,
+the <code>uTLB</code> performs address hashing rather than ordinary virtual-to-physical
+translation, distributing requests across GXBAR paths to avoid camping.
+<code>GPCARB</code> then routes SM-to-SM traffic through GXBAR and, on the destination
+side, fans it out to the target SM.</p>
+<p>Figure 21A locates the physical convergence more precisely. The connection
+from GPCMMU to GPCARB ingress is explicitly labeled <code>6 mmu2gpcarb</code>: the six SM
+paths are still distinct after TPCARB and GPCMMU. Only the output of GPCARB
+ingress is labeled <code>SM2SM4</code>. The structural narrow waist is therefore not in
+GPCMMU; it is the six-input/four-output GPCARB ingress and its four-lane
+interface to GXBAR.</p>
+<p>This does not require repacking a flit. If an input and an output lane both
+carry 32 B, GPCARB simply selects up to four of six ready input flits each
+cycle. Multi-flit packets remain sequences of same-width flits.</p>
+<h3 id="ingress-and-egress-are-organized-differently">Ingress and Egress Are Organized Differently</h3>
+<p>Figure 21B&rsquo;s port assignments are asymmetric between ingress and egress, and
+that asymmetry turns out to matter. The mapping is visible directly in <a href="https://patentimages.storage.googleapis.com/e6/27/57/9e4d0449530b56/US12248788.pdf#page=34">Patent Figure
+21B</a>.</p>
+<p>At ingress, each CPC&rsquo;s six source SMs feed one <code>GPCARB-IG</code>, which gets two
+ports on GX0 and two on GX1. That gives four lanes per CPC and twelve
+GPC-wide, matching the <code>SM2SM4</code>/<code>SM2SM12</code> names. GX0 and GX1 are separate
+$6\times6$ switch planes, not one ordinary $12\times12$ crossbar.</p>
+<p>Egress is organized differently. Each CPC has two <code>GPCARB-EG</code> blocks; each EG
+takes one output from GX0 and one from GX1, then fans out to three destination
+SMs. The destination side therefore still has four aggregate lanes per CPC,
+but they are split into two independent two-lane, three-SM groups. The figure
+below carries the detailed IG, GX, and EG port mapping.</p>
+<p>This also gives a cleaner reading of why adjacent SM pairs looked fast in the
+topology sweep. If two adjacent SMs correspond to the two SM slots of the
+same TPC, they land on <em>different</em> EGs (SM0 on EG0, SM1 on EG1), so a
+bidirectional exchange between them can use two different EGs, two different
+GX output ports, and both GX planes simultaneously &ndash; without requiring any
+TPC-local bypass of GXBAR. I want to flag a real limit here, though: the
+patent&rsquo;s figure uses 18 logical SM slots with its own floorsweeping, and my
+CUDA cluster ranks are not guaranteed to line up with that SM0&hellip;SM17
+numbering. This mapping is useful for a simulator, but I cannot claim that a
+measured <code>%smid</code> parity bit is literally the EG-select bit.</p>
+<p>This is one layer more specific than &ldquo;six SMs share four lanes&rdquo;: the four
+lanes are contended as a single pool at ingress, but organized as two
+independent two-lane, three-SM fan-out groups at egress.</p>
+<p>For a source CPC talking to one destination EG, there are four structurally
+distinct routes: GX0&rsquo;s two candidate inputs and GX1&rsquo;s two candidate inputs
+each reach that EG&rsquo;s one output on their respective plane. The <code>uTLB</code> address
+hash most likely selects among these four equivalent routes to spread load
+and avoid camping &ndash; which is also four, matching the four <code>SM2SM4</code> lanes.</p>
+<p>Three CPC <code>SM2SM4</code> paths are combined into the GPC-level <code>SM2SM12</code> network.
+These names describe aggregate connections, not a one-to-one mapping between
+network ports and the 16 CUDA cluster ranks used in my experiment.</p>
+<p>GX0 and GX1 are parallel switch planes or paths. They are not the request and
+response virtual channels. The patent says firmware may shut down one plane
+and retain connectivity at reduced bandwidth. An address selects a route
+through GXBAR, and a request and its response may use different internal paths.</p>
+<p>Every packet generated by an SM uses the outgoing path through TPCARB,
+GPCMMU, GPCARB ingress, and GXBAR, whether it is the original request or a
+read response/write ACK generated by the target. The <code>fold</code> path for a
+response does not need normal address translation, but Figure 21D still routes
+the outgoing response through the uTLB/GPCMMU block. In contrast, an arriving
+packet goes from GPCARB egress through the mapped request-or-response interface
+directly to the SM; it does not revisit GPCMMU.</p>
+<p>Thus a complete remote load uses the source GPCMMU when the request is sent
+and the target GPCMMU/fold path when the read response is sent. The request&rsquo;s
+arrival at the target and the response&rsquo;s arrival back at the source both go
+directly from GPCARB egress to the SM. A write ACK follows the same outgoing
+response path as read data, but carries much less information and can be
+coalesced.</p>
+<p>The packet table is also revealing. Read commands use a blocking request VC,
+while read data and write acknowledgments use a non-blocking response VC. Read
+responses may contain one or multiple packets. Short writes include payload in
+the request packet, while long writes use a command followed by write-data
+packets.</p>
+<p>Most importantly for the duplex result, write acknowledgments can be
+coalesced. A destination SM may count how many acknowledgments it owes each
+source and return an accumulated count when a threshold is reached or the bus
+is idle. A read cannot do the same thing with its response data.</p>
+<p>The patent explicitly permits a bandwidth control that restricts how much data
+each SM may transfer per clock. It also describes outstanding transaction
+counters and address-based routing. However, it does <strong>not</strong> disclose the
+physical flit width, exact limiter placement or implementation, header
+encoding, arbitration schedule, fabric clock, address-hash function, or
+link-credit depth. I treat the topology and packet classes as patent facts;
+the numerical model below remains an inference from measurement.</p>
+<div style="text-align: center;">
+  <img src="/img/gpu_dsm_bw/fig_patent_topology_full.png" alt="DSM request and response path through TPCARB, uTLB, GPCARB, GXBAR, and the asymmetric IG/EG port mapping" style="width: 100%;"/>
+</div>
+<p><em>Source-to-destination DSM path, redrawn from Patent Figures 21A&ndash;21D. The
+diagram shows the 3 CPC × 3 TPC × 2 SM hierarchy, the six-to-four convergence
+at GPCARB ingress, the two 6×6 GX planes, and the asymmetric GPCARB egress.</em></p>
+<h2 id="a-32-byte-lane-with-a-23-per-sm-allocation">A 32-Byte Lane with a 2/3 Per-SM Allocation</h2>
+<p>The <code>SM2SM4</code> structure gives a simple back-of-the-envelope explanation for the
+otherwise strange 21-B/cycle result. Suppose each aggregate lane carries 32 B
+per cycle. Four lanes shared equally by six SM clients provide</p>
+$$
+\frac{4\times32\ \mathrm{B}}{6\ \mathrm{SM}}
+=21.333\ \mathrm{B/(SM\cdot cycle)}.
+$$<p>This independently matches one-way load, normal store, TMA put, and multi-SM
+TMA scaling. The physical four-lane convergence alone does not explain why one
+SM cannot use an otherwise idle 32-B lane. The measurements point to the
+per-SM bandwidth control mentioned by the patent being configured as a hard
+limiter near the SM-facing injection path:</p>
+<ul>
+<li>one active SM reaches only about 20&ndash;21 B/cycle even when the rest of the CPC
+is idle;</li>
+<li>two active SMs each remain near 21 B/cycle rather than reclaiming unused CPC
+capacity;</li>
+<li>2/4/8/16-SM TMA slopes stay near the same rate per SM;</li>
+<li>cold-burst and gap tests reveal no material temporary rate above the steady
+limit.</li>
+</ul>
+<p>My working model is therefore that the SM injection path itself is shaped to
+<code>4/6</code> of one nominal 32-B lane. The shaper prevents the six inputs from
+offering more than four lanes in aggregate, while GPCARB ingress is where those
+six still-distinct physical paths actually converge onto <code>SM2SM4</code>. The exact
+limiter circuit may be inside the SM request interface or immediately beside
+it; the patent does not draw that boundary. What matters for the model is that
+the allocation is hard and non-work-conserving, rather than fairness emerging
+only after six unrestricted SMs contend at GPCARB.</p>
+<h2 id="why-bidirectional-reads-lose-about-one-quarter">Why Bidirectional Reads Lose About One Quarter</h2>
+<p>The remaining question is why symmetric reads fall from 19.87 to 15.37
+B/cycle per direction.</p>
+<p>A plausible saturated read-response quantum is 128 B, transported as four
+32-B flits. With six clients sharing four lanes, one 32-B flit costs an average
+of</p>
+$$
+\frac{6}{4}=1.5\ \mathrm{SM\ cycles}.
+$$<p>For a one-way read response:</p>
+$$
+4\ \mathrm{response\ flits}\times1.5=6\ \mathrm{cycles},
+$$<p>so</p>
+$$
+\frac{128\ \mathrm{B}}{6\ \mathrm{cycles}}
+=21.333\ \mathrm{B/cycle}.
+$$<p>During symmetric reads, each directional allocation carries four response-data
+flits plus approximately one read-command flit requesting the response in the
+opposite direction:</p>
+$$
+(4+1)\times1.5=7.5\ \mathrm{cycles},
+$$<p>giving</p>
+$$
+\frac{128\ \mathrm{B}}{7.5\ \mathrm{cycles}}
+=17.067\ \mathrm{B/cycle}.
+$$<p>The measured one-way load reaches 19.874 rather than the ideal 21.333 B/cycle.
+Applying that measured utilization to the ideal duplex prediction gives</p>
+$$
+17.067\times\frac{19.874}{21.333}
+=15.900\ \mathrm{B/cycle}.
+$$<p>The measured result is 15.372 B/cycle, only 3.4% lower.</p>
+<p>Another way to view the same data is cost per 128 B. Measurement increases
+from 6.441 cycles one way to 8.327 cycles two way. The extra 1.886 cycles is
+close to one shaped 32-B flit at 1.5 cycles, with the remaining difference
+plausibly coming from arbitration, trackers, credits, or metadata bubbles.</p>
+<p>Other response sizes are less convincing under the same one-command-flit
+assumption:</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: right">response data</th>
+					<th style="text-align: right">data flits</th>
+					<th style="text-align: right">ideal two-way rate</th>
+					<th style="text-align: right">ideal duplex loss</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: right">64 B</td>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">14.22 B/cycle</td>
+					<td style="text-align: right">33.3%</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">128 B</td>
+					<td style="text-align: right">4</td>
+					<td style="text-align: right">17.07 B/cycle</td>
+					<td style="text-align: right">20.0%</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">256 B</td>
+					<td style="text-align: right">8</td>
+					<td style="text-align: right">18.96 B/cycle</td>
+					<td style="text-align: right">11.1%</td>
+			</tr>
+	</tbody>
+</table>
+<p>A warp-wide <code>ld.shared::cluster.v4.b32</code> returns 512 useful bytes and can
+naturally decompose into four 128-B shared-memory wavefronts. This makes 128 B
+a plausible response/coalescing quantum. It does <strong>not</strong> mean there is a
+128-byte physical wire.</p>
+<p>Writes have a different packet composition. Their payload travels with the
+write request or in following write-data packets. The reverse direction needs
+only an acknowledgment, and the patent explicitly allows many acknowledgments
+to be combined. This naturally explains why two-way store and TMA traffic lose
+only 4&ndash;5% instead of the read path&rsquo;s 23%.</p>
+<h2 id="scaling-from-2-to-16-sms">Scaling from 2 to 16 SMs</h2>
+<p>The next test has every active SM use TMA to put one tile to its ring neighbor.
+I apply the same 16&ndash;96-KiB size-slope fit independently at 2, 4, 8, and 16
+SMs:</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: right">active SMs</th>
+					<th style="text-align: right">aggregate B/cycle</th>
+					<th style="text-align: right">aggregate GB/s</th>
+					<th style="text-align: right">per-SM B/cycle</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">40.59</td>
+					<td style="text-align: right">72.86</td>
+					<td style="text-align: right">20.29</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">4</td>
+					<td style="text-align: right">82.02</td>
+					<td style="text-align: right">145.06</td>
+					<td style="text-align: right">20.50</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">8</td>
+					<td style="text-align: right">164.30</td>
+					<td style="text-align: right">292.00</td>
+					<td style="text-align: right">20.54</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">16</td>
+					<td style="text-align: right">338.89</td>
+					<td style="text-align: right">606.00</td>
+					<td style="text-align: right">21.18</td>
+			</tr>
+	</tbody>
+</table>
+<p>The 16-SM result is within 0.72% of</p>
+$$
+16\times21.333=341.33\ \mathrm{B/cycle}.
+$$<p>There is no visible shared GPC-level put-data saturation through 16 SMs. Even
+more importantly, the two-SM case remains close to 21 B/cycle per SM although
+most potential clients are idle. Spare service is not visibly reclaimed. This
+is why I prefer a fixed TDM-like allocation over a normal work-conserving
+crossbar model.</p>
+<p>The size slope matters especially here. The fitted completion intercept grows
+from about 1,101 cycles at two SMs to about 5,256 cycles at 16 SMs, while the
+incremental slopes remain nearly equal. A single 64-KiB throughput point would
+mix this cluster-size-dependent completion cost into the network rate and make
+scaling look much worse than it is.</p>
+<h2 id="how-much-topology-can-we-recover">How Much Topology Can We Recover?</h2>
+<p>I next fix the payload at 64 KiB per active SM and compare traffic patterns of
+the same shape. These raw rates are useful for relative topology comparisons,
+not for extracting the steady physical bandwidth described above.</p>
+<table>
+	<thead>
+			<tr>
+					<th>topology</th>
+					<th style="text-align: right">aggregate bandwidth</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>2-SM ring</td>
+					<td style="text-align: right">51.2 GB/s</td>
+			</tr>
+			<tr>
+					<td>4-SM ring</td>
+					<td style="text-align: right">102.4 GB/s</td>
+			</tr>
+			<tr>
+					<td>8-SM ring</td>
+					<td style="text-align: right">204.8 GB/s</td>
+			</tr>
+			<tr>
+					<td>16-SM ring</td>
+					<td style="text-align: right">344.9&ndash;372.4 GB/s, depending on stride</td>
+			</tr>
+			<tr>
+					<td>eight adjacent two-SM groups</td>
+					<td style="text-align: right">390.1 GB/s</td>
+			</tr>
+	</tbody>
+</table>
+<p>The 16-SM ring favors strides 2 and 14, reaching 372.4 and 368.2 GB/s, while
+several strides fall to 344.9 GB/s. Eight disjoint adjacent pairs are about
+11% faster than the median 16-SM ring. This suggests a locality or arbitration
+boundary associated with the two-SM grouping.</p>
+<p>However, isolated pairs reveal almost nothing. All 240 directed source/target
+pairs lie within 31.51&ndash;32.00 raw GB/s, and scanning a 32-B address offset over
+4 KiB changes cycles by only 0.39%. Route hashing and camping become visible
+mainly when many flows contend simultaneously.</p>
+<p>This is not enough information to recover NVIDIA&rsquo;s exact address hash, and I
+am not sure doing so is particularly useful. A first simulator can use a simple
+deterministic cache-line or packet interleave that reproduces stride-dependent
+camping. The data also does not prove a special TPC-local bypass: the patent&rsquo;s
+illustrated route still passes through GPCARB and GXBAR.</p>
+<h2 id="hypotheses-that-did-not-survive">Hypotheses That Did Not Survive</h2>
+<p>Several explanations looked plausible at intermediate stages but did not fit
+all the experiments:</p>
+<ul>
+<li><strong>A separate 1-GHz DSM clock.</strong> It can turn the GB/s number into an appealing
+bus width, but the cycle/ns slope and <code>4 * 32 / 6</code> model already explain the
+observation in the SM clock domain.</li>
+<li><strong>One universal half-duplex SM port.</strong> This predicts a large duplex penalty
+for writes, which is not observed.</li>
+<li><strong>A 64-B physical flit.</strong> A 64-B response quantum can be made to fit one
+bandwidth ratio, but predicts too much symmetric-read loss under the common
+one-command-flit model. The patent&rsquo;s short-write payload is also naturally
+smaller than a full cache line.</li>
+<li><strong>A TMA-only bypass.</strong> Ordinary remote stores and TMA puts have almost the
+same directional contention and duplex efficiency.</li>
+<li><strong>The destination SRAM or a simple LSU stall.</strong> Adding up to 16 warps of
+local shared-memory pressure, including a conflicting bank pattern, leaves
+remote-load completion essentially unchanged at 3,628&ndash;3,633 cycles.</li>
+<li><strong>A large token bucket.</strong> Cold commands, command trains, and separated bursts
+do not reveal material temporary bandwidth above the approximately
+21.3-B/cycle rate. A very small hidden bucket remains possible.</li>
+<li><strong>A TPC-local DSM bypass.</strong> Adjacent pairing is favorable under concurrency,
+but neither the patent route nor isolated-pair latency/bandwidth provides
+evidence for bypassing the GPC-level path.</li>
+</ul>
+<h2 id="virtual-channels-credits-and-deadlock">Virtual Channels, Credits, and Deadlock</h2>
+<p>The patent&rsquo;s blocking request and non-blocking response VCs are useful for
+protocol separation, but virtual channels are logical queues multiplexed over
+physical links. They do not contradict the mixed-traffic directional ceiling.</p>
+<p>Credits are also easy to over-interpret. A link credit normally represents
+free downstream buffer capacity and prevents overflow. It is not itself a
+fairness policy, and credits alone cannot break a cyclic channel dependency.
+Deadlock avoidance additionally needs restricted VC transitions, an acyclic
+dependency graph, or an escape VC.</p>
+<p>The patent&rsquo;s endpoint outstanding-transaction counters are a different level
+of accounting. They track whether loads have received all response data and
+whether stores have received accumulated acknowledgments, allowing barriers
+and CTA exit to wait for DSM operations to complete. The patent does not reveal
+the per-hop link-credit implementation.</p>
+<h2 id="key-takeaway">Key Takeaway</h2>
+<p>The robust measurements are:</p>
+<ul>
+<li>one SM sustains about 20&ndash;21 B/cycle of DSM traffic;</li>
+<li>symmetric reads lose 22&ndash;23% per direction;</li>
+<li>symmetric normal stores and TMA puts lose only 4&ndash;6%;</li>
+<li>read responses and write payloads share a directional physical ceiling;</li>
+<li>TMA puts scale linearly from 2 to 16 SMs at about 21 B/SM-cycle;</li>
+<li>concurrent traffic reveals a favorable adjacent two-SM grouping and
+stride-dependent contention.</li>
+</ul>
+<p>The strongest model consistent with those results is:</p>
+<ol>
+<li>four 32-B lanes serve six SM clients in each CPC;</li>
+<li>each SM sees a non-work-conserving <code>2/3</code>-lane allocation;</li>
+<li>request and response virtual queues share directional lane service;</li>
+<li>saturated reads likely use a 128-B response quantum plus an opposite read
+command;</li>
+<li>writes carry payload forward and amortize reverse traffic through coalesced
+acknowledgments.</li>
+</ol>
+<p>I do not claim that the model is bit accurate. Literal TDM versus an equivalent
+issue shaper, exact packet headers, address hashing, link-credit depth, and any
+internal clock-domain crossing remain unresolved. But the model explains every
+robust bandwidth result with one fairly small set of assumptions, and it is
+simple enough to use in a first-order simulator.</p>
+
+</main>
+
+  <footer>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<script src="//cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/auto-render.min.js,npm/@xiee/utils/js/render-katex.js" defer></script>
+
+<script src="//cdn.jsdelivr.net/npm/@xiee/utils/js/center-img.min.js" defer></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-CTVHZGKZQ0"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-CTVHZGKZQ0');
+        }
+      </script>
+  
+  <hr/>
+  © <a href="https://seanzw.github.io">Zhengrong Wang</a> 2026 | <a href="https://github.com/seanzw">Github</a> | Enjoy it!
+  
+  </footer>
+  </body>
+</html>
+
