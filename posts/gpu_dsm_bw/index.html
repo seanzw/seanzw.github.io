@@ -300,7 +300,7 @@ that asymmetry turns out to matter. The mapping is visible directly in <a href="
 <p>At ingress, each CPC&rsquo;s six source SMs feed one <code>GPCARB-IG</code>, which gets two
 ports on GX0 and two on GX1. That gives four lanes per CPC and twelve
 GPC-wide, matching the <code>SM2SM4</code>/<code>SM2SM12</code> names. GX0 and GX1 are separate
-$6\times6$ switch planes, not one ordinary $12\times12$ crossbar.</p>
+6×6 switch planes, not one ordinary 12×12 crossbar.</p>
 <p>Egress is organized differently. Each CPC has two <code>GPCARB-EG</code> blocks; each EG
 takes one output from GX0 and one from GX1, then fans out to three destination
 SMs. The destination side therefore still has four aggregate lanes per CPC,
