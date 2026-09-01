@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Running Qwen3-8B on DGX Spark | Zhengrong Wang</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/publications/">Publications</a></li>
+      
+      <li><a href="/teaching/">Teaching</a></li>
+      
+      <li><a href="/posts/">Blog</a></li>
+      
+      <li><a href="/random/">Random</a></li>
+      
+      <li><a href="/recruiting/">Recruiting</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Running Qwen3-8B on DGX Spark</span></h1>
+
+<h2 class="date">2026/08/29</h2>
+</div>
+
+<main>
+<p><strong>My DGX Spark recently arrived! That&rsquo;s some 40k HKD I hope well spent :)</strong></p>
+<p>I wanted to play with deploying a small LLM
+locally. I picked Qwen3-8B and tried BF16, FP8, NVFP4, SGLang, vLLM, and DSpark.
+This post is just a record of the numbers.</p>
+<p><img src="/img/dgx-spark.jpg" alt="DGX Spark unboxing"></p>
+<h2 id="summary">Summary</h2>
+<p>All servers use a 32,768-token context limit and CUDA Graph. SGLang uses
+FlashInfer; vLLM uses its V2 runner, compiled kernels, and full plus piecewise
+CUDA Graph. Memory figures below are model-weight footprints reported by the
+server or checkpoint sizes, not total system memory usage.</p>
+<table>
+	<thead>
+			<tr>
+					<th></th>
+					<th style="text-align: right">SGLang BF16</th>
+					<th style="text-align: right">SGLang FP8</th>
+					<th style="text-align: right">SGLang NVFP4</th>
+					<th style="text-align: right">vLLM BF16</th>
+					<th style="text-align: right">vLLM FP8</th>
+					<th style="text-align: right">vLLM FP8 + DSpark</th>
+					<th style="text-align: right">vLLM NVFP4</th>
+					<th style="text-align: right">vLLM NVFP4 + DSpark</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Checkpoint size</td>
+					<td style="text-align: right">15.26 GiB</td>
+					<td style="text-align: right">8.79 GiB</td>
+					<td style="text-align: right">5.96 GiB</td>
+					<td style="text-align: right">15.26 GiB</td>
+					<td style="text-align: right">8.79 GiB</td>
+					<td style="text-align: right">FP8 + 4.42-GiB draft</td>
+					<td style="text-align: right">5.96 GiB</td>
+					<td style="text-align: right">NVFP4 + 4.42-GiB draft</td>
+			</tr>
+			<tr>
+					<td>Runtime model memory</td>
+					<td style="text-align: right">15.69 GB</td>
+					<td style="text-align: right">9.18 GB</td>
+					<td style="text-align: right">6.61 GB</td>
+					<td style="text-align: right">15.27 GiB</td>
+					<td style="text-align: right">8.88 GiB</td>
+					<td style="text-align: right">11.11 GiB total</td>
+					<td style="text-align: right">5.98 GiB</td>
+					<td style="text-align: right">8.16 GiB total</td>
+			</tr>
+			<tr>
+					<td>KV cache dtype</td>
+					<td style="text-align: right">BF16</td>
+					<td style="text-align: right">BF16</td>
+					<td style="text-align: right">FP8</td>
+					<td style="text-align: right">BF16</td>
+					<td style="text-align: right">BF16</td>
+					<td style="text-align: right">BF16</td>
+					<td style="text-align: right">FP8</td>
+					<td style="text-align: right">FP8</td>
+			</tr>
+			<tr>
+					<td>KV capacity</td>
+					<td style="text-align: right">about 463K</td>
+					<td style="text-align: right">about 510K</td>
+					<td style="text-align: right">about 1,058K</td>
+					<td style="text-align: right">497K</td>
+					<td style="text-align: right">549K</td>
+					<td style="text-align: right">440K</td>
+					<td style="text-align: right">1,135K</td>
+					<td style="text-align: right">919K</td>
+			</tr>
+			<tr>
+					<td>Per-request context setting</td>
+					<td style="text-align: right">32K</td>
+					<td style="text-align: right">32K</td>
+					<td style="text-align: right">32K</td>
+					<td style="text-align: right">32K</td>
+					<td style="text-align: right">32K</td>
+					<td style="text-align: right">32K</td>
+					<td style="text-align: right">32K</td>
+					<td style="text-align: right">32K</td>
+			</tr>
+			<tr>
+					<td>ARC-C, 300</td>
+					<td style="text-align: right">54.67%</td>
+					<td style="text-align: right">54.00%</td>
+					<td style="text-align: right">56.33%</td>
+					<td style="text-align: right">54.67%</td>
+					<td style="text-align: right">54.00%</td>
+					<td style="text-align: right">same FP8 target</td>
+					<td style="text-align: right">56.33%</td>
+					<td style="text-align: right">same NVFP4 target</td>
+			</tr>
+			<tr>
+					<td>MMLU-Pro, 420</td>
+					<td style="text-align: right">57.86%</td>
+					<td style="text-align: right">59.05%</td>
+					<td style="text-align: right">54.29%</td>
+					<td style="text-align: right">57.86%</td>
+					<td style="text-align: right">59.05%</td>
+					<td style="text-align: right">same FP8 target</td>
+					<td style="text-align: right">54.29%</td>
+					<td style="text-align: right">same NVFP4 target</td>
+			</tr>
+			<tr>
+					<td>C-Eval, 312</td>
+					<td style="text-align: right">80.45%</td>
+					<td style="text-align: right">79.49%</td>
+					<td style="text-align: right">75.96%</td>
+					<td style="text-align: right">80.45%</td>
+					<td style="text-align: right">79.49%</td>
+					<td style="text-align: right">same FP8 target</td>
+					<td style="text-align: right">75.96%</td>
+					<td style="text-align: right">same NVFP4 target</td>
+			</tr>
+			<tr>
+					<td>GSM8K, 300</td>
+					<td style="text-align: right">92.33%</td>
+					<td style="text-align: right">92.67%</td>
+					<td style="text-align: right">86.33%</td>
+					<td style="text-align: right">92.33%</td>
+					<td style="text-align: right">92.67%</td>
+					<td style="text-align: right">same FP8 target</td>
+					<td style="text-align: right">86.33%</td>
+					<td style="text-align: right">same NVFP4 target</td>
+			</tr>
+			<tr>
+					<td>Natural-language decode, B=1</td>
+					<td style="text-align: right">14.9 tok/s</td>
+					<td style="text-align: right">29.2 tok/s</td>
+					<td style="text-align: right">41.5 tok/s</td>
+					<td style="text-align: right">about 14 tok/s</td>
+					<td style="text-align: right">23.18 tok/s</td>
+					<td style="text-align: right"><strong>52.24 tok/s</strong></td>
+					<td style="text-align: right">39.86 tok/s</td>
+					<td style="text-align: right"><strong>72.33 tok/s</strong></td>
+			</tr>
+	</tbody>
+</table>
+<p>DSpark uses exact target verification, so its quality is that of the FP8 or
+NVFP4 target rather than a separate model.</p>
+<p>The 32K context is a deliberately identical server setting, not a datatype
+limit. Quantization mainly increases total KV capacity and therefore the number
+of concurrent long requests. It does not automatically change Qwen3-8B&rsquo;s
+configured per-request context window.</p>
+<p>The earlier draft also mixed checkpoint size with runtime allocation. With the
+same checkpoint, vLLM and SGLang load slightly different amounts because their
+quantized-weight packing, scale metadata, allocator, and kernel workspaces are
+different. The table now reports both quantities separately.</p>
+<h2 id="prefill-throughput">Prefill Throughput</h2>
+<p>These are aggregate input token/s with one generated token. Each value is
+<code>BF16 / FP8 / NVFP4</code>. Every batch has an SGLang row and a vLLM row.</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: right">B</th>
+					<th>Engine</th>
+					<th style="text-align: right">Seq 128</th>
+					<th style="text-align: right">Seq 512</th>
+					<th style="text-align: right">Seq 2,048</th>
+					<th style="text-align: right">Seq 4,096</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: right">1</td>
+					<td>SGLang</td>
+					<td style="text-align: right">1,386 / 2,595 / 3,570</td>
+					<td style="text-align: right">3,854 / 4,769 / 8,671</td>
+					<td style="text-align: right">4,364 / 4,853 / 10,144</td>
+					<td style="text-align: right">4,549 / 4,677 / 9,036</td>
+			</tr>
+			<tr>
+					<td style="text-align: right"></td>
+					<td>vLLM</td>
+					<td style="text-align: right">1,287 / 2,219 / 2,571</td>
+					<td style="text-align: right">3,914 / 6,343 / 8,696</td>
+					<td style="text-align: right">4,841 / 7,232 / 11,195</td>
+					<td style="text-align: right">4,604 / 6,866 / 10,504</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">8</td>
+					<td>SGLang</td>
+					<td style="text-align: right">4,687 / 4,981 / 10,727</td>
+					<td style="text-align: right">4,745 / 4,917 / 10,184</td>
+					<td style="text-align: right">5,331 / 4,880 / 8,021</td>
+					<td style="text-align: right">5,106 / 4,739 / 7,595</td>
+			</tr>
+			<tr>
+					<td style="text-align: right"></td>
+					<td>vLLM</td>
+					<td style="text-align: right">3,706 / 6,215 / 9,184</td>
+					<td style="text-align: right">4,855 / 7,634 / 12,481</td>
+					<td style="text-align: right">4,920 / 7,483 / 12,114</td>
+					<td style="text-align: right">4,719 / 7,057 / 11,167</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">64</td>
+					<td>SGLang</td>
+					<td style="text-align: right">5,368 / 4,918 / 8,137</td>
+					<td style="text-align: right">5,393 / 4,966 / 8,247</td>
+					<td style="text-align: right">5,257 / 4,878 / 8,011</td>
+					<td style="text-align: right">5,037 / 4,698 / 7,584</td>
+			</tr>
+			<tr>
+					<td style="text-align: right"></td>
+					<td>vLLM</td>
+					<td style="text-align: right">4,823 / 7,715 / 12,112</td>
+					<td style="text-align: right">5,045 / 7,922 / 13,297</td>
+					<td style="text-align: right">4,917 / 7,502 / 12,265</td>
+					<td style="text-align: right">4,707 / 7,025 / 11,229</td>
+			</tr>
+	</tbody>
+</table>
+<p>FP8 prefill is not especially good in this stack: SGLang reports no
+GB10-specific W8A8 tuning configuration and uses a default kernel. NVFP4
+completes FlashInfer SM121 autotuning and is much faster.</p>
+<h2 id="decode-throughput">Decode Throughput</h2>
+<p>These are steady aggregate output token/s for 128 generated tokens per request,
+calculated from TPOT. Each value is <code>BF16 / FP8 / NVFP4</code>.</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: right">B</th>
+					<th>Eng.</th>
+					<th style="text-align: right">Context 128</th>
+					<th style="text-align: right">Context 512</th>
+					<th style="text-align: right">Context 2,048</th>
+					<th style="text-align: right">Context 4,096</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: right">1</td>
+					<td>SGL</td>
+					<td style="text-align: right">14.92 / 29.46 / 41.69</td>
+					<td style="text-align: right">14.86 / 29.22 / 41.52</td>
+					<td style="text-align: right">14.68 / 28.39 / 40.63</td>
+					<td style="text-align: right">14.43 / 27.40 / 39.59</td>
+			</tr>
+			<tr>
+					<td style="text-align: right"></td>
+					<td>vLLM</td>
+					<td style="text-align: right">14.13 / 23.29 / 40.07</td>
+					<td style="text-align: right">14.07 / 23.04 / 39.97</td>
+					<td style="text-align: right">13.85 / 22.37 / 39.28</td>
+					<td style="text-align: right">13.55 / 21.65 / 38.39</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">8</td>
+					<td>SGL</td>
+					<td style="text-align: right">124.90 / 224.52 / 342.99</td>
+					<td style="text-align: right">121.50 / 213.44 / 327.45</td>
+					<td style="text-align: right">109.71 / 179.16 / 281.61</td>
+					<td style="text-align: right">97.07 / 146.99 / 237.68</td>
+			</tr>
+			<tr>
+					<td style="text-align: right"></td>
+					<td>vLLM</td>
+					<td style="text-align: right">117.92 / 185.23 / 334.98</td>
+					<td style="text-align: right">112.62 / 174.46 / 318.66</td>
+					<td style="text-align: right">94.40 / 138.44 / 254.57</td>
+					<td style="text-align: right">76.21 / 106.71 / 194.14</td>
+			</tr>
+			<tr>
+					<td style="text-align: right">64</td>
+					<td>SGL</td>
+					<td style="text-align: right">808.05 / 1,383.42 / 2,125.81</td>
+					<td style="text-align: right">682.30 / 1,048.48 / 1,664.87</td>
+					<td style="text-align: right">419.48 / 530.54 / 927.21</td>
+					<td style="text-align: right">275.64 / 318.61 / 579.99</td>
+			</tr>
+			<tr>
+					<td style="text-align: right"></td>
+					<td>vLLM</td>
+					<td style="text-align: right">760.08 / 1,251.41 / 2,129.29</td>
+					<td style="text-align: right">551.11 / 819.85 / 1,487.73</td>
+					<td style="text-align: right">230.04 / 291.60 / 669.73</td>
+					<td style="text-align: right">78.45 / 87.95 / 396.91</td>
+			</tr>
+	</tbody>
+</table>
+<p>At batch one, FP8 is almost exactly 2x BF16 and NVFP4 is about 2.8x. The
+advantage shrinks with long contexts and large batches as KV-cache traffic and
+attention account for more work.</p>
+<h2 id="dspark">DSpark</h2>
+<p>This test uses vLLM, 20 natural-language prompts, greedy decoding, 256 generated
+tokens, and concurrency one.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Target</th>
+					<th style="text-align: right">Plain</th>
+					<th style="text-align: right">DSpark</th>
+					<th style="text-align: right">Speedup</th>
+					<th style="text-align: right">Plain TPOT</th>
+					<th style="text-align: right">DSpark TPOT</th>
+					<th style="text-align: right">TTFT change</th>
+					<th style="text-align: right">Accept length / rate</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>FP8</td>
+					<td style="text-align: right">23.18 tok/s</td>
+					<td style="text-align: right">52.24 tok/s</td>
+					<td style="text-align: right">2.25x</td>
+					<td style="text-align: right">43.05 ms</td>
+					<td style="text-align: right">18.73 ms</td>
+					<td style="text-align: right">66.5 → 124.5 ms</td>
+					<td style="text-align: right">3.15 / 30.73%</td>
+			</tr>
+			<tr>
+					<td>NVFP4</td>
+					<td style="text-align: right">39.86 tok/s</td>
+					<td style="text-align: right">72.33 tok/s</td>
+					<td style="text-align: right">1.81x</td>
+					<td style="text-align: right">25.01 ms</td>
+					<td style="text-align: right">13.44 ms</td>
+					<td style="text-align: right">45.3 → 112.8 ms</td>
+					<td style="text-align: right">3.06 / 29.49%</td>
+			</tr>
+	</tbody>
+</table>
+<p>DSpark is useful for low-concurrency decode, but not for a saturated server. At
+batch 64 and context 128, plain FP8 reaches 1,098 tok/s while DSpark reaches
+688; plain NVFP4 reaches 1,749 tok/s while DSpark reaches 623.</p>
+<h2 id="compute-and-memory-roofs">Compute and Memory Roofs</h2>
+<p>I measured both an 8192-cubed GEMM and a Qwen-like
+<code>M=8192, K=4096, N=12288</code> projection. The best median roof for each datatype is
+100.5 TFLOP/s BF16, 198.9 TFLOP/s FP8, and 234.5 TFLOP/s NVFP4. The local
+2-GiB CUDA copy reaches 232.4 GB/s; NVIDIA advertises 273 GB/s LPDDR5X.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Phase / engine / datatype</th>
+					<th style="text-align: right">Effective model FLOP/s</th>
+					<th style="text-align: right">GEMM roof</th>
+					<th style="text-align: right">GEMM util</th>
+					<th style="text-align: right">Effective weight BW</th>
+					<th style="text-align: right">LPDDR util</th>
+					<th>Bound</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Prefill B64 L4096 / SGLang / BF16</td>
+					<td style="text-align: right"><strong>88.4 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>100.5 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>88.0%</strong></td>
+					<td style="text-align: right">0.315 GB/s*</td>
+					<td style="text-align: right">0.12%*</td>
+					<td><strong>compute</strong></td>
+			</tr>
+			<tr>
+					<td>Prefill B64 L4096 / SGLang / FP8</td>
+					<td style="text-align: right"><strong>82.5 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>198.9 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>41.5%</strong></td>
+					<td style="text-align: right">0.169 GB/s*</td>
+					<td style="text-align: right">0.06%*</td>
+					<td><strong>compute</strong></td>
+			</tr>
+			<tr>
+					<td>Prefill B64 L4096 / SGLang / NVFP4</td>
+					<td style="text-align: right"><strong>133.1 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>234.5 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>56.8%</strong></td>
+					<td style="text-align: right">0.185 GB/s*</td>
+					<td style="text-align: right">0.07%*</td>
+					<td><strong>compute</strong></td>
+			</tr>
+			<tr>
+					<td>Prefill B64 L4096 / vLLM / BF16</td>
+					<td style="text-align: right"><strong>82.6 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>100.5 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>82.2%</strong></td>
+					<td style="text-align: right">0.294 GB/s*</td>
+					<td style="text-align: right">0.11%*</td>
+					<td><strong>compute</strong></td>
+			</tr>
+			<tr>
+					<td>Prefill B64 L4096 / vLLM / FP8</td>
+					<td style="text-align: right"><strong>123.3 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>198.9 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>62.0%</strong></td>
+					<td style="text-align: right">0.253 GB/s*</td>
+					<td style="text-align: right">0.09%*</td>
+					<td><strong>compute</strong></td>
+			</tr>
+			<tr>
+					<td>Prefill B64 L4096 / vLLM / NVFP4</td>
+					<td style="text-align: right"><strong>197.1 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>234.5 TFLOP/s</strong></td>
+					<td style="text-align: right"><strong>84.1%</strong></td>
+					<td style="text-align: right">0.274 GB/s*</td>
+					<td style="text-align: right">0.10%*</td>
+					<td><strong>compute</strong></td>
+			</tr>
+			<tr>
+					<td>Decode B1 L512 / SGLang / BF16</td>
+					<td style="text-align: right">0.229 TFLOP/s</td>
+					<td style="text-align: right">100.5 TFLOP/s</td>
+					<td style="text-align: right">0.23%</td>
+					<td style="text-align: right"><strong>243.5 GB/s</strong></td>
+					<td style="text-align: right"><strong>89.2%</strong></td>
+					<td><strong>memory</strong></td>
+			</tr>
+			<tr>
+					<td>Decode B1 L512 / SGLang / FP8</td>
+					<td style="text-align: right">0.451 TFLOP/s</td>
+					<td style="text-align: right">198.9 TFLOP/s</td>
+					<td style="text-align: right">0.23%</td>
+					<td style="text-align: right"><strong>275.8 GB/s</strong></td>
+					<td style="text-align: right"><strong>101.0%</strong>*</td>
+					<td><strong>memory</strong></td>
+			</tr>
+			<tr>
+					<td>Decode B1 L512 / SGLang / NVFP4</td>
+					<td style="text-align: right">0.641 TFLOP/s</td>
+					<td style="text-align: right">234.5 TFLOP/s</td>
+					<td style="text-align: right">0.27%</td>
+					<td style="text-align: right"><strong>265.7 GB/s</strong></td>
+					<td style="text-align: right"><strong>97.3%</strong></td>
+					<td><strong>memory</strong></td>
+			</tr>
+			<tr>
+					<td>Decode B1 L512 / vLLM / BF16</td>
+					<td style="text-align: right">0.217 TFLOP/s</td>
+					<td style="text-align: right">100.5 TFLOP/s</td>
+					<td style="text-align: right">0.22%</td>
+					<td style="text-align: right"><strong>230.5 GB/s</strong></td>
+					<td style="text-align: right"><strong>84.4%</strong></td>
+					<td><strong>memory</strong></td>
+			</tr>
+			<tr>
+					<td>Decode B1 L512 / vLLM / FP8</td>
+					<td style="text-align: right">0.356 TFLOP/s</td>
+					<td style="text-align: right">198.9 TFLOP/s</td>
+					<td style="text-align: right">0.18%</td>
+					<td style="text-align: right"><strong>217.5 GB/s</strong></td>
+					<td style="text-align: right"><strong>79.7%</strong></td>
+					<td><strong>memory</strong></td>
+			</tr>
+			<tr>
+					<td>Decode B1 L512 / vLLM / NVFP4</td>
+					<td style="text-align: right">0.617 TFLOP/s</td>
+					<td style="text-align: right">234.5 TFLOP/s</td>
+					<td style="text-align: right">0.26%</td>
+					<td style="text-align: right"><strong>255.8 GB/s</strong></td>
+					<td style="text-align: right"><strong>93.7%</strong></td>
+					<td><strong>memory</strong></td>
+			</tr>
+	</tbody>
+</table>
+<p><code>Effective model FLOP/s</code> counts dense Qwen operations completed per second,
+not physical low-precision instructions. For prefill, starred bandwidth is only
+the checkpoint-once lower bound and deliberately excludes activation traffic;
+compute is the relevant comparison. For decode, effective weight bandwidth is
+checkpoint size times token rate. The FP8 estimate above 273 GB/s shows the
+approximation error: checkpoint bytes are not identical to DRAM bytes and
+caching is ignored. The relevant, bound-setting columns are bold.</p>
+<h2 id="takeaways">Takeaways</h2>
+<ul>
+<li><strong>FP8 is the default I would use.</strong> It roughly doubles batch-one decode and
+did not show a statistically significant quality loss here.</li>
+<li><strong>NVFP4 is faster, but the loss is visible.</strong> C-Eval drops 4.49 points and
+GSM8K drops 6.00 points relative to BF16.</li>
+<li><strong>DSpark is for interactive generation.</strong> FP8 + DSpark reaches 52 tok/s
+without the NVFP4 quality penalty, but plain decoding wins at high batch.</li>
+<li><strong>Batch-one decode is already at the memory roof.</strong> The simple estimates are
+around 89&ndash;101% of the advertised LPDDR bandwidth.</li>
+<li><strong>SGLang FP8 prefill needs better GB10 tuning.</strong> It reaches 41.5% of the
+measured FP8 GEMM roof in the large prefill case, versus 62.0% for vLLM.</li>
+</ul>
+
+</main>
+
+  <footer>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<script src="//cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/auto-render.min.js,npm/@xiee/utils/js/render-katex.js" defer></script>
+
+<script src="//cdn.jsdelivr.net/npm/@xiee/utils/js/center-img.min.js" defer></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-CTVHZGKZQ0"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-CTVHZGKZQ0');
+        }
+      </script>
+  
+  <hr/>
+  © <a href="https://seanzw.github.io">Zhengrong Wang</a> 2026 | <a href="https://github.com/seanzw">Github</a> | Enjoy it!
+  
+  </footer>
+  </body>
+</html>
+
