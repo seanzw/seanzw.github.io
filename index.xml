@@ -153,12 +153,5 @@
 				<guid>https://seanzw.github.io/courses/ceng-5410/2026-fall/</guid>
 				<description>&lt;p&gt;&lt;strong&gt;Version:&lt;/strong&gt;     2026 Fall&lt;br&gt;&#xA;&lt;strong&gt;Lecture:&lt;/strong&gt;    &#xA;M15:30-18:15      Venue: ELB 401&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Instructor:&lt;/strong&gt;      Prof. Zhengrong Wang      &lt;a href=&#34;mailto:zhengrongwang@cuhk.edu.hk&#34;&gt;zhengrongwang@cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Course Tutors:&lt;/strong&gt;&lt;br&gt;&#xA;    Xingyu Jiang      &lt;a href=&#34;mailto:xyjiang26@cse.cuhk.edu.hk&#34;&gt;xyjiang26@cse.cuhk.edu.hk&lt;/a&gt;&lt;br&gt;&#xA;    Yifan Guo      &lt;a href=&#34;mailto:yfguo26@cse.cuhk.edu.hk&#34;&gt;yfguo26@cse.cuhk.edu.hk&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;&#xA;&lt;p&gt;Computer architecture is the glue that binds the worlds of hardware and software. Developing new architectures is the art and science of understanding the intrinsic properties of applications, developing and interconnecting hardware components to meet cost and performance goals, and creating abstractions that enable efficient use of hardware without sacrificing generality.&lt;/p&gt;</description>
 			</item>
-			<item>
-				<title>Running Qwen3-8B on DGX Spark</title>
-				<link>https://seanzw.github.io/posts/dgx_spark_qwen3_quantization/</link>
-				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-				<guid>https://seanzw.github.io/posts/dgx_spark_qwen3_quantization/</guid>
-				<description>&lt;p&gt;&lt;strong&gt;My DGX Spark recently arrived! That&amp;rsquo;s some 40k HKD I hope well spent :)&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;I wanted to play with deploying a small LLM&#xA;locally. I picked Qwen3-8B and tried BF16, FP8, NVFP4, SGLang, vLLM, and DSpark.&#xA;This post is just a record of the numbers.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://seanzw.github.io/img/dgx-spark.jpg&#34; alt=&#34;DGX Spark unboxing&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;&#xA;&lt;p&gt;All servers use a 32,768-token context limit and CUDA Graph. SGLang uses&#xA;FlashInfer; vLLM uses its V2 runner, compiled kernels, and full plus piecewise&#xA;CUDA Graph. Memory figures below are model-weight footprints reported by the&#xA;server or checkpoint sizes, not total system memory usage.&lt;/p&gt;</description>
-			</item>
 	</channel>
 </rss>
