@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Sat, 22 Aug 2026 19:40:13 +0800</lastBuildDate>
+			<lastBuildDate>Sat, 05 Sep 2026 12:00:00 +0800</lastBuildDate>
 		
 			<atom:link href="https://seanzw.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Running Qwen3-8B on DGX Spark</title>
+				<link>https://seanzw.github.io/posts/dgx_spark_qwen3_quantization/</link>
+				<pubDate>Sat, 05 Sep 2026 12:00:00 +0800</pubDate>
+				<guid>https://seanzw.github.io/posts/dgx_spark_qwen3_quantization/</guid>
+				<description>&lt;p&gt;&lt;strong&gt;My DGX Spark recently arrived! That&amp;rsquo;s some 40k HKD I hope well spent :)&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;I wanted to play with deploying a small LLM&#xA;locally. I picked Qwen3-8B and tried BF16, FP8, NVFP4, SGLang, vLLM, and DSpark.&#xA;This post is just a record of the numbers.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://seanzw.github.io/img/dgx-spark.jpg&#34; alt=&#34;DGX Spark unboxing&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;&#xA;&lt;p&gt;All servers use a 32,768-token context limit and CUDA Graph. SGLang uses&#xA;FlashInfer; vLLM uses its V2 runner, compiled kernels, and full plus piecewise&#xA;CUDA Graph. Memory figures below are model-weight footprints reported by the&#xA;server or checkpoint sizes, not total system memory usage.&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>How does Hopper distributed shared memory actually move data?</title>
 				<link>https://seanzw.github.io/posts/gpu_dsm_bw/</link>
