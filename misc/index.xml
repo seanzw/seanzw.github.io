@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Miscs on Zhengrong Wang</title>
+		<link>https://seanzw.github.io/misc/</link>
+		<description>Recent content in Miscs on Zhengrong Wang</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<atom:link href="https://seanzw.github.io/misc/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title></title>
+				<link>https://seanzw.github.io/misc/recommendation/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>https://seanzw.github.io/misc/recommendation/</guid>
+				<description>&lt;p&gt;I am glad to write recommendation letters for students I know well.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;You have worked with me on serious research for at least one semester or one summer; OR&lt;/li&gt;&#xA;&lt;li&gt;You have taken at least one course from me, received the grade of A with active participation.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;what-i-need-from-you&#34;&gt;What I need from you&lt;/h4&gt;&#xA;&lt;p&gt;To help me write a concrete and detailed letter, please send me the following materials (preferably in a single PDF or a zip file):&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>
