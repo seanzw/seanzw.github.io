@@ -221,6 +221,87 @@ If you do want a textbook, <a href="https://www.amazon.com/Computer-Architecture
 <li>Nov. 2: In-class midterm exam.</li>
 <li>Dec. 13: Final project due on 11:59 pm.</li>
 </ul>
+<h3 id="course-projects">Course Projects</h3>
+<p>The final project is an opportunity to gain hands-on experience with architecture
+simulation and evaluation. You may work on one of the topics below, propose a
+variation, or develop an open-ended idea of your own. A good project should make
+one focused change or investigation, evaluate it on meaningful workloads, and
+explain the resulting performance tradeoffs.</p>
+<h4 id="simulation-instrumentation-and-visualization">Simulation, Instrumentation, and Visualization</h4>
+<ol>
+<li><strong>Visualizing the FlashGPU-Sim instruction pipeline:</strong> Build a timeline or
+interactive visualization for instruction issue, stalls, dependencies, and
+memory events. A useful starting point is <a href="https://github.com/shioyadan/Konata">Konata for gem5</a>; <a href="https://github.com/google/pprof">Google
+pprof</a> provides an example of a mature profile visualization workflow.</li>
+<li><strong>FlashGPU-Sim and gem5 co-simulation:</strong> Connect GPU and CPU simulation and
+study synchronization, data movement, and end-to-end performance. Start with
+<a href="https://github.com/FlashGPU-Sim/FlashGPU-Sim">FlashGPU-Sim</a> and <a href="https://www.gem5.org">gem5</a>.</li>
+<li><strong>Integrated CPU-GPU simulation:</strong> Extend the previous idea to model a
+heterogeneous system such as a DGX Spark. Compare application behavior under
+different CPU/GPU balance, interconnect, and memory assumptions. <a href="https://www.nvidia.com/en-us/products/workstations/dgx-spark/">DGX Spark
+technical information</a> and <a href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">NVIDIA&rsquo;s Grace Blackwell platform overview</a>
+provide system context.</li>
+</ol>
+<h4 id="ai-workloads-and-software-stacks">AI Workloads and Software Stacks</h4>
+<ol start="4">
+<li><strong>Characterizing emerging AI workloads:</strong> Characterize the execution and
+memory behavior of a recent mixture-of-experts, long-context, or reasoning
+workload. Possible starting points include <a href="https://arxiv.org/abs/2606.19348">DeepSeek-V4</a>, <a href="https://arxiv.org/abs/2607.24653">Kimi K3</a>,
+and Loop Transformer. Focus on a question that can be answered with
+available traces or a reduced representative workload rather than attempting
+to reproduce an entire production model.</li>
+<li><strong>FlashGPU-Sim integration with a high-level framework:</strong> Integrate the
+simulator with <a href="https://github.com/vllm-project/vllm">vLLM</a> or <a href="https://github.com/sgl-project/sglang">SGLang</a> and quantify the effects of
+batching, scheduling, KV-cache management, or speculative decoding on a
+simulated accelerator.</li>
+<li><strong>Architecture-aware LLM serving:</strong> Use a simulator or analytical model to
+study one serving policy, such as continuous batching, paged attention, or
+disaggregated prefill and decode. <a href="https://arxiv.org/abs/2309.06180">PagedAttention</a> and <a href="https://arxiv.org/abs/2403.02310">Sarathi-Serve</a>
+are useful references.</li>
+</ol>
+<h4 id="gpu-memory-and-multi-die-architecture">GPU Memory and Multi-Die Architecture</h4>
+<ol start="7">
+<li><strong>Coherence between private L2 caches on two GPU dies:</strong> Design and evaluate
+a coherence or communication protocol for a multi-die GPU. Compare directory,
+broadcast, and software-assisted alternatives using locality, traffic, and
+synchronization metrics. You can target AMD&rsquo;s chiplet and NVIDIA&rsquo;s
+Blackwell architecture for contemporary multi-die
+designs.</li>
+<li><strong>Spatial GPU placement and simulation:</strong> Model the impact of placing compute
+units, caches, memory controllers, or chiplets at different physical
+locations. Explore how placement changes latency, bandwidth, contention, or
+thermal/power proxies.</li>
+<li><strong>CXL-tiered memory for LLMs:</strong> Model fast and slow memory tiers and implement
+a page or tensor migration policy. Evaluate capacity, latency, bandwidth,
+migration overhead, and tail latency.</li>
+<li><strong>HBF-based memory-system simulation:</strong> Explore a high-bandwidth flash or
+hybrid-buffer memory design, including its controller, parallelism,
+scheduling, and failure or endurance tradeoffs. <a href="https://arxiv.org/abs/2609.09800">HBFSim</a>
+can be a starting point.</li>
+</ol>
+<h4 id="open-ended-projects">Open-Ended Projects</h4>
+<ol start="11">
+<li><strong>A project inspired by the CS251a project list:</strong> The <a href="https://polyarch.github.io/cs251a/08-project/">CS251a course
+project page</a> contains additional examples covering gem5, value
+prediction, prefetching, cache policies, CXL memory, processing-in-memory,
+and performance counters.</li>
+<li><strong>Open topic:</strong> Propose a research question related to computer architecture,
+simulation, systems for machine learning, or hardware-software co-design.
+Projects connected to ongoing research are welcome, provided that the work
+and evaluation performed for this course are clearly scoped.</li>
+</ol>
+<h4 id="project-proposal">Project Proposal</h4>
+<p>Please submit a short proposal describing:</p>
+<ol>
+<li><strong>Question:</strong> What problem are you studying, and why is it interesting?</li>
+<li><strong>Method:</strong> What simulator, implementation, workloads, baselines, and metrics
+will you use?</li>
+<li><strong>Plan:</strong> What are the implementation and evaluation milestones? What is the
+smallest complete version if the ambitious version cannot be finished?</li>
+</ol>
+<p>The proposal should identify a tractable scope. Reproducing or extending an
+existing result is a valid project, as long as the report explains the original
+design and provides a careful evaluation.</p>
 
 </main>
 
